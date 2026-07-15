@@ -650,6 +650,13 @@ def build_html_report(
     <meta charset="utf-8">
     <title>{store_name} KPI Report</title>
     <style>
+        @page {{ size: Letter; margin: 10mm; }}
+        @media print {{
+            body {{ background: #fff !important; }}
+            .page {{ box-shadow: none !important; margin: 0 auto !important; }}
+            .page-break {{ break-before: page; page-break-before: always; }}
+            * {{ -webkit-print-color-adjust: exact; print-color-adjust: exact; }}
+        }}
         * {{ box-sizing: border-box; }}
         body {{ font-family: Arial, Helvetica, sans-serif; margin: 0; background: #efefef; color: #202020; }}
         .page {{ width: 1200px; margin: 18px auto; background: white; padding: 22px 24px; box-shadow: 0 4px 22px rgba(0,0,0,0.12); }}

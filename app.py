@@ -68,16 +68,22 @@ def render_platform_hero() -> None:
             f"""
             <section
                 class="vm-hero vm-hero-image"
-                role="img"
-                aria-label="Store Performance Reporting Platform retail analytics command center"
-                style="background-image:
-                    linear-gradient(90deg, rgba(4,12,28,.08), rgba(4,12,28,.02)),
-                    url('{hero_uri}');"
+                aria-label="Retail Performance Reporting Platform"
+                style="background-image:url('{hero_uri}');"
             >
-                <span class="sr-only">
-                    Store Performance Reporting Platform — automated retail KPI reporting,
-                    validation, traffic analysis, department insights and executive reporting.
-                </span>
+                <div class="vm-hero-overlay"></div>
+                <div class="vm-hero-copy vm-hero-copy-overlay">
+                    <div class="vm-kicker">DDI DATA SOLUTIONS</div>
+                    <div class="vm-title">Retail Performance Reporting Platform</div>
+                    <div class="vm-sub">
+                        Transform Tableau exports into validated, executive-ready KPI reports
+                        with automated analysis and HTML, Excel and PDF outputs.
+                    </div>
+                    <div class="vm-author">
+                        Created by Diego Díaz Iturbe · Retail Analytics · Reporting Automation
+                    </div>
+                    <div class="vm-version">Cloud application · 8-source automated validation</div>
+                </div>
             </section>
             """,
             unsafe_allow_html=True,
@@ -89,10 +95,10 @@ def render_platform_hero() -> None:
         <section class="vm-hero vm-hero-fallback">
             <div class="vm-hero-copy">
                 <div class="vm-kicker">DDI DATA SOLUTIONS</div>
-                <div class="vm-title">Store Performance Reporting Platform</div>
+                <div class="vm-title">Retail Performance Reporting Platform</div>
                 <div class="vm-sub">
-                    Transform Tableau exports into executive-ready KPI reports with automated
-                    validation, traffic analysis, department insights and product performance.
+                    Transform Tableau exports into validated, executive-ready KPI reports with
+                    automated analysis and HTML, Excel and PDF outputs.
                 </div>
             </div>
         </section>
@@ -119,10 +125,39 @@ st.markdown("""
     box-shadow:0 18px 40px rgba(15,23,42,.18);
 }
 .vm-hero-image{
+    display:flex;
+    align-items:center;
     background-size:cover;
     background-position:center center;
     background-repeat:no-repeat;
 }
+.vm-hero-overlay{
+    position:absolute;
+    inset:0;
+    background:
+        linear-gradient(90deg,rgba(3,12,30,.92) 0%,rgba(4,19,45,.76) 44%,rgba(4,18,40,.24) 76%,rgba(4,12,28,.12) 100%),
+        linear-gradient(0deg,rgba(3,12,30,.32),transparent 55%);
+}
+.vm-hero-copy-overlay{
+    position:relative;
+    z-index:1;
+    max-width:760px;
+    padding:2.6rem 3rem;
+    text-shadow:0 2px 16px rgba(0,0,0,.34);
+}
+.vm-author{
+    display:inline-flex;
+    margin-top:1.15rem;
+    padding:.42rem .72rem;
+    border:1px solid rgba(255,255,255,.42);
+    border-radius:999px;
+    background:rgba(3,12,30,.24);
+    color:#f8fafc;
+    font-size:.79rem;
+    font-weight:650;
+    backdrop-filter:blur(4px);
+}
+.vm-version{margin-top:.65rem;color:#cbd5e1;font-size:.72rem;font-weight:650;}
 .vm-hero-fallback{
     display:flex;
     align-items:center;
@@ -168,8 +203,12 @@ st.markdown("""
     .vm-hero-image{background-position:center center;}
 }
 @media(max-width:620px){
-    .vm-hero{min-height:245px;}
-    .vm-hero-image{background-position:58% center;}
+    .vm-hero{min-height:300px;}
+    .vm-hero-image{background-position:60% center;}
+    .vm-hero-copy-overlay{padding:1.55rem 1.35rem;max-width:92%;}
+    .vm-title{font-size:1.85rem;}
+    .vm-sub{font-size:.9rem;line-height:1.45;}
+    .vm-author{border-radius:12px;line-height:1.35;}
 }
 
 .executive-panel{
@@ -310,37 +349,46 @@ div[data-testid="stFileUploaderDropzone"]{border:1.5px dashed #93c5fd;border-rad
 .validation-shell{margin:.2rem 0 1rem;padding:1rem;border:1px solid #dbe5ef;border-radius:16px;background:linear-gradient(180deg,#fbfdff,#f8fafc);box-shadow:0 8px 22px rgba(15,23,42,.04)}.validation-summary{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:.8rem}.validation-title{font-weight:850;color:#0f172a}.validation-count{padding:.28rem .58rem;border-radius:999px;background:#e0f2fe;color:#0369a1;font-size:.75rem;font-weight:850}.validation-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.65rem}.validation-card{display:flex;gap:.7rem;align-items:flex-start;padding:.78rem .82rem;border:1px solid #dbe5ef;border-radius:12px;background:#fff}.validation-card.detected{border-color:#bbf7d0;background:#f0fdf4}.validation-card.missing{border-color:#fecaca;background:#fef2f2}.validation-card.duplicate{border-color:#fde68a;background:#fffbeb}.validation-badge{display:flex;width:28px;height:28px;align-items:center;justify-content:center;border-radius:9px;font-weight:900}.detected .validation-badge{background:#dcfce7;color:#15803d}.missing .validation-badge{background:#fee2e2;color:#b91c1c}.duplicate .validation-badge{background:#fef3c7;color:#a16207}.validation-meta strong,.validation-meta small{display:block}.validation-meta strong{font-size:.82rem;color:#0f172a}.validation-meta small{margin-top:.2rem;color:#64748b;font-size:.72rem;line-height:1.3;word-break:break-word}
 div[data-testid="stFileUploader"]{padding:.35rem 0 .15rem}div[data-testid="stFileUploaderDropzone"]{min-height:170px;display:flex;align-items:center;justify-content:center;border:2px dashed #60a5fa!important;background:radial-gradient(circle at 50% 15%,rgba(59,130,246,.08),transparent 42%),linear-gradient(180deg,#fbfdff,#f8fbff)!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.7),0 8px 22px rgba(37,99,235,.06)}div[data-testid="stFileUploaderDropzone"] button{border:0!important;border-radius:10px!important;background:linear-gradient(135deg,#2563eb,#4f46e5)!important;color:#fff!important;font-weight:800!important;padding:.55rem 1rem!important;box-shadow:0 8px 18px rgba(37,99,235,.2)!important}div[data-testid="stFileUploaderDropzone"] button:hover{transform:translateY(-1px)}
 @media(max-width:1000px){.validation-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}@media(max-width:560px){.validation-grid{grid-template-columns:1fr;}}
+
+.page-nav-wrap{margin:.1rem 0 .2rem;}
+div[data-testid="stRadio"] > label{display:none;}
+div[data-testid="stRadio"] div[role="radiogroup"]{display:flex;gap:0;flex-wrap:wrap;border-bottom:1px solid #dbe5ef;}
+div[data-testid="stRadio"] div[role="radiogroup"] label{
+    margin:0!important;padding:.6rem .85rem!important;border-bottom:2px solid transparent;
+    color:#475569;font-size:.82rem;font-weight:700;
+}
+div[data-testid="stRadio"] div[role="radiogroup"] label:has(input:checked){border-bottom-color:#2563eb;color:#1d4ed8;}
+div[data-testid="stRadio"] div[role="radiogroup"] label > div:first-child{display:none;}
+.compact-start{margin:.15rem 0 .85rem;color:#64748b;font-size:.84rem;}
+
 </style>
 """, unsafe_allow_html=True)
 
 render_platform_hero()
 
-st.markdown(
-    """
-    <div class="quick-nav" aria-label="Platform help and preview menu">
-        <div><strong>Start here:</strong> add the report details, upload the eight Tableau exports, and generate your report.</div>
-        <div class="quick-nav-badges">
-            <span>8 exports</span><span>Automatic validation</span><span>HTML + Excel</span>
-        </div>
-    </div>
-    """,
-    unsafe_allow_html=True,
+st.markdown('<div class="page-nav-wrap"></div>', unsafe_allow_html=True)
+active_page = st.radio(
+    "Application section",
+    ["Generate Report", "How It Works", "Tableau Export Guide", "Example Report", "Report Contents"],
+    horizontal=True,
+    label_visibility="collapsed",
+    key="platform_page",
 )
 
-with st.expander("How it works", expanded=False):
+if active_page == "How It Works":
     st.markdown(
         """
         <div class="workflow-grid">
             <div class="workflow-step"><div class="workflow-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v5h5"/><path d="M9.5 13h5M9.5 17h5"/></svg></div><strong>Export from Tableau</strong><small>Set every report to the same date range, then download the eight required cross tabs.</small></div>
             <div class="workflow-step"><div class="workflow-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M12 16V4"/><path d="m7 9 5-5 5 5"/><path d="M5 20h14"/></svg></div><strong>Upload together</strong><small>Add all files in one step; the platform identifies and checks them automatically.</small></div>
             <div class="workflow-step"><div class="workflow-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/><circle cx="12" cy="12" r="4"/><path d="m5.6 5.6 2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/></svg></div><strong>Generate report</strong><small>Validate the source files and build the complete performance report.</small></div>
-            <div class="workflow-step"><div class="workflow-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M12 4v12"/><path d="m7 11 5 5 5-5"/><path d="M5 20h14"/></svg></div><strong>Download outputs</strong><small>Save the HTML and Excel reports, or print the finished report to PDF.</small></div>
+            <div class="workflow-step"><div class="workflow-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M12 4v12"/><path d="m7 11 5 5 5-5"/><path d="M5 20h14"/></svg></div><strong>Download outputs</strong><small>Download the finished HTML, Excel and PDF reports directly.</small></div>
         </div>
         """,
         unsafe_allow_html=True,
     )
 
-with st.expander("Tableau export guide — 8 required files", expanded=False):
+if active_page == "Tableau Export Guide":
     st.caption("Open each Tableau report, select Download → Cross Tab, choose the listed view, and export in CSV format.")
     st.markdown(
         """
@@ -375,7 +423,7 @@ with st.expander("Tableau export guide — 8 required files", expanded=False):
         unsafe_allow_html=True,
     )
 
-with st.expander("View example report", expanded=False):
+if active_page == "Example Report":
     st.caption("An anonymized production example will be added after cloud deployment. These placeholders reserve the final layout.")
     st.markdown(
         """
@@ -389,14 +437,14 @@ with st.expander("View example report", expanded=False):
         unsafe_allow_html=True,
     )
 
-with st.expander("What the report includes", expanded=False):
+if active_page == "Report Contents":
     st.markdown("""
 - Executive KPI dashboard and automated summary
 - Sales, budget attainment and budget-gap analysis
 - Traffic, conversion, transactions, ATV and IPC / UPT
 - Department and subdepartment performance
 - Top brands and top-selling products
-- Data validation checks and downloadable HTML and Excel outputs
+- Data validation checks and downloadable HTML, Excel and PDF outputs
 """)
 
 
@@ -448,13 +496,11 @@ def embed_images_in_html(html_text: str) -> str:
     return html_text
 
 
-def try_export_pdf(html_text: str) -> bytes | None:
-    try:
-        from weasyprint import HTML
+def export_pdf(html_text: str) -> bytes:
+    """Convert the completed HTML report into a downloadable PDF."""
+    from weasyprint import HTML
 
-        return HTML(string=html_text).write_pdf()
-    except Exception:
-        return None
+    return HTML(string=html_text, base_url=str(APP_DIR)).write_pdf()
 
 
 @st.cache_data(show_spinner=False)
@@ -462,7 +508,7 @@ def build_outputs_from_uploads(
     file_bytes: Dict[str, bytes],
     store_name: str,
     report_period: str,
-) -> Tuple[bytes, bytes, bytes, bytes | None, Dict[str, pd.DataFrame], Dict[str, pd.DataFrame | str]]:
+) -> Tuple[bytes, bytes, bytes, bytes, Dict[str, pd.DataFrame], Dict[str, pd.DataFrame | str]]:
     with tempfile.TemporaryDirectory() as temp:
         base = Path(temp)
 
@@ -496,7 +542,7 @@ def build_outputs_from_uploads(
         html_text = embed_images_in_html(html_text)
         html_bytes = html_text.encode("utf-8")
 
-        pdf_bytes = try_export_pdf(html_text)
+        pdf_bytes = export_pdf(html_text)
 
         return (
             model_path.read_bytes(),
@@ -675,197 +721,201 @@ def show_upload_validation(validation: Dict[str, object]) -> None:
 
 
 
-st.markdown('<div class="section-kicker">BUILD YOUR REPORT</div>', unsafe_allow_html=True)
-st.subheader("Report setup")
-st.caption("Add the location and reporting period that should appear in the report header.")
+if active_page == "Generate Report":
+    st.markdown(
+        '<div class="compact-start"><strong>Start here:</strong> add the report details, upload the eight Tableau exports and generate the report.</div>',
+        unsafe_allow_html=True,
+    )
+    st.markdown('<div class="section-kicker">BUILD YOUR REPORT</div>', unsafe_allow_html=True)
+    st.subheader("Report setup")
+    st.caption("Add the location and reporting period that should appear in the report header.")
 
-with st.container(border=True):
-    setup_col1, setup_col2, setup_col3 = st.columns([1.35, 1, 1])
-    with setup_col1:
-        store_name = st.text_input(
-            "Store / location",
-            value="",
-            placeholder="e.g., Sample Store",
-            help="Required. The Tableau exports do not reliably contain the store name.",
+    with st.container(border=True):
+        setup_col1, setup_col2, setup_col3 = st.columns([1.35, 1, 1])
+        with setup_col1:
+            store_name = st.text_input(
+                "Store / location",
+                value="",
+                placeholder="e.g., Sample Store",
+                help="Required. The Tableau exports do not reliably contain the store name.",
+            )
+        with setup_col2:
+            report_start = st.date_input("Report start date", value=date.today())
+        with setup_col3:
+            report_end = st.date_input("Report end date", value=date.today())
+
+        default_report_period = f"{report_start.strftime('%b %d, %Y')} – {report_end.strftime('%b %d, %Y')}"
+        report_period = st.text_input(
+            "Report label / period",
+            value=default_report_period,
+            help="This text appears on the report header and can be edited manually.",
         )
-    with setup_col2:
-        report_start = st.date_input("Report start date", value=date.today())
-    with setup_col3:
-        report_end = st.date_input("Report end date", value=date.today())
 
-    default_report_period = f"{report_start.strftime('%b %d, %Y')} – {report_end.strftime('%b %d, %Y')}"
-    report_period = st.text_input(
-        "Report label / period",
-        value=default_report_period,
-        help="This text appears on the report header and can be edited manually.",
+    st.subheader("1. Upload Tableau exports")
+    st.write("Drag and drop all eight required exports below. The platform will identify and validate each report automatically.")
+
+    bulk_uploads = st.file_uploader(
+        "Upload all Tableau exports",
+        type=["csv", "xlsx", "xls"],
+        accept_multiple_files=True,
+        key="bulk_tableau_uploads",
+        help="You may select all eight files at once. Original filenames can vary because the app also checks their contents.",
     )
 
-st.subheader("1. Upload Tableau exports")
-st.write("Drag and drop all eight required exports below. The platform will identify and validate each report automatically.")
+    validation = classify_uploaded_files(bulk_uploads or [])
 
-bulk_uploads = st.file_uploader(
-    "Upload all Tableau exports",
-    type=["csv", "xlsx", "xls"],
-    accept_multiple_files=True,
-    key="bulk_tableau_uploads",
-    help="You may select all eight files at once. Original filenames can vary because the app also checks their contents.",
-)
+    st.subheader("2. Report validation")
+    show_upload_validation(validation)
 
-validation = classify_uploaded_files(bulk_uploads or [])
+    current_fingerprint = upload_fingerprint(
+        bulk_uploads or [], store_name, report_start, report_end, report_period
+    )
+    if st.session_state.get("input_fingerprint") != current_fingerprint:
+        clear_generated_report()
+        st.session_state["input_fingerprint"] = current_fingerprint
 
-st.subheader("2. Report validation")
-show_upload_validation(validation)
+    location_missing = not store_name.strip()
+    dates_invalid = report_start > report_end
+    period_missing = not report_period.strip()
 
-current_fingerprint = upload_fingerprint(
-    bulk_uploads or [], store_name, report_start, report_end, report_period
-)
-if st.session_state.get("input_fingerprint") != current_fingerprint:
-    clear_generated_report()
-    st.session_state["input_fingerprint"] = current_fingerprint
+    if location_missing:
+        st.warning("Enter the store / location before generating the report.")
+    if dates_invalid:
+        st.warning("The report start date cannot be after the report end date.")
+    if period_missing:
+        st.warning("Enter a report label / period before generating the report.")
 
-location_missing = not store_name.strip()
-dates_invalid = report_start > report_end
-period_missing = not report_period.strip()
+    ready_to_generate = bool(
+        validation.get("ready")
+        and not location_missing
+        and not dates_invalid
+        and not period_missing
+    )
 
-if location_missing:
-    st.warning("Enter the store / location before generating the report.")
-if dates_invalid:
-    st.warning("The report start date cannot be after the report end date.")
-if period_missing:
-    st.warning("Enter a report label / period before generating the report.")
+    st.subheader("3. Generate report")
+    if not ready_to_generate:
+        st.warning("Missing required files or report details. Complete the items above to continue.")
 
-ready_to_generate = bool(
-    validation.get("ready")
-    and not location_missing
-    and not dates_invalid
-    and not period_missing
-)
+    build_clicked = st.button(
+        "Generate Report",
+        type="primary",
+        use_container_width=True,
+        disabled=not ready_to_generate,
+    )
 
-st.subheader("3. Generate report")
-if not ready_to_generate:
-    st.warning("Missing required files or report details. Complete the items above to continue.")
+    if build_clicked:
+        with st.spinner("Building data model, calculations, charts and report..."):
+            try:
+                (
+                    model_bytes,
+                    calculations_bytes,
+                    html_report_bytes,
+                    pdf_report_bytes,
+                    tables,
+                    outputs,
+                ) = build_outputs_from_uploads(
+                    validation["file_bytes"],
+                    store_name.strip(),
+                    report_period.strip(),
+                )
 
-build_clicked = st.button(
-    "Generate Report",
-    type="primary",
-    use_container_width=True,
-    disabled=not ready_to_generate,
-)
+                st.session_state["model_bytes"] = model_bytes
+                st.session_state["calculations_bytes"] = calculations_bytes
+                st.session_state["html_report_bytes"] = html_report_bytes
+                st.session_state["pdf_report_bytes"] = pdf_report_bytes
+                st.session_state["tables"] = tables
+                st.session_state["outputs"] = outputs
+                st.session_state["report_ready"] = True
+                st.success("Report generated successfully.")
 
-if build_clicked:
-    with st.spinner("Building data model, calculations, charts and report..."):
-        try:
-            (
-                model_bytes,
-                calculations_bytes,
-                html_report_bytes,
-                pdf_report_bytes,
-                tables,
-                outputs,
-            ) = build_outputs_from_uploads(
-                validation["file_bytes"],
-                store_name.strip(),
-                report_period.strip(),
+            except Exception as exc:
+                clear_generated_report()
+                st.error("The report could not be generated.")
+                st.exception(exc)
+
+    if st.session_state.get("report_ready"):
+        outputs = st.session_state["outputs"]
+
+        st.subheader("4. Executive preview")
+        show_kpi_cards(outputs["kpi_master"])
+
+        summary_text = outputs.get("executive_summary_text", "")
+        if summary_text:
+            safe_summary = html.escape(str(summary_text)).replace("\n", "<br>")
+            st.markdown(
+                f"""
+                <div class="summary-card">
+                    <span class="summary-label">Auto executive summary</span>
+                    {safe_summary}
+                </div>
+                """,
+                unsafe_allow_html=True,
             )
 
-            st.session_state["model_bytes"] = model_bytes
-            st.session_state["calculations_bytes"] = calculations_bytes
-            st.session_state["html_report_bytes"] = html_report_bytes
-            st.session_state["pdf_report_bytes"] = pdf_report_bytes
-            st.session_state["tables"] = tables
-            st.session_state["outputs"] = outputs
-            st.session_state["report_ready"] = True
-            st.success("Report generated successfully.")
+        st.subheader("5. Data validation checks")
+        show_validation(outputs["validation"])
 
-        except Exception as exc:
-            clear_generated_report()
-            st.error("The report could not be generated.")
-            st.exception(exc)
+        st.subheader("6. Report tables")
 
-if st.session_state.get("report_ready"):
-    outputs = st.session_state["outputs"]
-
-    st.subheader("4. Executive preview")
-    show_kpi_cards(outputs["kpi_master"])
-
-    summary_text = outputs.get("executive_summary_text", "")
-    if summary_text:
-        safe_summary = html.escape(str(summary_text)).replace("\n", "<br>")
-        st.markdown(
-            f"""
-            <div class="summary-card">
-                <span class="summary-label">Auto executive summary</span>
-                {safe_summary}
-            </div>
-            """,
-            unsafe_allow_html=True,
+        tab1, tab2, tab3, tab4, tab5 = st.tabs(
+            ["Department KPIs", "Subdepartment Gaps", "Opportunities", "Top Brands", "Traffic"]
         )
 
-    st.subheader("5. Data validation checks")
-    show_validation(outputs["validation"])
+        with tab1:
+            st.dataframe(outputs["department_kpis"], use_container_width=True, hide_index=True)
 
-    st.subheader("6. Report tables")
+        with tab2:
+            st.dataframe(outputs["sub_department_kpis"], use_container_width=True, hide_index=True)
 
-    tab1, tab2, tab3, tab4, tab5 = st.tabs(
-        ["Department KPIs", "Subdepartment Gaps", "Opportunities", "Top Brands", "Traffic"]
-    )
+        with tab3:
+            st.caption(
+                "Priority Score = absolute budget gap % weighted by sales mix. "
+                "It ranks areas that are both underperforming and meaningful to the business."
+            )
+            st.dataframe(outputs["opportunity_ranking"], use_container_width=True, hide_index=True)
 
-    with tab1:
-        st.dataframe(outputs["department_kpis"], use_container_width=True, hide_index=True)
+        with tab4:
+            st.dataframe(outputs["top_brands_fixed"], use_container_width=True, hide_index=True)
 
-    with tab2:
-        st.dataframe(outputs["sub_department_kpis"], use_container_width=True, hide_index=True)
+        with tab5:
+            st.dataframe(outputs["traffic_summary"], use_container_width=True, hide_index=True)
+            st.dataframe(outputs["hourly_traffic"], use_container_width=True, hide_index=True)
 
-    with tab3:
-        st.caption(
-            "Priority Score = absolute budget gap % weighted by sales mix. "
-            "It ranks areas that are both underperforming and meaningful to the business."
-        )
-        st.dataframe(outputs["opportunity_ranking"], use_container_width=True, hide_index=True)
+        st.subheader("7. Download outputs")
 
-    with tab4:
-        st.dataframe(outputs["top_brands_fixed"], use_container_width=True, hide_index=True)
+        # The requested convention uses the report end date as the report date.
+        report_date_text = report_end.strftime("%Y-%m-%d")
+        base_name = safe_filename(f"{store_name}_VM_KPI_Report_{report_date_text}")
+        col1, col2, col3, col4 = st.columns(4)
 
-    with tab5:
-        st.dataframe(outputs["traffic_summary"], use_container_width=True, hide_index=True)
-        st.dataframe(outputs["hourly_traffic"], use_container_width=True, hide_index=True)
+        with col1:
+            st.download_button(
+                "Download data model",
+                data=st.session_state["model_bytes"],
+                file_name=f"{base_name}_Data_Model.xlsx",
+                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                use_container_width=True,
+            )
 
-    st.subheader("7. Download outputs")
+        with col2:
+            st.download_button(
+                "Download calculations",
+                data=st.session_state["calculations_bytes"],
+                file_name=f"{base_name}_Calculations.xlsx",
+                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                use_container_width=True,
+            )
 
-    # The requested convention uses the report end date as the report date.
-    report_date_text = report_end.strftime("%Y-%m-%d")
-    base_name = safe_filename(f"{store_name}_VM_KPI_Report_{report_date_text}")
-    col1, col2, col3, col4 = st.columns(4)
+        with col3:
+            st.download_button(
+                "Download HTML report",
+                data=st.session_state["html_report_bytes"],
+                file_name=f"{base_name}.html",
+                mime="text/html",
+                use_container_width=True,
+            )
 
-    with col1:
-        st.download_button(
-            "Download data model",
-            data=st.session_state["model_bytes"],
-            file_name=f"{base_name}_Data_Model.xlsx",
-            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            use_container_width=True,
-        )
-
-    with col2:
-        st.download_button(
-            "Download calculations",
-            data=st.session_state["calculations_bytes"],
-            file_name=f"{base_name}_Calculations.xlsx",
-            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            use_container_width=True,
-        )
-
-    with col3:
-        st.download_button(
-            "Download HTML report",
-            data=st.session_state["html_report_bytes"],
-            file_name=f"{base_name}.html",
-            mime="text/html",
-            use_container_width=True,
-        )
-
-    with col4:
-        if st.session_state.get("pdf_report_bytes"):
+        with col4:
             st.download_button(
                 "Download PDF report",
                 data=st.session_state["pdf_report_bytes"],
@@ -873,19 +923,3 @@ if st.session_state.get("report_ready"):
                 mime="application/pdf",
                 use_container_width=True,
             )
-        else:
-            st.button(
-                "PDF via Print / Save",
-                disabled=True,
-                use_container_width=True,
-                help="Use the Print / Save PDF button inside the report preview or downloaded HTML report.",
-            )
-
-    if st.session_state.get("pdf_report_bytes"):
-        st.caption("A PDF was generated automatically in this environment.")
-    else:
-        st.info(
-            "Automatic PDF generation is not available on this computer, but the report now includes "
-            "a **Print / Save PDF** button. Open the report preview or the downloaded HTML report, "
-            "click that button, and choose **Save as PDF** in the macOS print dialog."
-        )
