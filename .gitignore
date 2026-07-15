@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual environments
+.venv/
+venv/
+
+# MacOS
+.DS_Store
+
+# Streamlit secrets
+.streamlit/secrets.toml
+
+# Reports
+*.xlsx
+*.xls
+*.csv
+*.pdf
+
+# IDE
+.vscode/
+.idea/
