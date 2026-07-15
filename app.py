@@ -20,6 +20,7 @@ from typing import Dict, Tuple
 
 import pandas as pd
 import streamlit as st
+from PIL import Image
 
 from upload_classifier import (
     REPORT_DEFINITIONS,
@@ -42,9 +43,14 @@ ASSETS_DIR = APP_DIR / "assets"
 HERO_IMAGE_PATH = ASSETS_DIR / "store_performance_hero.png"
 FAVICON_PATH = ASSETS_DIR / "ddi_favicon.png"
 
+try:
+    PAGE_ICON = Image.open(FAVICON_PATH) if FAVICON_PATH.exists() else "📈"
+except Exception:
+    PAGE_ICON = "📈"
+
 st.set_page_config(
     page_title="Store Performance Reporting Platform",
-    page_icon=str(FAVICON_PATH) if FAVICON_PATH.exists() else "📈",
+    page_icon=PAGE_ICON,
     layout="wide",
 )
 
@@ -527,10 +533,17 @@ def embed_images_in_html(html_text: str) -> str:
 
 
 def export_pdf(html_text: str) -> bytes:
-    """Convert the completed HTML report into a downloadable PDF."""
-    from weasyprint import HTML
+    """Convert HTML to PDF when WeasyPrint's system libraries are available.
 
-    return HTML(string=html_text, base_url=str(APP_DIR)).write_pdf()
+    Returning empty bytes keeps the data model, calculations, preview, and HTML
+    report working even when the deployment environment lacks Pango/GObject.
+    """
+    try:
+        from weasyprint import HTML
+
+        return HTML(string=html_text, base_url=str(APP_DIR)).write_pdf()
+    except Exception:
+        return b""
 
 
 @st.cache_data(show_spinner=False)
@@ -946,10 +959,17 @@ with generate_tab:
             )
 
         with col4:
-            st.download_button(
-                "Download PDF report",
-                data=st.session_state["pdf_report_bytes"],
-                file_name=f"{base_name}.pdf",
-                mime="application/pdf",
-                use_container_width=True,
-            )
+            pdf_data = st.session_state.get("pdf_report_bytes", b"")
+            if pdf_data:
+                st.download_button(
+                    "Download PDF report",
+                    data=pdf_data,
+                    file_name=f"{base_name}.pdf",
+                    mime="application/pdf",
+                    use_container_width=True,
+                )
+            else:
+                st.info(
+                    "PDF export is temporarily unavailable on this deployment. "
+                    "The HTML report and all Excel outputs are ready."
+                )
