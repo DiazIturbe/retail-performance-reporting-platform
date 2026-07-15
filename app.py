@@ -37,15 +37,16 @@ from report_calculations import (
 from html_report_builder import build_html_report
 
 
+APP_DIR = Path(__file__).resolve().parent
+ASSETS_DIR = APP_DIR / "assets"
+HERO_IMAGE_PATH = ASSETS_DIR / "store_performance_hero.png"
+FAVICON_PATH = ASSETS_DIR / "ddi_favicon.png"
+
 st.set_page_config(
     page_title="Store Performance Reporting Platform",
-    page_icon="📈",
+    page_icon=str(FAVICON_PATH) if FAVICON_PATH.exists() else "📈",
     layout="wide",
 )
-
-
-APP_DIR = Path(__file__).resolve().parent
-HERO_IMAGE_PATH = APP_DIR / "assets" / "store_performance_hero.png"
 
 
 def image_data_uri(image_path: Path) -> str | None:
@@ -142,7 +143,7 @@ st.markdown("""
     position:relative;
     z-index:1;
     max-width:760px;
-    padding:2.6rem 3rem;
+    padding:3.25rem 3rem 2.65rem;
     text-shadow:0 2px 16px rgba(0,0,0,.34);
 }
 .vm-author{
@@ -203,12 +204,14 @@ st.markdown("""
     .vm-hero-image{background-position:center center;}
 }
 @media(max-width:620px){
-    .vm-hero{min-height:300px;}
+    .vm-hero{min-height:330px;}
     .vm-hero-image{background-position:60% center;}
-    .vm-hero-copy-overlay{padding:1.55rem 1.35rem;max-width:92%;}
-    .vm-title{font-size:1.85rem;}
-    .vm-sub{font-size:.9rem;line-height:1.45;}
-    .vm-author{border-radius:12px;line-height:1.35;}
+    .vm-hero-copy-overlay{padding:2.35rem 1.45rem 1.85rem;max-width:94%;}
+    .vm-kicker{margin-bottom:.8rem;}
+    .vm-title{font-size:1.68rem;line-height:1.08;}
+    .vm-sub{font-size:.88rem;line-height:1.48;}
+    .vm-author{border-radius:12px;line-height:1.35;font-size:.74rem;}
+    .vm-version{font-size:.68rem;}
 }
 
 .executive-panel{
@@ -350,16 +353,46 @@ div[data-testid="stFileUploaderDropzone"]{border:1.5px dashed #93c5fd;border-rad
 div[data-testid="stFileUploader"]{padding:.35rem 0 .15rem}div[data-testid="stFileUploaderDropzone"]{min-height:170px;display:flex;align-items:center;justify-content:center;border:2px dashed #60a5fa!important;background:radial-gradient(circle at 50% 15%,rgba(59,130,246,.08),transparent 42%),linear-gradient(180deg,#fbfdff,#f8fbff)!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.7),0 8px 22px rgba(37,99,235,.06)}div[data-testid="stFileUploaderDropzone"] button{border:0!important;border-radius:10px!important;background:linear-gradient(135deg,#2563eb,#4f46e5)!important;color:#fff!important;font-weight:800!important;padding:.55rem 1rem!important;box-shadow:0 8px 18px rgba(37,99,235,.2)!important}div[data-testid="stFileUploaderDropzone"] button:hover{transform:translateY(-1px)}
 @media(max-width:1000px){.validation-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}@media(max-width:560px){.validation-grid{grid-template-columns:1fr;}}
 
-.page-nav-wrap{margin:.1rem 0 .2rem;}
-div[data-testid="stRadio"] > label{display:none;}
-div[data-testid="stRadio"] div[role="radiogroup"]{display:flex;gap:0;flex-wrap:wrap;border-bottom:1px solid #dbe5ef;}
-div[data-testid="stRadio"] div[role="radiogroup"] label{
-    margin:0!important;padding:.6rem .85rem!important;border-bottom:2px solid transparent;
-    color:#475569;font-size:.82rem;font-weight:700;
+.page-nav-wrap{margin:.1rem 0 .35rem;}
+div[data-testid="stTabs"]{margin-top:.1rem;}
+div[data-testid="stTabs"] [data-baseweb="tab-list"]{
+    gap:.35rem;
+    padding:.32rem;
+    border:1px solid #dbe5ef;
+    border-radius:14px;
+    background:#f8fafc;
+    box-shadow:0 4px 14px rgba(15,23,42,.04);
+    overflow-x:auto;
 }
-div[data-testid="stRadio"] div[role="radiogroup"] label:has(input:checked){border-bottom-color:#2563eb;color:#1d4ed8;}
-div[data-testid="stRadio"] div[role="radiogroup"] label > div:first-child{display:none;}
-.compact-start{margin:.15rem 0 .85rem;color:#64748b;font-size:.84rem;}
+div[data-testid="stTabs"] button[data-baseweb="tab"]{
+    min-height:42px;
+    padding:.55rem 1rem;
+    border-radius:10px;
+    color:#475569;
+    font-size:.84rem;
+    font-weight:750;
+    white-space:nowrap;
+}
+div[data-testid="stTabs"] button[data-baseweb="tab"]:first-child{
+    background:linear-gradient(135deg,#2563eb,#4f46e5);
+    color:#fff;
+    box-shadow:0 7px 16px rgba(37,99,235,.20);
+}
+div[data-testid="stTabs"] button[data-baseweb="tab"][aria-selected="true"]{
+    background:#fff;
+    color:#1d4ed8;
+    box-shadow:0 3px 10px rgba(15,23,42,.08);
+}
+div[data-testid="stTabs"] button[data-baseweb="tab"]:first-child[aria-selected="true"]{
+    background:linear-gradient(135deg,#2563eb,#4f46e5);
+    color:#fff;
+}
+div[data-testid="stTabs"] [data-baseweb="tab-highlight"]{display:none;}
+.compact-start{margin:.25rem 0 .9rem;color:#64748b;font-size:.84rem;}
+@media(max-width:620px){
+    div[data-testid="stTabs"] [data-baseweb="tab-list"]{padding:.25rem;gap:.2rem;}
+    div[data-testid="stTabs"] button[data-baseweb="tab"]{min-height:39px;padding:.48rem .72rem;font-size:.78rem;}
+}
 
 </style>
 """, unsafe_allow_html=True)
@@ -367,15 +400,12 @@ div[data-testid="stRadio"] div[role="radiogroup"] label > div:first-child{displa
 render_platform_hero()
 
 st.markdown('<div class="page-nav-wrap"></div>', unsafe_allow_html=True)
-active_page = st.radio(
-    "Application section",
-    ["Generate Report", "How It Works", "Tableau Export Guide", "Example Report", "Report Contents"],
-    horizontal=True,
-    label_visibility="collapsed",
-    key="platform_page",
+generate_tab, guide_tab, preview_tab = st.tabs(
+    ["🚀 Generate Report", "Guide", "Report Preview"]
 )
 
-if active_page == "How It Works":
+with guide_tab:
+    st.subheader("How the workflow works")
     st.markdown(
         """
         <div class="workflow-grid">
@@ -388,7 +418,7 @@ if active_page == "How It Works":
         unsafe_allow_html=True,
     )
 
-if active_page == "Tableau Export Guide":
+    st.subheader("Required Tableau exports")
     st.caption("Open each Tableau report, select Download → Cross Tab, choose the listed view, and export in CSV format.")
     st.markdown(
         """
@@ -423,8 +453,9 @@ if active_page == "Tableau Export Guide":
         unsafe_allow_html=True,
     )
 
-if active_page == "Example Report":
-    st.caption("An anonymized production example will be added after cloud deployment. These placeholders reserve the final layout.")
+with preview_tab:
+    st.subheader("Report preview")
+    st.caption("An anonymized production example will be added after final cloud validation. These placeholders reserve the intended layout.")
     st.markdown(
         """
         <div class="demo-grid">
@@ -436,8 +467,7 @@ if active_page == "Example Report":
         """,
         unsafe_allow_html=True,
     )
-
-if active_page == "Report Contents":
+    st.markdown("#### Included in every report")
     st.markdown("""
 - Executive KPI dashboard and automated summary
 - Sales, budget attainment and budget-gap analysis
@@ -721,7 +751,7 @@ def show_upload_validation(validation: Dict[str, object]) -> None:
 
 
 
-if active_page == "Generate Report":
+with generate_tab:
     st.markdown(
         '<div class="compact-start"><strong>Start here:</strong> add the report details, upload the eight Tableau exports and generate the report.</div>',
         unsafe_allow_html=True,
