@@ -226,6 +226,18 @@ def section_icon(name, css_class="section-icon"):
     return f'<svg class="{css_class}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">{paths[icon_name]}</svg>'
 
 
+def cover_section_icon(name):
+    """Return a PDF-safe cover icon with an explicit department stroke."""
+    color = {
+        "footwear": "#176FA6",
+        "apparel": "#D96A2B",
+        "accessories": "#4A9455",
+    }.get(department_class(name), "#A9C3DC")
+    return section_icon(name, "cover-dept-icon").replace(
+        'stroke="currentColor"', f'stroke="{color}"'
+    )
+
+
 def subsection_icon(name):
     text = str(name).lower()
     if "women" in text:
@@ -770,10 +782,10 @@ def build_html_report(
             align-items: center;
             justify-content: center;
             flex: 0 0 auto;
-            padding: 1mm;
+            padding: 0;
             border-radius: 2.4mm;
-            background: rgba(255, 255, 255, .96);
-            box-shadow: 0 1mm 3mm rgba(0, 0, 0, .12);
+            background: transparent;
+            box-shadow: none;
         }}
 
         .cover-logo {{
@@ -781,6 +793,7 @@ def build_html_report(
             width: 100%;
             height: 100%;
             object-fit: contain;
+            border-radius: 2.4mm;
         }}
 
         .cover-title {{
@@ -915,7 +928,8 @@ def build_html_report(
             padding: 5mm 3mm 4mm;
             border: 1px solid rgba(255,255,255,.18);
             border-radius: 5mm;
-            background: rgba(255,255,255,.035);
+            background: rgba(255,255,255,.065);
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,.025);
         }}
 
         .cover-dept-panel.footwear-panel {{ height: 82mm; border-color: rgba(23,111,166,.7); color: var(--footwear); }}
@@ -928,12 +942,12 @@ def build_html_report(
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            border: 1px solid currentColor;
-            border-radius: 50%;
-            background: rgba(15,39,71,.5);
+            border: 0;
+            border-radius: 0;
+            background: transparent;
         }}
 
-        .cover-dept-icon {{ width: 8mm; height: 8mm; color: currentColor; stroke: currentColor; }}
+        .cover-dept-icon {{ width: 9mm; height: 9mm; }}
 
         .cover-dept-name {{
             margin-top: 4mm;
@@ -1717,8 +1731,8 @@ def build_html_report(
             }}
 
             .page-break {{
-                break-before: page;
-                page-break-before: always;
+                break-before: auto !important;
+                page-break-before: auto !important;
             }}
 
             .card, .chart-card, .section, .department-card,
@@ -1794,17 +1808,17 @@ def build_html_report(
 
                 <div class="cover-panels">
                     <div class="cover-dept-panel footwear-panel">
-                        <span class="cover-dept-icon-shell">{section_icon('Footwear', 'cover-dept-icon')}</span><div class="cover-dept-name">Footwear</div><div class="cover-mini-rule"></div>
+                        <span class="cover-dept-icon-shell">{cover_section_icon('Footwear')}</span><div class="cover-dept-name">Footwear</div><div class="cover-mini-rule"></div>
                         <svg class="cover-sparkline" viewBox="0 0 100 40"><polyline points="4,32 20,25 35,29 50,17 67,22 82,10 96,14"/><circle cx="96" cy="14" r="2.5"/></svg>
                         <div class="cover-mini-bars"><span style="height:24%"></span><span style="height:38%"></span><span style="height:31%"></span><span style="height:55%"></span><span style="height:70%"></span></div>
                     </div>
                     <div class="cover-dept-panel apparel-panel">
-                        <span class="cover-dept-icon-shell">{section_icon('Apparel', 'cover-dept-icon')}</span><div class="cover-dept-name">Apparel</div><div class="cover-mini-rule"></div>
+                        <span class="cover-dept-icon-shell">{cover_section_icon('Apparel')}</span><div class="cover-dept-name">Apparel</div><div class="cover-mini-rule"></div>
                         <svg class="cover-sparkline" viewBox="0 0 100 40"><polyline points="4,31 18,23 34,27 51,16 66,20 82,9 96,5"/><circle cx="96" cy="5" r="2.5"/></svg>
                         <div class="cover-mini-bars"><span style="height:22%"></span><span style="height:35%"></span><span style="height:48%"></span><span style="height:66%"></span><span style="height:82%"></span></div>
                     </div>
                     <div class="cover-dept-panel accessories-panel">
-                        <span class="cover-dept-icon-shell">{section_icon('Accessories', 'cover-dept-icon')}</span><div class="cover-dept-name">Accessories</div><div class="cover-mini-rule"></div>
+                        <span class="cover-dept-icon-shell">{cover_section_icon('Accessories')}</span><div class="cover-dept-name">Accessories</div><div class="cover-mini-rule"></div>
                         <svg class="cover-sparkline" viewBox="0 0 100 40"><polyline points="4,30 18,18 33,22 48,12 63,17 79,8 96,4"/><circle cx="96" cy="4" r="2.5"/></svg>
                         <div class="cover-mini-bars"><span style="height:20%"></span><span style="height:32%"></span><span style="height:46%"></span><span style="height:65%"></span><span style="height:88%"></span></div>
                     </div>
