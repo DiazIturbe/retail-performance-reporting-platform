@@ -42,6 +42,7 @@ APP_DIR = Path(__file__).resolve().parent
 ASSETS_DIR = APP_DIR / "assets"
 HERO_IMAGE_PATH = ASSETS_DIR / "store_performance_hero.png"
 FAVICON_PATH = ASSETS_DIR / "ddi_favicon.png"
+REPORT_TEMPLATE_VERSION = "2026-07-27.4"
 
 try:
     PAGE_ICON = Image.open(FAVICON_PATH) if FAVICON_PATH.exists() else "📈"
@@ -570,7 +571,12 @@ def build_outputs_from_uploads(
     file_bytes: Dict[str, bytes],
     store_name: str,
     report_period: str,
+    template_version: str,
 ) -> Tuple[bytes, bytes, bytes, bytes, Dict[str, pd.DataFrame], Dict[str, pd.DataFrame | str]]:
+    # template_version is intentionally part of the cached function arguments.
+    # It prevents Streamlit from returning HTML/PDF created by an older report
+    # template when the same uploads and report details are reused.
+    del template_version
     with tempfile.TemporaryDirectory() as temp:
         base = Path(temp)
 
@@ -880,6 +886,7 @@ with generate_tab:
                     validation["file_bytes"],
                     store_name.strip(),
                     report_period.strip(),
+                    REPORT_TEMPLATE_VERSION,
                 )
 
                 st.session_state["model_bytes"] = model_bytes
