@@ -1,0 +1,10 @@
+libglib2.0-0t64
+libpango-1.0-0
+libpangoft2-1.0-0
+libpangocairo-1.0-0
+libharfbuzz0b
+libharfbuzz-subset0
+libjpeg62-turbo
+libopenjp2-7
+libffi-dev
+shared-mime-info
