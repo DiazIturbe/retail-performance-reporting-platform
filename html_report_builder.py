@@ -740,6 +740,7 @@ def build_html_report(
         }}
 
         .cover-page {{
+            page: cover;
             padding: 0;
             display: flex;
             min-height: 215.9mm;
@@ -750,14 +751,14 @@ def build_html_report(
         }}
 
         .cover-accent {{
-            width: 13mm;
+            width: 10mm;
             background: linear-gradient(180deg, #4f8bc9, #7bb3dc 48%, #f3a45e);
         }}
 
         .cover-content {{
             flex: 1;
             min-width: 0;
-            padding: 13mm 15mm 13mm 16mm;
+            padding: 10mm 13mm 9mm 14mm;
             display: flex;
             flex-direction: column;
         }}
@@ -767,7 +768,7 @@ def build_html_report(
             align-items: center;
             justify-content: space-between;
             gap: 8mm;
-            margin-bottom: 11mm;
+            margin-bottom: 7mm;
         }}
 
         .cover-eyebrow {{
@@ -779,8 +780,8 @@ def build_html_report(
         }}
 
         .cover-logo-shell {{
-            width: 10mm;
-            height: 10mm;
+            width: 12mm;
+            height: 12mm;
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -869,7 +870,7 @@ def build_html_report(
 
         .cover-bottom {{
             margin-top: auto;
-            padding-top: 7mm;
+            padding-top: 4mm;
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
@@ -909,7 +910,7 @@ def build_html_report(
             grid-template-columns: minmax(0, 1.12fr) minmax(94mm, .88fr);
             gap: 12mm;
             align-items: stretch;
-            min-height: 126mm;
+            min-height: 111mm;
         }}
 
         .cover-left {{ min-width: 0; }}
@@ -919,7 +920,7 @@ def build_html_report(
             grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: 3mm;
             align-items: end;
-            padding-top: 12mm;
+            padding-top: 6mm;
         }}
 
         .cover-dept-panel {{
@@ -935,9 +936,9 @@ def build_html_report(
             box-shadow: none;
         }}
 
-        .cover-dept-panel.footwear-panel {{ height: 82mm; border-color: rgba(23,111,166,.7); color: var(--footwear); }}
-        .cover-dept-panel.apparel-panel {{ height: 102mm; border-color: rgba(217,106,43,.72); color: var(--apparel); }}
-        .cover-dept-panel.accessories-panel {{ height: 122mm; border-color: rgba(74,148,85,.72); color: var(--accessories); }}
+        .cover-dept-panel.footwear-panel {{ height: 72mm; border-color: rgba(23,111,166,.82); color: var(--footwear); }}
+        .cover-dept-panel.apparel-panel {{ height: 90mm; border-color: rgba(217,106,43,.84); color: var(--apparel); }}
+        .cover-dept-panel.accessories-panel {{ height: 108mm; border-color: rgba(74,148,85,.84); color: var(--accessories); }}
 
         .cover-dept-icon-shell {{
             width: 14mm;
@@ -1710,6 +1711,14 @@ def build_html_report(
             }}
         }}
 
+        @page cover {{
+            size: Letter landscape;
+            margin: 0;
+
+            @bottom-left {{ content: none; }}
+            @bottom-right {{ content: none; }}
+        }}
+
         @media print {{
             * {{
                 -webkit-print-color-adjust: exact !important;
@@ -1736,8 +1745,11 @@ def build_html_report(
             }}
 
             .cover-page {{
-                min-height: 195mm !important;
+                width: 279.4mm !important;
+                height: 215.9mm !important;
+                min-height: 215.9mm !important;
                 display: flex !important;
+                overflow: hidden !important;
             }}
 
             .page:last-child {{
@@ -1761,6 +1773,14 @@ def build_html_report(
             .seller-department-section {{
                 break-inside: avoid !important;
                 page-break-inside: avoid !important;
+            }}
+
+            .department-grid {{
+                display: block !important;
+            }}
+
+            .department-grid .department-card {{
+                margin-bottom: 4mm;
             }}
 
             thead {{
@@ -1809,14 +1829,14 @@ def build_html_report(
                 <div class="cover-left">
                     <div class="cover-kicker">Operational Intelligence</div>
                     <h1 class="cover-title">{report_title}</h1>
-                    <div class="cover-subtitle">Operational KPI Dashboard</div>
+                    <div class="cover-subtitle">Executive KPI Dashboard</div>
                     <div class="cover-store">{store_name}</div>
                     <div class="cover-rule"><span class="rule-footwear"></span><span class="rule-apparel"></span><span class="rule-accessories"></span></div>
 
                     <div class="cover-meta-grid">
                         <div class="cover-meta-item"><span>Reporting period</span><strong>{report_period}</strong></div>
                         <div class="cover-meta-item"><span>Generated</span><strong>{generated_date}</strong></div>
-                        <div class="cover-meta-item"><span>Report scope</span><strong>Sales, budget, brands and inventory</strong></div>
+                        <div class="cover-meta-item"><span>Report scope</span><strong>Sales, budget, brands &amp; inventory</strong></div>
                         <div class="cover-meta-item"><span>Source</span><strong>Standardized Tableau exports</strong></div>
                     </div>
                 </div>
