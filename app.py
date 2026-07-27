@@ -519,7 +519,13 @@ def get_metric_field(
 
 
 def embed_images_in_html(html_text: str) -> str:
-    chart_dir = Path("assets/charts")
+    """Embed generated chart images so HTML and PDF outputs are self-contained.
+
+    Resolve the chart folder relative to this application file instead of the
+    process working directory. Streamlit Cloud does not guarantee that the
+    working directory used while generating a report matches the app folder.
+    """
+    chart_dir = ASSETS_DIR / "charts"
     if not chart_dir.exists():
         return html_text
 
@@ -532,18 +538,31 @@ def embed_images_in_html(html_text: str) -> str:
     return html_text
 
 
-def export_pdf(html_text: str) -> bytes:
-    """Convert HTML to PDF when WeasyPrint's system libraries are available.
+def export_pdf(html_text: str) -> tuple[bytes, str | None]:
+    """Convert the completed report HTML into a directly downloadable PDF.
 
-    Returning empty bytes keeps the data model, calculations, preview, and HTML
-    report working even when the deployment environment lacks Pango/GObject.
+    Returns ``(pdf_bytes, error_message)``. Keeping the error visible is
+    important on Streamlit Cloud because missing Linux libraries or an
+    incompatible WeasyPrint dependency otherwise look like a broken button.
     """
     try:
         from weasyprint import HTML
 
-        return HTML(string=html_text, base_url=str(APP_DIR)).write_pdf()
-    except Exception:
-        return b""
+        pdf_bytes = HTML(string=html_text, base_url=str(APP_DIR)).write_pdf()
+        if not isinstance(pdf_bytes, bytes):
+            pdf_bytes = bytes(pdf_bytes)
+        if len(pdf_bytes) < 5 or not pdf_bytes.startswith(b"%PDF"):
+            raise RuntimeError("The PDF renderer returned an invalid document.")
+        return pdf_bytes, None
+    except Exception as exc:
+        diagnostic = (
+            f"{type(exc).__name__}: {exc}\n\n"
+            "The HTML and Excel outputs were generated successfully. "
+            "If this occurs on Streamlit Community Cloud, verify the "
+            "WeasyPrint Python and Linux package dependencies, then reboot "
+            "the deployment so they are installed during a fresh build."
+        )
+        return b"", diagnostic
 
 
 @st.cache_data(show_spinner=False)
@@ -585,7 +604,8 @@ def build_outputs_from_uploads(
         html_text = embed_images_in_html(html_text)
         html_bytes = html_text.encode("utf-8")
 
-        pdf_bytes = export_pdf(html_text)
+        pdf_bytes, pdf_error = export_pdf(html_text)
+        outputs["pdf_error"] = pdf_error or ""
 
         return (
             model_path.read_bytes(),
@@ -960,6 +980,7 @@ with generate_tab:
 
         with col4:
             pdf_data = st.session_state.get("pdf_report_bytes", b"")
+            pdf_error = str(st.session_state.get("outputs", {}).get("pdf_error", "")).strip()
             if pdf_data:
                 st.download_button(
                     "Download PDF report",
@@ -968,6 +989,11 @@ with generate_tab:
                     mime="application/pdf",
                     use_container_width=True,
                 )
+            elif pdf_error:
+                st.error("The HTML report was created, but the PDF renderer could not start.")
+                with st.expander("PDF conversion details"):
+                    st.code(pdf_error)
+                    st.caption("On Streamlit Community Cloud, confirm that requirements.txt and packages.txt include the PDF dependencies supplied with this update, then reboot the app.")
             else:
                 st.info(
                     "PDF export is temporarily unavailable on this deployment. "

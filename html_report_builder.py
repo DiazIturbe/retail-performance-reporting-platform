@@ -649,330 +649,920 @@ def build_html_report(
 <head>
     <meta charset="utf-8">
     <title>{store_name} KPI Report</title>
+
     <style>
-        @page {{ size: Letter; margin: 10mm; }}
-        @media print {{
-            body {{ background: #fff !important; }}
-            .page {{ box-shadow: none !important; margin: 0 auto !important; }}
-            .page-break {{ break-before: page; page-break-before: always; }}
-            * {{ -webkit-print-color-adjust: exact; print-color-adjust: exact; }}
+        :root {{
+            --ink: #172033;
+            --muted: #64748b;
+            --line: #dbe3ed;
+            --soft: #f5f7fa;
+            --panel: #ffffff;
+            --navy: #0f2747;
+            --blue: #2563eb;
+            --blue-soft: #eaf2ff;
+            --green: #16845b;
+            --green-soft: #eaf8f2;
+            --red: #c63f46;
+            --red-soft: #fff0f1;
+            --amber: #a96308;
+            --amber-soft: #fff6df;
+            --footwear: #386ea8;
+            --footwear-soft: #eef5fb;
+            --apparel: #c56e2f;
+            --apparel-soft: #fff3ea;
+            --accessories: #6f5aa8;
+            --accessories-soft: #f4f0fb;
+            --radius: 12px;
         }}
-        * {{ box-sizing: border-box; }}
-        body {{ font-family: Arial, Helvetica, sans-serif; margin: 0; background: #efefef; color: #202020; }}
-        .page {{ width: 1200px; margin: 18px auto; background: white; padding: 22px 24px; box-shadow: 0 4px 22px rgba(0,0,0,0.12); }}
-        .page-break {{ page-break-before: always; }}
-        .header {{ background: #0F172A; color: white; padding: 20px 24px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: flex-end; }}
-        .title {{ font-size: 34px; font-weight: 800; line-height: 1.1; }}
-        .subtitle {{ font-size: 16px; margin-top: 8px; opacity: 0.9; }}
-        .header-meta {{ text-align: right; font-size: 14px; line-height: 1.5; }}
-        .header-actions {{ display:flex; flex-direction:column; align-items:flex-end; gap:9px; }}
-        .print-button {{
-            appearance:none;
-            border:1px solid rgba(255,255,255,.45);
-            background:rgba(255,255,255,.10);
-            color:#FFFFFF;
-            border-radius:7px;
-            padding:7px 11px;
-            font-size:11px;
-            font-weight:800;
-            letter-spacing:.01em;
-            cursor:pointer;
-            display:inline-flex;
-            align-items:center;
-            gap:6px;
+
+        * {{
+            box-sizing: border-box;
         }}
-        .print-button:hover {{ background:rgba(255,255,255,.18); }}
-        .print-button:focus {{ outline:2px solid rgba(255,255,255,.65); outline-offset:2px; }}
 
-        .cards {{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px; margin-bottom:8px; align-items:stretch; }}
-        .card {{ border-radius:11px; display:flex; flex-direction:column; border:1px solid #D9E2EC; padding:11px 13px 9px; background:linear-gradient(180deg,#FFFFFF 0%,#FBFCFE 100%); min-height:108px; height:108px; box-shadow:0 3px 10px rgba(15,23,42,.05); position:relative; overflow:hidden; box-sizing:border-box; }}
-        .card::before {{ content:""; position:absolute; inset:0 auto 0 0; width:2.5px; background:#CBD5E1; opacity:.9; }}
-        .card.tone-positive::before {{ background:#238A4B; }} .card.tone-negative::before {{ background:#C63D3D; }} .card.tone-neutral::before {{ background:#356E9D; }}
-        .card-title {{ font-size:11.5px; line-height:1.1; text-transform:uppercase; font-weight:800; color:#50555B; letter-spacing:.035em; text-align:right; max-width:106px; }}
-        .card-value {{ font-size:27px; font-weight:800; line-height:1; letter-spacing:-.025em; color:#16181C; white-space:nowrap; }}
-        .card-note {{ font-size:10px; line-height:1.15; margin-top:5px; font-weight:750; min-height:12px; background:transparent!important; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }}
-        .negative {{ color:#D00000; }}
-        .positive {{ color:#16803A; }}
-        .kpi-note-positive {{ color:#16803A; }}
-        .kpi-note-negative {{ color:#C62828; }}
-        .kpi-note-neutral {{ color:#667085; font-weight:600; }}
-        .chart-row {{ display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 12px; margin-bottom: 12px; }}
-        .single-chart-row {{ grid-template-columns: 1fr 1fr; }}
-        .chart-card {{ background: white; border: 1px solid #E2E8F0; border-radius: 10px; padding: 12px; }}
-        .chart-card h3 {{ margin: 0 0 8px 0; font-size: 17px; font-weight: 800; display:flex; align-items:center; gap:7px; }} .chart-heading-icon {{ width:21px; height:21px; }}
-        .chart-card img {{ width: 100%; display: block; }}
-        .section {{ margin-top: 18px; }}
-        .section-title {{ background: #0F172A; color: white; padding: 9px 12px; font-size: 15px; font-weight: 800; margin-bottom: 10px; border-radius: 6px; }}
-        .summary {{ font-size: 16px; line-height: 1.65; background: linear-gradient(90deg,#F1F5F9,#FAFCFE); border-left: 5px solid #315F86; padding: 16px 20px; box-shadow: inset 0 0 0 1px #E5EAF0; }}
-        .summary-chip {{ display:inline-block; padding:1px 6px; border-radius:999px; font-weight:800; line-height:1.35; margin:0 1px; border:1px solid transparent; }}
-        .money-chip {{ background:#E9EEF5; color:#243B53; border-color:#CBD5E1; }}
-        .positive-chip {{ background:#E7F4EB; color:#176B35; border-color:#A8D5B5; }}
-        .negative-chip {{ background:#FBEAEA; color:#A82424; border-color:#E5B5B5; }}
-        .mix-chip {{ background:#E8F0F7; color:#24587D; border-color:#B8CBDA; }}
-        .note-box {{ font-size: 13px; color: #444; background: #f7f7f7; border-left: 4px solid #555; padding: 12px 14px; margin: 12px 0; }}
-        .table-grid {{ display: grid; grid-template-columns: 1.35fr 1fr; gap: 24px; }}
-        .subsection-label {{ font-size: 13px; font-weight: 800; color: #333; margin: 0 0 8px 0; text-transform: uppercase; letter-spacing: 0.03em; }}
-        .data-table {{ width: 100%; border-collapse: collapse; font-size: 13px; background: white; }}
-        .data-table th {{ background: #1E293B; color: white; padding: 8px 7px; text-align: center; font-weight: 800; }}
-        .data-table td {{ border-bottom: 1px solid #E2E8F0; padding: 7px 7px; text-align: center; vertical-align: middle; }}
-        .data-table tr:nth-child(even) {{ background: #f8f8f8; }}
-        .brand-performance-table th:first-child, .brand-performance-table td:first-child {{ text-align: left; }}
-        .brand-performance-table th:nth-child(2), .brand-performance-table td:nth-child(2) {{ text-align: left; font-weight: 700; }}
-        .opportunities-table td:last-child {{ text-align: left; }}
-        .visual-table th {{ background: #005A64; color: white; }}
-        .visual-table td {{ padding: 10px 9px; }}
-        .compact-visual-table {{ font-size: 12.5px; }}
-        .compact-visual-table .text-left {{ text-align: left; }}
-        .spark-cell {{ display: grid; grid-template-columns: 96px 68px; align-items: center; gap: 10px; min-width: 170px; }}
-        .spark-track {{ width: 96px; height: 8px; background: #edf0f2; border-radius: 999px; overflow: hidden; }}
-        .spark-fill {{ height: 100%; border-radius: 999px; }}
-        .spark-positive {{ background: #3FA66B; }}
-        .spark-negative {{ background: #E05A5A; }}
-        .spark-contribution {{ background: #5B8DB8; }}
-        .spark-value {{ font-weight: 800; font-size: 12px; text-align: right; white-space: nowrap; }}
-        .value-text {{ font-weight: 800; white-space: nowrap; }}
-        .neutral-text {{ color: #333; }}
-        .department-grid {{ display: grid; grid-template-columns: 1fr; gap: 16px; }}
-        .department-card {{ border: 1px solid #E2E8F0; border-radius: 10px; padding: 13px; background: #fff; }}
-        .department-header {{ color: white; padding: 12px 16px; border-radius: 10px; font-size: 23px; font-weight: 800; margin-bottom: 14px; display:flex; align-items:center; gap:10px; box-shadow: inset 0 -2px 0 rgba(0,0,0,.12); }}
-        .section-icon {{ width:30px; height:30px; flex:0 0 auto; }}
-        .subsection-icon {{ width:20px; height:20px; flex:0 0 auto; }}
-        .footwear {{ background: #176FA6; }}
-        .apparel {{ background: #D96A2B; }}
-        .accessories {{ background: #4A9455; }}
-        .neutral {{ background: #555; }}
-        .metric-row {{ display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-bottom: 18px; }}
-        .small-metric {{ background: #f7f7f7; border-radius: 10px; padding: 11px; text-align: center; border: 1px solid #e2e2e2; }}
-        .small-metric-label {{ font-size: 11px; font-weight: 800; color: #555; text-transform: uppercase; }}
-        .small-metric-value {{ font-size: 18px; font-weight: 800; margin-top: 5px; }}
-        .brand-grid {{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }}
-        .brand-column {{ border: 1px solid #ddd; border-radius: 10px; overflow: hidden; background: #fff; }}
-        .brand-column-title {{ color: white; padding: 8px 11px; font-size: 13px; font-weight: 800; display:flex; justify-content:center; align-items:center; gap:7px; }}
-        .footwear-shade-1 .brand-column-title {{ background:#155F8E; }} .footwear-shade-2 .brand-column-title {{ background:#2879A8; }} .footwear-shade-3 .brand-column-title {{ background:#3D8DB8; }} .footwear-shade-4 .brand-column-title {{ background:#559FC4; }} .footwear-shade-5 .brand-column-title {{ background:#5FA3C5; color:#FFFFFF; }}
-        .apparel-shade-1 .brand-column-title {{ background:#B9531F; }} .apparel-shade-2 .brand-column-title {{ background:#D5682B; }} .apparel-shade-3 .brand-column-title {{ background:#E67D43; }} .apparel-shade-4 .brand-column-title {{ background:#EC9563; }} .apparel-shade-5 .brand-column-title {{ background:#E99165; color:#FFFFFF; }}
-        .accessories-shade-1 .brand-column-title {{ background:#34753F; }} .accessories-shade-2 .brand-column-title {{ background:#4A9455; }} .accessories-shade-3 .brand-column-title {{ background:#64A96D; }} .accessories-shade-4 .brand-column-title {{ background:#7DB985; }} .accessories-shade-5 .brand-column-title {{ background:#78AE7E; color:#FFFFFF; }}
-        .mini-table {{ width: 100%; border-collapse: collapse; font-size: 12px; }}
-        .mini-table th {{ background: #f1f1f1; color: #222; padding: 7px; font-weight: 800; border-bottom: 1px solid #ddd; }}
-        .mini-table td {{ padding: 7px; border-bottom: 1px solid #eee; text-align: center; }}
-        .mini-table tr:nth-child(even) {{ background: #fafafa; }}
-        .empty-note {{ padding: 14px; text-align: center; color: #777; font-size: 12px; }}
-        .footer {{ margin-top: 16px; font-size: 11px; color: #666; text-align: right; }}
+        html, body {{
+            margin: 0;
+            padding: 0;
+            background: #e8edf3;
+            color: var(--ink);
+            font-family: "Inter", "Segoe UI", Arial, Helvetica, sans-serif;
+            font-size: 11px;
+            line-height: 1.38;
+        }}
 
-        .card-main-row {{ display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }}
-        .card-identity {{ margin-left:auto; display:flex; align-items:center; justify-content:flex-end; gap:7px; min-width:0; }}
-        .icon-shell {{ width:26px; height:26px; display:inline-flex; align-items:center; justify-content:center; color:#28658F; flex:0 0 26px; }}
-        .kpi-icon {{ width:22px; height:22px; color:currentColor; flex:0 0 auto; stroke-width:1.9; }}
-        .card-utility {{ margin-top:auto; padding-top:5px; min-height:27px; }}
-        .kpi-progress-meta {{ display:flex; align-items:baseline; justify-content:space-between; gap:8px; margin-bottom:3px; }}
-        .kpi-progress-text {{ color:#64748B; font-size:9.6px; line-height:1.1; font-weight:650; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }}
-        .kpi-progress-value {{ color:#334155; font-size:10.5px; line-height:1.1; font-weight:850; white-space:nowrap; }}
-        .kpi-progress {{ height:8px; background:#E7ECF1; border-radius:999px; overflow:hidden; box-shadow:inset 0 0 0 1px rgba(100,116,139,.08); }}
-        .kpi-progress-fill {{ height:100%; border-radius:99px; background:#64748B; }}
-        .kpi-progress-fill.positive {{ background:#10B981; }} .kpi-progress-fill.negative {{ background:#EF4444; }} .kpi-progress-fill.neutral {{ background:#1D4ED8; }}
-        .trend-arrow {{ font-size:8px; vertical-align:1px; margin-right:1px; }}
-        .kpi-empty-space {{ height:17px; }}
-        .seller-grid {{ display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }}
-        .seller-block {{ border:1px solid #E2E8F0; border-radius:9px; overflow:hidden; break-inside:avoid; }}
-        .seller-block-title {{ padding:8px 10px; font-weight:800; display:flex; align-items:center; gap:7px; border-bottom:1px solid #D7E0EA; }}
-        .seller-title-icon {{ width:18px; height:18px; }}
-        .footwear-seller {{ border-top:4px solid #176FA6; }} .footwear-seller .seller-block-title {{ background:#EAF3F8; color:#174A68; }}
-        .apparel-seller {{ border-top:4px solid #D96A2B; }} .apparel-seller .seller-block-title {{ background:#FBEEE7; color:#7D391B; }}
-        .accessories-seller {{ border-top:4px solid #4A9455; }} .accessories-seller .seller-block-title {{ background:#EDF6EF; color:#285F31; }}
-        .product-table {{ font-size:11.5px; }} .product-table th:first-child {{ width:34px; }}
-        .product-cell {{ text-align:left!important; min-width:230px; }} .product-cell span {{ display:block; color:#64748B; font-size:10.5px; margin-top:2px; }}
-        .product-context {{ color:#1D4ED8!important; }} .rank-cell {{ font-weight:800; color:#1D4ED8; }} .stock-low {{ color:#B91C1C; font-weight:900; text-decoration:underline; text-decoration-thickness:2px; }}
-        .spark-footwear {{ background:#176FA6; }} .spark-apparel {{ background:#D96A2B; }} .spark-accessories {{ background:#4A9455; }}
-        .department-name-cell {{ min-width:126px; text-align:left!important; }}
-        .department-pill {{ display:inline-flex; align-items:center; gap:7px; color:white; border-radius:999px; padding:4px 9px; font-weight:800; font-size:11px; width:112px; justify-content:flex-start; }}
-        .table-dept-icon {{ width:16px; height:16px; flex:0 0 16px; }}
-        .department-performance-table td {{ padding-top:8px; padding-bottom:8px; }}
-        .department-performance-table .spark-cell {{ grid-template-columns:72px 62px; min-width:142px; gap:7px; }}
-        .department-performance-table .spark-track {{ width:72px; }}
-        .footwear-row {{ background:#F7FBFD!important; }} .apparel-row {{ background:#FFF9F5!important; }} .accessories-row {{ background:#F7FBF8!important; }}
+        body {{
+            padding: 22px 0;
+        }}
 
-        .embedded-sellers {{ margin-top:14px; border:1px solid #DCE4EC; border-radius:9px; overflow:hidden; }}
-        .embedded-sellers-title {{ display:flex; align-items:center; gap:8px; padding:8px 11px; font-size:13px; font-weight:800; }}
-        .footwear-department-card {{ border-top:4px solid #176FA6; }}
-        .apparel-department-card {{ border-top:4px solid #D96A2B; }}
-        .accessories-department-card {{ border-top:4px solid #4A9455; }}
-        .footwear-department-card .embedded-sellers-title {{ background:#EAF3F8; color:#174A68; }}
-        .apparel-department-card .embedded-sellers-title {{ background:#FBEEE7; color:#7D391B; }}
-        .accessories-department-card .embedded-sellers-title {{ background:#EDF6EF; color:#285F31; }}
+        .page {{
+            width: 279.4mm;
+            min-height: 215.9mm;
+            margin: 0 auto 20px;
+            padding: 10mm;
+            background: #fff;
+            border-radius: 4px;
+            box-shadow: 0 10px 28px rgba(15, 39, 71, 0.12);
+            overflow: hidden;
+            position: relative;
+        }}
 
-        .footwear-seller .rank-cell, .footwear-seller .product-context {{ color:#176FA6!important; }}
-        .apparel-seller .rank-cell, .apparel-seller .product-context {{ color:#D96A2B!important; }}
-        .accessories-seller .rank-cell, .accessories-seller .product-context {{ color:#4A9455!important; }}
-        .seller-department-section {{ margin:14px 0 20px; }}
-        .seller-department-heading {{ display:flex; align-items:center; gap:9px; padding:9px 12px; border-radius:7px; font-weight:800; margin-bottom:10px; color:white; }}
-        .seller-heading-icon {{ width:22px; height:22px; }}
-        .footwear-seller-section .seller-department-heading {{ background:#176FA6; }}
-        .apparel-seller-section .seller-department-heading {{ background:#D96A2B; }}
-        .accessories-seller-section .seller-department-heading {{ background:#4A9455; }}
+        .cover-page {{
+            padding: 0;
+            display: flex;
+            min-height: 215.9mm;
+            background:
+                linear-gradient(120deg, rgba(15,39,71,.98), rgba(28,70,116,.96)),
+                #0f2747;
+            color: #fff;
+        }}
 
-        .gap-group-cell {{ text-align:left!important; }}
-        .gap-group-label {{ display:inline-flex; align-items:center; gap:6px; font-weight:700; }}
-        .gap-group-icon {{ width:17px; height:17px; }}
-        .compact-visual-table td.text-left {{ display:flex; align-items:center; gap:7px; }}
-        .subdepartment-name {{ white-space:nowrap; }}
-        .footwear-gap-row {{ background:#F5FAFD!important; }}
-        .apparel-gap-row {{ background:#FFF7F2!important; }}
-        .accessories-gap-row {{ background:#F5FAF6!important; }}
-        .footwear-gap-row:nth-child(even) {{ background:#EDF6FB!important; }}
-        .apparel-gap-row:nth-child(even) {{ background:#FDF0E8!important; }}
-        .accessories-gap-row:nth-child(even) {{ background:#EDF7EF!important; }}
+        .cover-accent {{
+            width: 13mm;
+            background: linear-gradient(180deg, #4f8bc9, #7bb3dc 48%, #f3a45e);
+        }}
 
-        .chart-card.compact-chart {{ padding:10px 12px 6px; }}
-        .chart-card.compact-chart img {{ max-height:335px; object-fit:contain; }}
-        .top-brands-chart img {{ max-height:430px; object-fit:contain; }}
+        .cover-content {{
+            flex: 1;
+            min-width: 0;
+            padding: 22mm 22mm 16mm 20mm;
+            display: flex;
+            flex-direction: column;
+        }}
 
+        .cover-eyebrow {{
+            text-transform: uppercase;
+            letter-spacing: .18em;
+            font-size: 9px;
+            font-weight: 700;
+            opacity: .78;
+            margin-bottom: 18mm;
+        }}
 
-        .store-insights-section {{ margin-top:12px; }}
+        .cover-title {{
+            font-size: 32px;
+            line-height: 1.02;
+            font-weight: 800;
+            letter-spacing: -.04em;
+            max-width: 180mm;
+            margin: 0;
+        }}
+
+        .cover-store {{
+            font-size: 19px;
+            font-weight: 600;
+            color: #d8e9f8;
+            margin-top: 6mm;
+        }}
+
+        .cover-rule {{
+            width: 40mm;
+            height: 3px;
+            background: #f3a45e;
+            margin: 10mm 0 12mm;
+        }}
+
+        .cover-meta-grid {{
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8mm 14mm;
+            max-width: 130mm;
+        }}
+
+        .cover-meta-item span {{
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: .12em;
+            font-size: 8px;
+            color: #a9c3dc;
+            margin-bottom: 2mm;
+        }}
+
+        .cover-meta-item strong {{
+            font-size: 12px;
+            color: #fff;
+            font-weight: 600;
+        }}
+
+        .cover-bottom {{
+            margin-top: auto;
+            padding-top: 14mm;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 12mm;
+        }}
+
+        .cover-description {{
+            max-width: 155mm;
+            color: #d5e3ef;
+            font-size: 10px;
+            line-height: 1.55;
+        }}
+
+        .cover-version {{
+            white-space: nowrap;
+            font-size: 9px;
+            color: #a9c3dc;
+        }}
+
+        .header {{
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 10mm;
+            padding-bottom: 4mm;
+            margin-bottom: 5mm;
+            border-bottom: 1px solid var(--line);
+        }}
+
+        .title {{
+            font-size: 21px;
+            line-height: 1.05;
+            font-weight: 800;
+            letter-spacing: -.025em;
+            color: var(--navy);
+        }}
+
+        .subtitle {{
+            margin-top: 1.6mm;
+            color: var(--muted);
+            font-size: 10px;
+        }}
+
+        .header-meta {{
+            min-width: 58mm;
+            text-align: right;
+            color: var(--muted);
+            font-size: 9px;
+            line-height: 1.55;
+        }}
+
+        .header-meta strong {{
+            color: var(--ink);
+            font-weight: 700;
+        }}
+
+        .cards {{
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 3mm;
+            margin-bottom: 3mm;
+        }}
+
+        .card {{
+            min-height: 29mm;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            padding: 3.5mm;
+            background: var(--panel);
+            position: relative;
+            overflow: hidden;
+        }}
+
+        .card::before {{
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: #94a3b8;
+        }}
+
+        .tone-positive::before {{ background: var(--green); }}
+        .tone-negative::before {{ background: var(--red); }}
+        .tone-neutral::before {{ background: #7890aa; }}
+
+        .card-main-row {{
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 3mm;
+        }}
+
+        .card-value {{
+            font-size: 18px;
+            line-height: 1;
+            font-weight: 800;
+            letter-spacing: -.025em;
+            color: var(--navy);
+            white-space: nowrap;
+        }}
+
+        .card-identity {{
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 2mm;
+            color: var(--muted);
+            text-align: right;
+        }}
+
+        .icon-shell {{
+            width: 7mm;
+            height: 7mm;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--soft);
+            color: var(--navy);
+            flex: 0 0 auto;
+        }}
+
+        .kpi-icon {{
+            width: 4mm;
+            height: 4mm;
+        }}
+
+        .card-title {{
+            font-size: 8px;
+            line-height: 1.2;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .055em;
+        }}
+
+        .card-note {{
+            margin-top: 3mm;
+            font-size: 9px;
+            color: var(--muted);
+            min-height: 4mm;
+        }}
+
+        .kpi-note-positive {{ color: var(--green); }}
+        .kpi-note-negative {{ color: var(--red); }}
+        .trend-arrow {{ font-size: 8px; }}
+
+        .card-utility {{
+            margin-top: 2mm;
+        }}
+
+        .kpi-empty-space {{ height: 7px; }}
+
+        .kpi-progress-meta {{
+            display: flex;
+            justify-content: space-between;
+            gap: 2mm;
+            color: var(--muted);
+            font-size: 7.5px;
+            margin-bottom: 1mm;
+        }}
+
+        .kpi-progress-value {{ font-weight: 700; color: var(--ink); }}
+
+        .kpi-progress {{
+            height: 3px;
+            background: #e6ebf1;
+            border-radius: 99px;
+            overflow: hidden;
+        }}
+
+        .kpi-progress-fill {{
+            height: 100%;
+            border-radius: 99px;
+            background: #7890aa;
+        }}
+
+        .kpi-progress-fill.positive {{ background: var(--green); }}
+        .kpi-progress-fill.negative {{ background: var(--red); }}
+
+        .chart-row {{
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 4mm;
+            margin-top: 4mm;
+        }}
+
+        .single-chart-row {{
+            grid-template-columns: minmax(0, 1fr);
+        }}
+
+        .single-chart-row .chart-card {{
+            max-width: 50%;
+        }}
+
+        .chart-card {{
+            border: 1px solid var(--line);
+            background: #fff;
+            border-radius: var(--radius);
+            padding: 3.5mm;
+            min-width: 0;
+        }}
+
+        .chart-card h3 {{
+            margin: 0 0 2mm;
+            font-size: 10px;
+            color: var(--navy);
+            display: flex;
+            align-items: center;
+            gap: 2mm;
+        }}
+
+        .chart-card img {{
+            display: block;
+            width: 100%;
+            max-height: 58mm;
+            object-fit: contain;
+        }}
+
+        .compact-chart img {{ max-height: 50mm; }}
+        .top-brands-chart img {{ max-height: 58mm; }}
+
+        .section {{
+            margin-top: 4mm;
+        }}
+
+        .section-title {{
+            display: flex;
+            align-items: center;
+            min-height: 7mm;
+            margin-bottom: 2.5mm;
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--navy);
+            letter-spacing: -.01em;
+        }}
+
+        .section-title::before {{
+            content: "";
+            width: 3px;
+            height: 5mm;
+            margin-right: 2.2mm;
+            border-radius: 2px;
+            background: #4f8bc9;
+        }}
+
+        .subsection-label {{
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            font-size: 8px;
+            font-weight: 700;
+            margin: 0 0 1.5mm;
+        }}
+
+        .summary {{
+            border: 1px solid #d7e3ef;
+            border-left: 4px solid #4f8bc9;
+            background: #f7fbff;
+            border-radius: 8px;
+            padding: 3mm 4mm;
+            color: #334155;
+            line-height: 1.55;
+        }}
+
+        .summary-chip {{
+            display: inline-block;
+            border-radius: 4px;
+            padding: 0 .8mm;
+            font-weight: 700;
+        }}
+
+        .money-chip {{ background: #e8eff8; color: var(--navy); }}
+        .positive-chip {{ background: var(--green-soft); color: var(--green); }}
+        .negative-chip {{ background: var(--red-soft); color: var(--red); }}
+        .mix-chip {{ background: var(--amber-soft); color: var(--amber); }}
+
+        .table-grid {{
+            display: grid;
+            grid-template-columns: 1.42fr .9fr;
+            gap: 4mm;
+            align-items: start;
+        }}
+
+        .data-table, .mini-table {{
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            overflow: hidden;
+            background: #fff;
+        }}
+
+        .data-table th, .mini-table th {{
+            padding: 2mm 1.5mm;
+            background: #eef2f6;
+            border-bottom: 1px solid var(--line);
+            color: #475569;
+            text-align: right;
+            font-size: 7.5px;
+            line-height: 1.25;
+            text-transform: uppercase;
+            letter-spacing: .035em;
+            white-space: nowrap;
+        }}
+
+        .data-table td, .mini-table td {{
+            padding: 1.8mm 1.5mm;
+            border-bottom: 1px solid #edf1f5;
+            color: #334155;
+            text-align: right;
+            vertical-align: middle;
+            font-size: 8.5px;
+        }}
+
+        .data-table tr:last-child td, .mini-table tr:last-child td {{
+            border-bottom: 0;
+        }}
+
+        .data-table tbody tr:nth-child(even) td {{
+            background: #fafbfd;
+        }}
+
+        .data-table th:first-child,
+        .data-table td:first-child,
+        .mini-table th:first-child,
+        .mini-table td:first-child,
+        .text-left {{
+            text-align: left;
+        }}
+
+        .brand-performance-table td:first-child {{
+            font-weight: 600;
+        }}
+
+        .department-pill, .gap-group-label {{
+            display: inline-flex;
+            align-items: center;
+            gap: 1.5mm;
+            font-weight: 700;
+            white-space: nowrap;
+        }}
+
+        .section-icon, .table-dept-icon, .gap-group-icon,
+        .subsection-icon, .chart-heading-icon,
+        .seller-title-icon, .seller-heading-icon,
+        .subsection-heading-icon {{
+            width: 4mm;
+            height: 4mm;
+            flex: 0 0 auto;
+        }}
+
+        .footwear {{ color: var(--footwear); }}
+        .apparel {{ color: var(--apparel); }}
+        .accessories {{ color: var(--accessories); }}
+
+        .footwear-row td:first-child {{ border-left: 3px solid var(--footwear); }}
+        .apparel-row td:first-child {{ border-left: 3px solid var(--apparel); }}
+        .accessories-row td:first-child {{ border-left: 3px solid var(--accessories); }}
+
+        .positive {{ color: var(--green) !important; font-weight: 700; }}
+        .negative {{ color: var(--red) !important; font-weight: 700; }}
+        .neutral-text {{ color: var(--muted) !important; }}
+
+        .spark-cell {{
+            display: grid;
+            grid-template-columns: minmax(16mm, 1fr) auto;
+            align-items: center;
+            gap: 1.5mm;
+            min-width: 29mm;
+        }}
+
+        .spark-track {{
+            height: 3px;
+            border-radius: 99px;
+            background: #e8edf2;
+            overflow: hidden;
+        }}
+
+        .spark-fill {{ height: 100%; border-radius: 99px; }}
+        .spark-positive {{ background: var(--green); }}
+        .spark-negative {{ background: var(--red); }}
+        .spark-footwear {{ background: var(--footwear); }}
+        .spark-apparel {{ background: var(--apparel); }}
+        .spark-accessories {{ background: var(--accessories); }}
+        .spark-contribution {{ background: #738aa2; }}
+
+        .spark-value {{
+            white-space: nowrap;
+            font-size: 8px;
+        }}
+
         .store-insights-grid {{
-            display:grid;
-            grid-template-columns:minmax(0, 1.22fr) minmax(0, 1fr);
-            gap:14px;
-            align-items:stretch;
-        }}
-        .store-insight-panel {{
-            min-width:0;
-            display:flex;
-            flex-direction:column;
-        }}
-        .store-insight-panel .section-title {{ margin-bottom:8px; }}
-        .compact-note {{
-            min-height:38px;
-            display:flex;
-            align-items:center;
-            padding:9px 12px;
-            margin-bottom:9px;
-            font-size:11.5px;
-            line-height:1.3;
-        }}
-        .compact-product-table {{
-            table-layout:fixed;
-            font-size:10.6px;
-        }}
-        .compact-product-table th,
-        .compact-product-table td {{
-            padding-top:6px;
-            padding-bottom:6px;
-        }}
-        .compact-product-table th:first-child {{ width:28px; }}
-        .compact-product-table th:nth-child(3) {{ width:74px; }}
-        .compact-product-table th:nth-child(4) {{ width:50px; }}
-        .compact-product-table th:nth-child(5) {{ width:50px; }}
-        .compact-product-table .product-cell {{
-            min-width:0;
-            line-height:1.16;
-        }}
-        .compact-product-table .product-cell strong {{
-            font-size:10.7px;
-            line-height:1.16;
-        }}
-        .compact-product-table .product-cell span {{
-            display:inline;
-            font-size:9.4px;
-            margin-top:0;
-        }}
-        .compact-product-table .product-context::before {{
-            content:" · ";
-            color:#94A3B8;
-        }}
-        .compact-side-chart {{
-            flex:1;
-            min-height:0;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            padding:7px 7px 3px;
-        }}
-        .compact-side-chart img {{
-            width:100%;
-            max-height:382px;
-            object-fit:contain;
-        }}
-        @media (max-width:950px) {{
-            .store-insights-grid {{ grid-template-columns:1fr; }}
-            .compact-side-chart img {{ max-height:325px; }}
+            display: grid;
+            grid-template-columns: 1.25fr 1fr;
+            gap: 4mm;
+            align-items: start;
         }}
 
+        .store-insight-panel {{
+            min-width: 0;
+        }}
+
+        .note-box {{
+            border-radius: 7px;
+            border: 1px solid #dce5ee;
+            background: var(--soft);
+            padding: 2.4mm 3mm;
+            color: var(--muted);
+            font-size: 8.5px;
+            line-height: 1.45;
+            margin-bottom: 2.5mm;
+        }}
+
+        .compact-note {{
+            padding: 1.8mm 2.5mm;
+        }}
+
+        .seller-grid {{
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 3mm;
+        }}
+
+        .seller-block, .department-card, .brand-column {{
+            border: 1px solid var(--line);
+            border-radius: 9px;
+            background: #fff;
+            overflow: hidden;
+        }}
+
+        .seller-block-title, .seller-department-heading,
+        .embedded-sellers-title, .brand-column-title,
+        .department-subsection-heading {{
+            display: flex;
+            align-items: center;
+            gap: 2mm;
+            font-weight: 800;
+            color: var(--navy);
+        }}
+
+        .seller-block-title {{
+            padding: 2.4mm 3mm;
+            border-bottom: 1px solid var(--line);
+            background: #f6f8fb;
+        }}
+
+        .seller-department-section {{
+            margin-bottom: 4mm;
+        }}
+
+        .seller-department-heading {{
+            margin-bottom: 2mm;
+            font-size: 11px;
+        }}
+
+        .product-table td {{
+            padding-top: 1.5mm;
+            padding-bottom: 1.5mm;
+        }}
+
+        .rank-cell {{
+            width: 8mm;
+            color: var(--muted);
+            font-weight: 700;
+        }}
+
+        .product-cell {{
+            text-align: left !important;
+            min-width: 38mm;
+        }}
+
+        .product-cell strong,
+        .product-cell span {{
+            display: block;
+        }}
+
+        .product-cell strong {{
+            font-size: 8.2px;
+            color: var(--ink);
+        }}
+
+        .product-cell span {{
+            margin-top: .5mm;
+            color: var(--muted);
+            font-size: 7px;
+        }}
+
+        .stock-low {{
+            color: var(--red) !important;
+            font-weight: 800;
+            background: var(--red-soft) !important;
+        }}
+
+        .department-grid {{
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 4mm;
+        }}
+
+        .department-card {{
+            padding: 0;
+        }}
+
+        .department-header {{
+            display: flex;
+            align-items: center;
+            gap: 2mm;
+            padding: 2.5mm 3.5mm;
+            color: #fff;
+            font-weight: 800;
+            font-size: 11px;
+        }}
+
+        .department-header.footwear {{ background: var(--footwear); }}
+        .department-header.apparel {{ background: var(--apparel); }}
+        .department-header.accessories {{ background: var(--accessories); }}
+        .department-header.neutral {{ background: #64748b; }}
+
+        .metric-row {{
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 2mm;
+            padding: 3mm;
+            border-bottom: 1px solid var(--line);
+        }}
+
+        .small-metric {{
+            padding: 2mm;
+            border-radius: 7px;
+            background: var(--soft);
+            min-width: 0;
+        }}
+
+        .small-metric-label {{
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: .035em;
+            font-size: 6.8px;
+            line-height: 1.15;
+            min-height: 7mm;
+        }}
+
+        .small-metric-value {{
+            margin-top: 1mm;
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--navy);
+            white-space: nowrap;
+        }}
 
         .department-subsection-heading {{
-            display:flex;
-            align-items:center;
-            gap:9px;
-            margin:14px 0 9px;
-            padding:8px 11px;
-            border-radius:8px;
-            border:1px solid #DCE4EC;
+            padding: 3mm 3mm 1.5mm;
         }}
+
         .department-subsection-title {{
-            font-size:13px;
-            line-height:1.15;
-            font-weight:800;
+            font-size: 10px;
         }}
+
         .department-subsection-note {{
-            margin-top:2px;
-            font-size:9.5px;
-            line-height:1.2;
-            color:#64748B;
-            font-weight:500;
+            color: var(--muted);
+            font-size: 7.5px;
+            font-weight: 400;
         }}
-        .subsection-heading-icon {{
-            width:22px;
-            height:22px;
-            flex:0 0 22px;
+
+        .brand-grid {{
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 2.5mm;
+            padding: 2mm 3mm 3mm;
         }}
-        .footwear-subsection-heading {{
-            background:#F2F8FC;
-            color:#174A68;
-            border-left:4px solid #176FA6;
+
+        .brand-column-title {{
+            padding: 2mm 2.5mm;
+            background: #f6f8fb;
+            border-bottom: 1px solid var(--line);
+            font-size: 8.5px;
         }}
-        .apparel-subsection-heading {{
-            background:#FFF6F0;
-            color:#7D391B;
-            border-left:4px solid #D96A2B;
+
+        .brand-column .mini-table {{
+            border: 0;
+            border-radius: 0;
         }}
-        .accessories-subsection-heading {{
-            background:#F3F9F4;
-            color:#285F31;
-            border-left:4px solid #4A9455;
+
+        .brand-column .mini-table th,
+        .brand-column .mini-table td {{
+            padding: 1.35mm 1.5mm;
+            font-size: 7.5px;
+        }}
+
+        .footwear-column {{ border-top: 3px solid var(--footwear); }}
+        .apparel-column {{ border-top: 3px solid var(--apparel); }}
+        .accessories-column {{ border-top: 3px solid var(--accessories); }}
+
+        .embedded-sellers {{
+            margin: 0 3mm 3mm;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            overflow: hidden;
+        }}
+
+        .embedded-sellers-title {{
+            padding: 2mm 2.5mm;
+            background: #f6f8fb;
+            border-bottom: 1px solid var(--line);
+        }}
+
+        .embedded-sellers .data-table {{
+            border: 0;
+            border-radius: 0;
+        }}
+
+        .empty-note {{
+            padding: 4mm;
+            color: var(--muted);
+            text-align: center;
+            font-style: italic;
+            background: var(--soft);
+            border-radius: 7px;
+        }}
+
+        .footer {{
+            margin-top: 4mm;
+            padding-top: 2mm;
+            border-top: 1px solid var(--line);
+            color: #8795a5;
+            text-align: center;
+            font-size: 7.5px;
+        }}
+
+        @page {{
+            size: Letter landscape;
+            margin: 8mm 8mm 10mm 8mm;
+
+            @bottom-left {{
+                content: "Store Performance Reporting Platform";
+                color: #7b8796;
+                font-size: 7px;
+            }}
+
+            @bottom-right {{
+                content: "Page " counter(page) " of " counter(pages);
+                color: #7b8796;
+                font-size: 7px;
+            }}
         }}
 
         @media print {{
-            * {{ -webkit-print-color-adjust: exact; print-color-adjust: exact; }}
-            .print-button {{ display:none!important; }}
-            body {{ background: white; }}
-            .page {{ width: auto; margin: 0; box-shadow: none; page-break-after: always; }}
-            .card, .chart-card, .department-card, .seller-block, .brand-column {{ box-shadow:none!important; break-inside:avoid; }}
-            .store-insights-grid {{ grid-template-columns:1.22fr 1fr!important; gap:10px!important; }}
-            .store-insight-panel {{ break-inside:avoid; }}
-            .footwear, .footwear .brand-column-title, .footwear-seller {{ filter:grayscale(1); }}
-            .apparel, .apparel .brand-column-title, .apparel-seller {{ filter:grayscale(1); }}
-            .accessories, .accessories .brand-column-title, .accessories-seller {{ filter:grayscale(1); }}
-            .footwear {{ background:#3D3D3D!important; }}
-            .apparel {{ background:#707070!important; }}
-            .accessories {{ background:#A0A0A0!important; color:#111!important; }}
-            .spark-footwear {{ background:#3D3D3D!important; }}
-            .spark-apparel {{ background:repeating-linear-gradient(45deg,#656565 0,#656565 4px,#8A8A8A 4px,#8A8A8A 8px)!important; }}
-            .spark-accessories {{ background:repeating-linear-gradient(90deg,#8C8C8C 0,#8C8C8C 3px,#B0B0B0 3px,#B0B0B0 7px)!important; }}
-            .spark-positive {{ background:#4F4F4F!important; }}
-            .spark-negative {{ background:repeating-linear-gradient(45deg,#333 0,#333 3px,#777 3px,#777 7px)!important; }}
-            .stock-low::after {{ content:" LOW"; font-size:8px; letter-spacing:.04em; }}
-            .summary-chip {{ background:#EEE!important; color:#111!important; border-color:#777!important; }}
+            * {{
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }}
+
+            html, body {{
+                background: #fff !important;
+                width: auto !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }}
+
+            .page {{
+                width: auto !important;
+                min-height: auto !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                border-radius: 0 !important;
+                box-shadow: none !important;
+                overflow: visible !important;
+                break-after: page;
+                page-break-after: always;
+            }}
+
+            .cover-page {{
+                min-height: 195mm !important;
+                display: flex !important;
+            }}
+
+            .page:last-child {{
+                break-after: auto;
+                page-break-after: auto;
+            }}
+
+            .page-break {{
+                break-before: page;
+                page-break-before: always;
+            }}
+
+            .card, .chart-card, .section, .department-card,
+            .brand-column, .seller-block, .store-insight-panel,
+            .note-box, table, tr, img {{
+                break-inside: avoid !important;
+                page-break-inside: avoid !important;
+                box-shadow: none !important;
+            }}
+
+            thead {{
+                display: table-header-group;
+            }}
+
+            tfoot {{
+                display: table-footer-group;
+            }}
+
+            img {{
+                max-width: 100% !important;
+                height: auto !important;
+            }}
+
+            .chart-card img {{
+                max-height: 48mm !important;
+            }}
+
+            .top-brands-chart img {{
+                max-height: 53mm !important;
+            }}
+
+            .header {{
+                margin-top: 0 !important;
+            }}
+
+            .section {{
+                margin-top: 3mm !important;
+            }}
+
+            .footer {{
+                margin-top: 3mm !important;
+            }}
         }}
     </style>
+
 </head>
 <body>
-    <div class="page">
+
+    <div class="page cover-page">
+        <div class="cover-accent"></div>
+        <div class="cover-content">
+            <div class="cover-eyebrow">Store Performance Reporting Platform</div>
+            <h1 class="cover-title">{report_title}</h1>
+            <div class="cover-store">{store_name}</div>
+            <div class="cover-rule"></div>
+
+            <div class="cover-meta-grid">
+                <div class="cover-meta-item">
+                    <span>Reporting period</span>
+                    <strong>{report_period}</strong>
+                </div>
+                <div class="cover-meta-item">
+                    <span>Generated</span>
+                    <strong>{generated_date}</strong>
+                </div>
+                <div class="cover-meta-item">
+                    <span>Report scope</span>
+                    <strong>Sales, budget, brands and inventory</strong>
+                </div>
+                <div class="cover-meta-item">
+                    <span>Source</span>
+                    <strong>Standardized Tableau exports</strong>
+                </div>
+            </div>
+
+            <div class="cover-bottom">
+                <div class="cover-description">
+                    Automated weekly operational report consolidating store KPIs,
+                    department performance, sales contribution, top brands,
+                    top-selling products, budget opportunities and validation checks.
+                </div>
+                <div class="cover-version">Report version 1.0</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page page-break">
         <div class="header">
             <div><div class="title">{store_name} KPI Report</div><div class="subtitle">{report_title}</div></div>
             <div class="header-actions">
                 <div class="header-meta"><div><strong>Period:</strong> {report_period}</div><div><strong>Generated:</strong> {generated_date}</div></div>
-                <button class="print-button" type="button" onclick="window.print()" title="Open the browser print dialog and choose Save as PDF">
-                    <span aria-hidden="true">⎙</span>
-                    <span>Print / Save PDF</span>
-                </button>
             </div>
         </div>
 
@@ -992,7 +1582,7 @@ def build_html_report(
 
         <div class="chart-row">
             <div class="chart-card compact-chart"><h3>Global Sales Contribution</h3><img src="../assets/charts/sales_mix.png" alt="Global Sales Contribution"></div>
-            <div class="chart-card compact-chart"><h3>Budget GAP by Department</h3><img src="../assets/charts/budget_gap.png" alt="Budget GAP by Department"></div>
+            <div class="chart-card compact-chart"><h3>Budget Gap by Department</h3><img src="../assets/charts/budget_gap.png" alt="Budget Gap by Department"></div>
         </div>
 
         <div class="section"><div class="section-title">Executive Summary</div><div class="summary">{summary}</div></div>
