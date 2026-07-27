@@ -88,9 +88,8 @@ def render_platform_hero() -> None:
                         with automated analysis and HTML, Excel and PDF outputs.
                     </div>
                     <div class="vm-author">
-                        Created by Diego Díaz Iturbe · Retail Analytics · Reporting Automation
+                        Created by Diego Diaz Iturbe · Retail Analytics · Reporting Automation
                     </div>
-                    <div class="vm-version">Cloud application · 8-source automated validation</div>
                 </div>
             </section>
             """,
@@ -126,11 +125,11 @@ st.markdown("""
     position:relative;
     overflow:hidden;
     width:100%;
-    min-height:355px;
+    min-height:285px;
     margin:0 0 1.15rem 0;
     border-radius:0 0 24px 24px;
     color:white;
-    box-shadow:0 18px 40px rgba(15,23,42,.18);
+    box-shadow:0 10px 28px rgba(15,23,42,.12);
 }
 .vm-hero-image{
     display:flex;
@@ -150,7 +149,7 @@ st.markdown("""
     position:relative;
     z-index:1;
     max-width:760px;
-    padding:3.25rem 3rem 2.65rem;
+    padding:2.35rem 3rem 2.15rem;
     text-shadow:0 2px 16px rgba(0,0,0,.34);
 }
 .vm-author{
@@ -165,7 +164,6 @@ st.markdown("""
     font-weight:650;
     backdrop-filter:blur(4px);
 }
-.vm-version{margin-top:.65rem;color:#cbd5e1;font-size:.72rem;font-weight:650;}
 .vm-hero-fallback{
     display:flex;
     align-items:center;
@@ -207,7 +205,7 @@ st.markdown("""
     border:0;
 }
 @media(max-width:900px){
-    .vm-hero{min-height:300px;border-radius:0 0 18px 18px;}
+    .vm-hero{min-height:265px;border-radius:0 0 18px 18px;}
     .vm-hero-image{background-position:center center;}
 }
 @media(max-width:620px){
@@ -334,6 +332,14 @@ div[data-testid="stButton"] > button[kind="primary"]:disabled{
 .quick-nav-badges{display:flex;gap:.45rem;flex-wrap:wrap;justify-content:flex-end;}
 .quick-nav-badges span{padding:.28rem .58rem;border-radius:999px;background:#eff6ff;color:#1d4ed8;font-size:.73rem;font-weight:800;}
 .section-kicker{margin-top:1.35rem;color:#2563eb;font-size:.72rem;font-weight:900;letter-spacing:.13em;}
+.process-strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.55rem;margin:.55rem 0 1.25rem;}
+.process-item{position:relative;padding:.72rem .8rem;border:1px solid #dbe5ef;border-radius:11px;background:#fff;color:#475569;font-size:.78rem;font-weight:750;line-height:1.35;}
+.process-item b{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;margin-right:.42rem;border-radius:50%;background:#eaf3ff;color:#1d4ed8;font-size:.72rem;}
+.process-item:not(:last-child):after{content:"";position:absolute;right:-.42rem;top:50%;width:.3rem;border-top:1px solid #93c5fd;}
+.upload-guidance{margin:.25rem 0 .8rem;padding:.72rem .85rem;border-left:3px solid #2563eb;border-radius:0 10px 10px 0;background:#f8fbff;color:#475569;font-size:.84rem;line-height:1.5;}
+.upload-guidance strong{color:#1e3a8a;}
+.about-panel{margin-top:1.25rem;padding:1rem 1.05rem;border:1px solid #dbe5ef;border-radius:14px;background:#f8fafc;color:#475569;font-size:.88rem;line-height:1.55;}
+.about-panel strong{display:block;margin-bottom:.25rem;color:#0f172a;font-size:.96rem;}
 .workflow-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.75rem;padding:.2rem 0 .45rem;}
 .workflow-step{padding:1rem;border:1px solid #dbe5ef;border-radius:14px;background:#fbfdff;}
 .workflow-step span{display:inline-flex;width:28px;height:28px;align-items:center;justify-content:center;border-radius:50%;background:#2563eb;color:#fff;font-weight:900;margin-bottom:.65rem;}
@@ -354,6 +360,8 @@ div[data-testid="stFileUploaderDropzone"]{border:1.5px dashed #93c5fd;border-rad
 @media(max-width:1050px){.guide-grid{grid-template-columns:repeat(2,minmax(0,1fr));}.demo-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
 @media(max-width:760px){.quick-nav{align-items:flex-start;flex-direction:column}.workflow-grid{grid-template-columns:repeat(2,minmax(0,1fr));}.quick-nav-badges{justify-content:flex-start;}}
 @media(max-width:560px){.workflow-grid,.guide-grid,.demo-grid{grid-template-columns:1fr;}}
+@media(max-width:760px){.process-strip{grid-template-columns:repeat(2,minmax(0,1fr));}.process-item:after{display:none;}}
+@media(max-width:480px){.process-strip{grid-template-columns:1fr;}}
 .workflow-icon{display:flex;width:44px;height:44px;align-items:center;justify-content:center;border-radius:12px;background:linear-gradient(135deg,#eff6ff,#ecfeff);color:#2563eb;margin-bottom:.7rem;border:1px solid #dbeafe}.workflow-icon svg{width:23px;height:23px;stroke:currentColor}.workflow-step{position:relative;overflow:hidden}.workflow-step:after{content:"";position:absolute;inset:auto 0 0 0;height:3px;background:linear-gradient(90deg,#2563eb,#14b8a6)}
 .date-reminder{display:flex;gap:.6rem;align-items:center;margin:.2rem 0 .85rem;padding:.65rem .8rem;border:1px solid #bfdbfe;border-radius:10px;background:#f8fbff;color:#475569;font-size:.84rem;line-height:1.4}.date-reminder svg{flex:0 0 auto;width:18px;height:18px;stroke:#2563eb}.date-reminder strong{color:#1e3a8a}.date-reminder b{color:#2563eb}
 .validation-shell{margin:.2rem 0 1rem;padding:1rem;border:1px solid #dbe5ef;border-radius:16px;background:linear-gradient(180deg,#fbfdff,#f8fafc);box-shadow:0 8px 22px rgba(15,23,42,.04)}.validation-summary{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:.8rem}.validation-title{font-weight:850;color:#0f172a}.validation-count{padding:.28rem .58rem;border-radius:999px;background:#e0f2fe;color:#0369a1;font-size:.75rem;font-weight:850}.validation-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.65rem}.validation-card{display:flex;gap:.7rem;align-items:flex-start;padding:.78rem .82rem;border:1px solid #dbe5ef;border-radius:12px;background:#fff}.validation-card.detected{border-color:#bbf7d0;background:#f0fdf4}.validation-card.missing{border-color:#fecaca;background:#fef2f2}.validation-card.duplicate{border-color:#fde68a;background:#fffbeb}.validation-badge{display:flex;width:28px;height:28px;align-items:center;justify-content:center;border-radius:9px;font-weight:900}.detected .validation-badge{background:#dcfce7;color:#15803d}.missing .validation-badge{background:#fee2e2;color:#b91c1c}.duplicate .validation-badge{background:#fef3c7;color:#a16207}.validation-meta strong,.validation-meta small{display:block}.validation-meta strong{font-size:.82rem;color:#0f172a}.validation-meta small{margin-top:.2rem;color:#64748b;font-size:.72rem;line-height:1.3;word-break:break-word}
@@ -407,8 +415,8 @@ div[data-testid="stTabs"] [data-baseweb="tab-highlight"]{display:none;}
 render_platform_hero()
 
 st.markdown('<div class="page-nav-wrap"></div>', unsafe_allow_html=True)
-generate_tab, guide_tab, preview_tab = st.tabs(
-    ["🚀 Generate Report", "Guide", "Report Preview"]
+generate_tab, preview_tab, guide_tab = st.tabs(
+    ["Generate Report", "Example Report", "Guide"]
 )
 
 with guide_tab:
@@ -456,13 +464,15 @@ with guide_tab:
             </div>
         </div>
         <div class="guide-note">The uploader checks file contents as well as filenames, so minor filename differences are usually accepted.</div>
+        <div class="about-panel"><strong>About this application</strong>This proof of concept transforms standardized Tableau exports into validated HTML, Excel and PDF reporting outputs. It is designed to reduce repetitive report preparation and give store teams more time for analysis and operational decisions.</div>
         """,
         unsafe_allow_html=True,
     )
 
 with preview_tab:
-    st.subheader("Report preview")
-    st.caption("An anonymized production example will be added after final cloud validation. These placeholders reserve the intended layout.")
+    st.subheader("Example report")
+    st.info("The example report uses synthetic sample data for demonstration. It does not contain actual store performance information.")
+    st.caption("A production-quality example will be added after final cloud validation. These placeholders reserve the intended layout.")
     st.markdown(
         """
         <div class="demo-grid">
@@ -792,18 +802,22 @@ def show_upload_validation(validation: Dict[str, object]) -> None:
 
 with generate_tab:
     st.markdown(
-        '<div class="compact-start"><strong>Start here:</strong> add the report details, upload the eight Tableau exports and generate the report.</div>',
+        '''<div class="process-strip" aria-label="Report workflow">
+            <div class="process-item"><b>1</b>Report details</div>
+            <div class="process-item"><b>2</b>Upload exports</div>
+            <div class="process-item"><b>3</b>Validate</div>
+            <div class="process-item"><b>4</b>Generate &amp; download</div>
+        </div>''',
         unsafe_allow_html=True,
     )
-    st.markdown('<div class="section-kicker">BUILD YOUR REPORT</div>', unsafe_allow_html=True)
-    st.subheader("Report setup")
+    st.subheader("Report details")
     st.caption("Add the location and reporting period that should appear in the report header.")
 
     with st.container(border=True):
         setup_col1, setup_col2, setup_col3 = st.columns([1.35, 1, 1])
         with setup_col1:
             store_name = st.text_input(
-                "Store / location",
+                "Store or location",
                 value="",
                 placeholder="e.g., Sample Store",
                 help="Required. The Tableau exports do not reliably contain the store name.",
@@ -815,13 +829,17 @@ with generate_tab:
 
         default_report_period = f"{report_start.strftime('%b %d, %Y')} – {report_end.strftime('%b %d, %Y')}"
         report_period = st.text_input(
-            "Report label / period",
+            "Custom report label (optional)",
             value=default_report_period,
-            help="This text appears on the report header and can be edited manually.",
+            help="The date range is supplied automatically. Edit this only if the report needs a custom label.",
         )
+        report_period = report_period.strip() or default_report_period
 
-    st.subheader("1. Upload Tableau exports")
-    st.write("Drag and drop all eight required exports below. The platform will identify and validate each report automatically.")
+    st.subheader("Upload Tableau exports")
+    st.markdown(
+        '<div class="upload-guidance"><strong>Eight exports are required.</strong> Select all files together. The platform identifies each report from its contents and checks that the complete set is present.<br><small>Files are processed within the application to build the report. Confirm your organization\'s data-handling requirements before uploading sensitive information.</small></div>',
+        unsafe_allow_html=True,
+    )
 
     bulk_uploads = st.file_uploader(
         "Upload all Tableau exports",
@@ -833,7 +851,7 @@ with generate_tab:
 
     validation = classify_uploaded_files(bulk_uploads or [])
 
-    st.subheader("2. Report validation")
+    st.subheader("Validate exports")
     show_upload_validation(validation)
 
     current_fingerprint = upload_fingerprint(
@@ -845,23 +863,18 @@ with generate_tab:
 
     location_missing = not store_name.strip()
     dates_invalid = report_start > report_end
-    period_missing = not report_period.strip()
 
     if location_missing:
         st.warning("Enter the store / location before generating the report.")
     if dates_invalid:
         st.warning("The report start date cannot be after the report end date.")
-    if period_missing:
-        st.warning("Enter a report label / period before generating the report.")
-
     ready_to_generate = bool(
         validation.get("ready")
         and not location_missing
         and not dates_invalid
-        and not period_missing
     )
 
-    st.subheader("3. Generate report")
+    st.subheader("Generate and download")
     if not ready_to_generate:
         st.warning("Missing required files or report details. Complete the items above to continue.")
 
@@ -906,7 +919,7 @@ with generate_tab:
     if st.session_state.get("report_ready"):
         outputs = st.session_state["outputs"]
 
-        st.subheader("4. Executive preview")
+        st.subheader("Executive preview")
         show_kpi_cards(outputs["kpi_master"])
 
         summary_text = outputs.get("executive_summary_text", "")
@@ -922,10 +935,10 @@ with generate_tab:
                 unsafe_allow_html=True,
             )
 
-        st.subheader("5. Data validation checks")
+        st.subheader("Data validation checks")
         show_validation(outputs["validation"])
 
-        st.subheader("6. Report tables")
+        st.subheader("Report tables")
 
         tab1, tab2, tab3, tab4, tab5 = st.tabs(
             ["Department KPIs", "Subdepartment Gaps", "Opportunities", "Top Brands", "Traffic"]
@@ -951,7 +964,7 @@ with generate_tab:
             st.dataframe(outputs["traffic_summary"], use_container_width=True, hide_index=True)
             st.dataframe(outputs["hourly_traffic"], use_container_width=True, hide_index=True)
 
-        st.subheader("7. Download outputs")
+        st.subheader("Download outputs")
 
         # The requested convention uses the report end date as the report date.
         report_date_text = report_end.strftime("%Y-%m-%d")
