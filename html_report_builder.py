@@ -1781,6 +1781,27 @@ def build_html_report(
 
             .department-grid .department-card {{
                 margin-bottom: 4mm;
+                /* Department cards can exceed one physical PDF page. Keeping
+                   the whole card unbroken pushes it past the page header and
+                   leaves a nearly blank page behind. */
+                break-inside: auto !important;
+                page-break-inside: auto !important;
+            }}
+
+            /* Keep each internal unit polished even when the outer department
+               card continues onto the following page. */
+            .department-header,
+            .metric-row,
+            .department-subsection-heading {{
+                break-inside: avoid !important;
+                page-break-inside: avoid !important;
+                break-after: avoid !important;
+                page-break-after: avoid !important;
+            }}
+
+            .brand-grid {{
+                break-inside: auto !important;
+                page-break-inside: auto !important;
             }}
 
             thead {{
