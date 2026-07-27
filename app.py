@@ -42,7 +42,10 @@ APP_DIR = Path(__file__).resolve().parent
 ASSETS_DIR = APP_DIR / "assets"
 HERO_IMAGE_PATH = ASSETS_DIR / "store_performance_hero.png"
 FAVICON_PATH = ASSETS_DIR / "ddi_favicon.png"
-REPORT_TEMPLATE_VERSION = "2026-07-27.9"
+EXAMPLE_ASSET_DIR = ASSETS_DIR / "example_report"
+SAMPLE_REPORT_PDF = EXAMPLE_ASSET_DIR / "Synthetic_Store_Performance_Report.pdf"
+SAMPLE_REPORT_HTML = EXAMPLE_ASSET_DIR / "Synthetic_Store_Performance_Report.html"
+REPORT_TEMPLATE_VERSION = "2026-07-27.10"
 
 try:
     PAGE_ICON = Image.open(FAVICON_PATH) if FAVICON_PATH.exists() else "📈"
@@ -353,6 +356,7 @@ div[data-testid="stButton"] > button[kind="primary"]:disabled{
 .demo-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.8rem;margin-top:.4rem;}
 .demo-card{padding:.75rem;border:1px solid #dbe5ef;border-radius:14px;background:#fff;}
 .demo-placeholder{display:flex;align-items:center;justify-content:center;min-height:128px;margin-bottom:.75rem;border:1px dashed #93c5fd;border-radius:10px;background:linear-gradient(135deg,#f8fbff,#eef6ff);color:#2563eb;text-align:center;font-size:.78rem;font-weight:800;}
+.demo-image{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;object-position:top left;margin-bottom:.75rem;border:1px solid #dbe5ef;border-radius:10px;background:#f8fafc;box-shadow:0 5px 14px rgba(15,23,42,.07);}
 .demo-card strong,.demo-card small{display:block}.demo-card small{margin-top:.3rem;color:#64748b;line-height:1.4}.demo-title{display:flex;align-items:center;gap:.5rem}.demo-title .mini-icon{width:28px;height:28px}.demo-title .mini-icon svg{width:16px;height:16px}
 div[data-testid="stExpander"]{border:1px solid #dbe5ef!important;border-radius:13px!important;background:#fff!important;box-shadow:0 3px 12px rgba(15,23,42,.025);margin-bottom:.55rem;}
 div[data-testid="stExpander"] summary{font-weight:800;color:#0f172a;}
@@ -472,18 +476,41 @@ with guide_tab:
 with preview_tab:
     st.subheader("Example report")
     st.info("The example report uses synthetic sample data for demonstration. It does not contain actual store performance information.")
-    st.caption("A production-quality example will be added after final cloud validation. These placeholders reserve the intended layout.")
+    st.caption("Explore representative sections from the generated report before uploading any files.")
+
+    def example_visual(filename: str, alt_text: str) -> str:
+        uri = image_data_uri(EXAMPLE_ASSET_DIR / filename)
+        if uri:
+            return f'<img class="demo-image" src="{uri}" alt="{html.escape(alt_text)}">'
+        return '<div class="demo-placeholder">Example screenshot coming soon</div>'
+
     st.markdown(
-        """
+        f"""
         <div class="demo-grid">
-            <div class="demo-card"><div class="demo-placeholder">Production screenshot coming soon</div><div class="demo-title"><span class="mini-icon"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20V7"/></svg></span><strong>Executive Dashboard</strong></div><small>Headline KPIs, trends, sales mix and budget performance.</small></div>
-            <div class="demo-card"><div class="demo-placeholder">Production screenshot coming soon</div><div class="demo-title"><span class="mini-icon"><svg viewBox="0 0 24 24"><path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"/></svg></span><strong>Department Analysis</strong></div><small>Department and subdepartment performance with budget gaps.</small></div>
-            <div class="demo-card"><div class="demo-placeholder">Production screenshot coming soon</div><div class="demo-title"><span class="mini-icon"><svg viewBox="0 0 24 24"><path d="M20 13 11 4H4v7l9 9 7-7Z"/><circle cx="7.5" cy="7.5" r="1"/></svg></span><strong>Brands & Products</strong></div><small>Top brands, top sellers and contribution insights.</small></div>
-            <div class="demo-card"><div class="demo-placeholder">Production screenshot coming soon</div><div class="demo-title"><span class="mini-icon"><svg viewBox="0 0 24 24"><path d="M5 3h14v18H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span><strong>Executive Summary</strong></div><small>Automated findings, opportunities and operational priorities.</small></div>
+            <div class="demo-card">{example_visual('executive_dashboard.png', 'Executive KPI dashboard')}<div class="demo-title"><span class="mini-icon"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20V7"/></svg></span><strong>Executive Dashboard</strong></div><small>Headline KPIs, year-over-year movement, sales contribution and budget performance in one management view.</small></div>
+            <div class="demo-card">{example_visual('department_analysis.png', 'Department and subdepartment analysis')}<div class="demo-title"><span class="mini-icon"><svg viewBox="0 0 24 24"><path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"/></svg></span><strong>Department Analysis</strong></div><small>Sales, targets, budget gaps and contribution metrics organized by department and subdepartment.</small></div>
+            <div class="demo-card">{example_visual('brands_products.png', 'Top brands and products')}<div class="demo-title"><span class="mini-icon"><svg viewBox="0 0 24 24"><path d="M20 13 11 4H4v7l9 9 7-7Z"/><circle cx="7.5" cy="7.5" r="1"/></svg></span><strong>Brands &amp; Products</strong></div><small>Top-selling products by customer segment, with sales, units and low-stock visibility.</small></div>
+            <div class="demo-card">{example_visual('executive_summary.png', 'Automated executive summary')}<div class="demo-title"><span class="mini-icon"><svg viewBox="0 0 24 24"><path d="M5 3h14v18H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span><strong>Executive Summary</strong></div><small>Rule-based findings translate report results into concise performance highlights and operational priorities.</small></div>
         </div>
         """,
         unsafe_allow_html=True,
     )
+
+    available_sample_outputs = [
+        path for path in (SAMPLE_REPORT_PDF, SAMPLE_REPORT_HTML) if path.exists()
+    ]
+    if available_sample_outputs:
+        st.markdown("#### Download the synthetic sample")
+        sample_columns = st.columns(len(available_sample_outputs))
+        for column, sample_path in zip(sample_columns, available_sample_outputs):
+            with column:
+                st.download_button(
+                    f"Download sample {sample_path.suffix.lstrip('.').upper()}",
+                    data=sample_path.read_bytes(),
+                    file_name=sample_path.name,
+                    mime="application/pdf" if sample_path.suffix.lower() == ".pdf" else "text/html",
+                    use_container_width=True,
+                )
     st.markdown("#### Included in every report")
     st.markdown("""
 - Executive KPI dashboard and automated summary

@@ -706,6 +706,11 @@ def build_html_report(
             --apparel-soft: #fff3ea;
             --accessories: #4A9455;
             --accessories-soft: #edf8f2;
+            /* Brighter cover-only accents. The report body keeps the more
+               restrained department palette above. */
+            --cover-footwear: #22A7E3;
+            --cover-apparel: #F2762E;
+            --cover-accessories: #68C85F;
             --radius: 12px;
         }}
 
@@ -751,8 +756,16 @@ def build_html_report(
         }}
 
         .cover-accent {{
-            width: 10mm;
-            background: linear-gradient(180deg, #4f8bc9, #7bb3dc 48%, #f3a45e);
+            position: absolute;
+            inset: 0 auto 0 0;
+            width: 8mm;
+            background: linear-gradient(
+                90deg,
+                rgba(63, 145, 218, .72) 0%,
+                rgba(75, 169, 222, .28) 48%,
+                rgba(75, 169, 222, 0) 100%
+            );
+            pointer-events: none;
         }}
 
         .cover-content {{
@@ -842,9 +855,9 @@ def build_html_report(
         }}
 
         .cover-rule span {{ border-radius: 99px; }}
-        .cover-rule .rule-footwear {{ background: var(--footwear); }}
-        .cover-rule .rule-apparel {{ background: var(--apparel); }}
-        .cover-rule .rule-accessories {{ background: var(--accessories); }}
+        .cover-rule .rule-footwear {{ background: var(--cover-footwear); }}
+        .cover-rule .rule-apparel {{ background: var(--cover-apparel); }}
+        .cover-rule .rule-accessories {{ background: var(--cover-accessories); }}
 
         .cover-meta-grid {{
             display: grid;
@@ -936,9 +949,9 @@ def build_html_report(
             box-shadow: none;
         }}
 
-        .cover-dept-panel.footwear-panel {{ height: 72mm; border-color: rgba(23,111,166,.82); color: var(--footwear); }}
-        .cover-dept-panel.apparel-panel {{ height: 90mm; border-color: rgba(217,106,43,.84); color: var(--apparel); }}
-        .cover-dept-panel.accessories-panel {{ height: 108mm; border-color: rgba(74,148,85,.84); color: var(--accessories); }}
+        .cover-dept-panel.footwear-panel {{ height: 72mm; border-color: var(--cover-footwear); color: var(--cover-footwear); }}
+        .cover-dept-panel.apparel-panel {{ height: 90mm; border-color: var(--cover-apparel); color: var(--cover-apparel); }}
+        .cover-dept-panel.accessories-panel {{ height: 108mm; border-color: var(--cover-accessories); color: var(--cover-accessories); }}
 
         .cover-dept-icon-shell {{
             width: 14mm;
