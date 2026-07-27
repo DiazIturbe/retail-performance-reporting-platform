@@ -1,4 +1,5 @@
 from pathlib import Path
+import base64
 import re
 
 from report_calculations import build_report_calculations
@@ -13,6 +14,17 @@ OUTPUT_DIR = Path("report_output")
 OUTPUT_DIR.mkdir(exist_ok=True)
 
 DATA_MODEL = "vm_weekly_report_data_model.xlsx"
+
+
+def image_data_uri(image_path):
+    """Return a self-contained image URI for HTML and PDF output."""
+    path = Path(image_path)
+    if not path.exists():
+        return ""
+    suffix = path.suffix.lower().lstrip(".")
+    subtype = "jpeg" if suffix in {"jpg", "jpeg"} else suffix
+    encoded = base64.b64encode(path.read_bytes()).decode("ascii")
+    return f"data:image/{subtype};base64,{encoded}"
 
 
 def money(value):
@@ -574,6 +586,13 @@ def build_html_report(
     if generated_date is None:
         generated_date = date.today().isoformat()
 
+    logo_path = Path(__file__).resolve().parent / "assets" / "ddi_favicon.png"
+    logo_uri = image_data_uri(logo_path)
+    cover_logo = (
+        f'<span class="cover-logo-shell"><img class="cover-logo" src="{logo_uri}" alt="DDI Data Solutions"></span>'
+        if logo_uri else ""
+    )
+
     outputs = build_report_calculations(data_model, store_name=store_name)
 
     kpi = outputs["kpi_master"]
@@ -729,12 +748,35 @@ def build_html_report(
         }}
 
         .cover-eyebrow {{
+            display: flex;
+            align-items: center;
+            gap: 3mm;
             text-transform: uppercase;
             letter-spacing: .18em;
             font-size: 9px;
             font-weight: 700;
             opacity: .78;
             margin-bottom: 18mm;
+        }}
+
+        .cover-logo-shell {{
+            width: 9mm;
+            height: 9mm;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex: 0 0 auto;
+            padding: 1mm;
+            border-radius: 2.4mm;
+            background: rgba(255, 255, 255, .96);
+            box-shadow: 0 1mm 3mm rgba(0, 0, 0, .12);
+        }}
+
+        .cover-logo {{
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }}
 
         .cover-title {{
@@ -754,11 +796,18 @@ def build_html_report(
         }}
 
         .cover-rule {{
-            width: 40mm;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: .7mm;
+            width: 54mm;
             height: 3px;
-            background: #f3a45e;
             margin: 10mm 0 12mm;
         }}
+
+        .cover-rule span {{ border-radius: 99px; }}
+        .cover-rule .rule-footwear {{ background: var(--footwear); }}
+        .cover-rule .rule-apparel {{ background: var(--apparel); }}
+        .cover-rule .rule-accessories {{ background: var(--accessories); }}
 
         .cover-meta-grid {{
             display: grid;
@@ -802,6 +851,21 @@ def build_html_report(
             white-space: nowrap;
             font-size: 9px;
             color: #a9c3dc;
+        }}
+
+        .cover-contents {{
+            margin-top: 4mm;
+            padding-top: 3mm;
+            border-top: 1px solid rgba(213, 227, 239, .22);
+            color: #a9c3dc;
+            font-size: 8px;
+            letter-spacing: .015em;
+        }}
+
+        .cover-credit {{
+            margin-top: 1.5mm;
+            color: #8faac2;
+            font-size: 7.5px;
         }}
 
         .header {{
@@ -1605,10 +1669,10 @@ def build_html_report(
     <div class="page cover-page">
         <div class="cover-accent"></div>
         <div class="cover-content">
-            <div class="cover-eyebrow">Store Performance Reporting Platform</div>
+            <div class="cover-eyebrow">{cover_logo}<span>Store Performance Reporting Platform</span></div>
             <h1 class="cover-title">{report_title}</h1>
             <div class="cover-store">{store_name}</div>
-            <div class="cover-rule"></div>
+            <div class="cover-rule"><span class="rule-footwear"></span><span class="rule-apparel"></span><span class="rule-accessories"></span></div>
 
             <div class="cover-meta-grid">
                 <div class="cover-meta-item">
@@ -1634,6 +1698,8 @@ def build_html_report(
                     Automated weekly operational report consolidating store KPIs,
                     department performance, sales contribution, top brands,
                     top-selling products, budget opportunities and validation checks.
+                    <div class="cover-contents">Executive KPIs &nbsp;·&nbsp; Department Performance &nbsp;·&nbsp; Top Sellers &nbsp;·&nbsp; Budget Opportunities</div>
+                    <div class="cover-credit">Report design and automation: Diego Diaz Iturbe</div>
                 </div>
                 <div class="cover-version">Report version 1.0</div>
             </div>

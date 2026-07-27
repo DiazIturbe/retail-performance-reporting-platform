@@ -42,7 +42,7 @@ APP_DIR = Path(__file__).resolve().parent
 ASSETS_DIR = APP_DIR / "assets"
 HERO_IMAGE_PATH = ASSETS_DIR / "store_performance_hero.png"
 FAVICON_PATH = ASSETS_DIR / "ddi_favicon.png"
-REPORT_TEMPLATE_VERSION = "2026-07-27.4"
+REPORT_TEMPLATE_VERSION = "2026-07-27.5"
 
 try:
     PAGE_ICON = Image.open(FAVICON_PATH) if FAVICON_PATH.exists() else "📈"
