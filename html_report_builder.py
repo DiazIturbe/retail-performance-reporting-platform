@@ -407,7 +407,7 @@ def build_subdepartment_gap_table(subdept):
         rows.append(f"""
         <tr class="{css}-gap-row">
             <td class="gap-group-cell"><span class="gap-group-label">{section_icon(row.get('group', ''), 'gap-group-icon')}{row.get('group', '')}</span></td>
-            <td class="text-left">{subsection_icon(row.get('department', ''))}<span class="subdepartment-name">{row.get('department', '')}</span></td>
+            <td class="subdepartment-cell"><span class="subdepartment-label">{subsection_icon(row.get('department', ''))}<span class="subdepartment-name">{row.get('department', '')}</span></span></td>
             <td>{money(row.get('net_sales', 0))}</td>
             <td>{money(row.get('budget', 0))}</td>
             <td>{format_spark_cell(row.get('budget_gap', 0), money_signed(row.get('budget_gap', 0)), kind='gap', max_abs=max_gap)}</td>
@@ -666,12 +666,12 @@ def build_html_report(
             --red-soft: #fff0f1;
             --amber: #a96308;
             --amber-soft: #fff6df;
-            --footwear: #386ea8;
+            --footwear: #176FA6;
             --footwear-soft: #eef5fb;
-            --apparel: #c56e2f;
+            --apparel: #D96A2B;
             --apparel-soft: #fff3ea;
-            --accessories: #6f5aa8;
-            --accessories-soft: #f4f0fb;
+            --accessories: #4A9455;
+            --accessories-soft: #edf8f2;
             --radius: 12px;
         }}
 
@@ -1021,6 +1021,7 @@ def build_html_report(
             font-weight: 800;
             color: var(--navy);
             letter-spacing: -.01em;
+            white-space: nowrap;
         }}
 
         .section-title::before {{
@@ -1086,7 +1087,7 @@ def build_html_report(
             border-bottom: 1px solid var(--line);
             color: #475569;
             text-align: right;
-            font-size: 7.5px;
+            font-size: 8px;
             line-height: 1.25;
             text-transform: uppercase;
             letter-spacing: .035em;
@@ -1099,7 +1100,7 @@ def build_html_report(
             color: #334155;
             text-align: right;
             vertical-align: middle;
-            font-size: 8.5px;
+            font-size: 9px;
         }}
 
         .data-table tr:last-child td, .mini-table tr:last-child td {{
@@ -1146,6 +1147,35 @@ def build_html_report(
         .footwear-row td:first-child {{ border-left: 3px solid var(--footwear); }}
         .apparel-row td:first-child {{ border-left: 3px solid var(--apparel); }}
         .accessories-row td:first-child {{ border-left: 3px solid var(--accessories); }}
+
+        .compact-visual-table th:first-child,
+        .compact-visual-table td:first-child {{ width: 17%; }}
+
+        .compact-visual-table th:nth-child(2),
+        .compact-visual-table td:nth-child(2) {{
+            width: 18%;
+            text-align: left;
+        }}
+
+        .subdepartment-cell {{
+            text-align: left !important;
+            padding-left: 2mm !important;
+        }}
+
+        .subdepartment-label {{
+            display: inline-flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 1.4mm;
+            min-width: 0;
+            font-weight: 500;
+        }}
+
+        .subdepartment-name {{ line-height: 1.2; }}
+
+        .footwear-gap-row .subdepartment-cell {{ background: var(--footwear-soft) !important; }}
+        .apparel-gap-row .subdepartment-cell {{ background: var(--apparel-soft) !important; }}
+        .accessories-gap-row .subdepartment-cell {{ background: var(--accessories-soft) !important; }}
 
         .positive {{ color: var(--green) !important; font-weight: 700; }}
         .negative {{ color: var(--red) !important; font-weight: 700; }}
@@ -1234,13 +1264,25 @@ def build_html_report(
             background: #f6f8fb;
         }}
 
+        .seller-block.footwear-seller {{ border-top: 3px solid var(--footwear); }}
+        .seller-block.apparel-seller {{ border-top: 3px solid var(--apparel); }}
+        .seller-block.accessories-seller {{ border-top: 3px solid var(--accessories); }}
+
+        .footwear-seller .seller-block-title {{ background: var(--footwear-soft); color: var(--footwear); }}
+        .apparel-seller .seller-block-title {{ background: var(--apparel-soft); color: var(--apparel); }}
+        .accessories-seller .seller-block-title {{ background: var(--accessories-soft); color: var(--accessories); }}
+
+        .footwear-seller-section .seller-department-heading {{ color: var(--footwear); }}
+        .apparel-seller-section .seller-department-heading {{ color: var(--apparel); }}
+        .accessories-seller-section .seller-department-heading {{ color: var(--accessories); }}
+
         .seller-department-section {{
             margin-bottom: 4mm;
         }}
 
         .seller-department-heading {{
             margin-bottom: 2mm;
-            font-size: 11px;
+            font-size: 12px;
         }}
 
         .product-table td {{
@@ -1265,14 +1307,14 @@ def build_html_report(
         }}
 
         .product-cell strong {{
-            font-size: 8.2px;
+            font-size: 8.8px;
             color: var(--ink);
         }}
 
         .product-cell span {{
             margin-top: .5mm;
             color: var(--muted);
-            font-size: 7px;
+            font-size: 7.4px;
         }}
 
         .stock-low {{
@@ -1298,7 +1340,7 @@ def build_html_report(
             padding: 2.5mm 3.5mm;
             color: #fff;
             font-weight: 800;
-            font-size: 11px;
+            font-size: 12px;
         }}
 
         .department-header.footwear {{ background: var(--footwear); }}
@@ -1325,7 +1367,7 @@ def build_html_report(
             color: var(--muted);
             text-transform: uppercase;
             letter-spacing: .035em;
-            font-size: 6.8px;
+            font-size: 7.2px;
             line-height: 1.15;
             min-height: 7mm;
         }}
@@ -1343,12 +1385,12 @@ def build_html_report(
         }}
 
         .department-subsection-title {{
-            font-size: 10px;
+            font-size: 10.5px;
         }}
 
         .department-subsection-note {{
             color: var(--muted);
-            font-size: 7.5px;
+            font-size: 8px;
             font-weight: 400;
         }}
 
@@ -1363,7 +1405,7 @@ def build_html_report(
             padding: 2mm 2.5mm;
             background: #f6f8fb;
             border-bottom: 1px solid var(--line);
-            font-size: 8.5px;
+            font-size: 9px;
         }}
 
         .brand-column .mini-table {{
@@ -1374,7 +1416,7 @@ def build_html_report(
         .brand-column .mini-table th,
         .brand-column .mini-table td {{
             padding: 1.35mm 1.5mm;
-            font-size: 7.5px;
+            font-size: 8px;
         }}
 
         .footwear-column {{ border-top: 3px solid var(--footwear); }}
@@ -1393,6 +1435,14 @@ def build_html_report(
             background: #f6f8fb;
             border-bottom: 1px solid var(--line);
         }}
+
+        .embedded-sellers.footwear-seller {{ border-top: 3px solid var(--footwear); }}
+        .embedded-sellers.apparel-seller {{ border-top: 3px solid var(--apparel); }}
+        .embedded-sellers.accessories-seller {{ border-top: 3px solid var(--accessories); }}
+
+        .embedded-sellers.footwear-seller .embedded-sellers-title {{ background: var(--footwear-soft); color: var(--footwear); }}
+        .embedded-sellers.apparel-seller .embedded-sellers-title {{ background: var(--apparel-soft); color: var(--apparel); }}
+        .embedded-sellers.accessories-seller .embedded-sellers-title {{ background: var(--accessories-soft); color: var(--accessories); }}
 
         .embedded-sellers .data-table {{
             border: 0;
@@ -1480,6 +1530,11 @@ def build_html_report(
                 break-inside: avoid !important;
                 page-break-inside: avoid !important;
                 box-shadow: none !important;
+            }}
+
+            .seller-department-section {{
+                break-inside: avoid !important;
+                page-break-inside: avoid !important;
             }}
 
             thead {{
