@@ -598,7 +598,10 @@ def build_html_report(
     if generated_date is None:
         generated_date = date.today().isoformat()
 
-    logo_path = Path(__file__).resolve().parent / "assets" / "ddi_favicon.png"
+    asset_dir = Path(__file__).resolve().parent / "assets"
+    logo_path = asset_dir / "ddi_logo_transparent.png"
+    if not logo_path.exists():
+        logo_path = asset_dir / "ddi_favicon.png"
     logo_uri = image_data_uri(logo_path)
     cover_logo = (
         f'<span class="cover-logo-shell"><img class="cover-logo" src="{logo_uri}" alt="DDI Data Solutions"></span>'
@@ -793,7 +796,7 @@ def build_html_report(
             width: 100%;
             height: 100%;
             object-fit: contain;
-            border-radius: 2.4mm;
+            border-radius: 0;
         }}
 
         .cover-title {{
@@ -928,8 +931,8 @@ def build_html_report(
             padding: 5mm 3mm 4mm;
             border: 1px solid rgba(255,255,255,.18);
             border-radius: 5mm;
-            background: rgba(255,255,255,.065);
-            box-shadow: inset 0 0 0 1px rgba(255,255,255,.025);
+            background: transparent;
+            box-shadow: none;
         }}
 
         .cover-dept-panel.footwear-panel {{ height: 82mm; border-color: rgba(23,111,166,.7); color: var(--footwear); }}
@@ -965,15 +968,27 @@ def build_html_report(
             background: currentColor;
         }}
 
-        .cover-sparkline {{
-            width: 100%;
-            height: 17mm;
+        .cover-momentum {{
+            width: 72%;
+            height: 12mm;
             margin-top: auto;
-            color: currentColor;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }}
 
-        .cover-sparkline polyline {{ fill: none; stroke: currentColor; stroke-width: 2; }}
-        .cover-sparkline circle {{ fill: currentColor; }}
+        .cover-momentum span {{
+            width: 2mm;
+            height: 2mm;
+            border-radius: 50%;
+            background: currentColor;
+        }}
+
+        .cover-momentum span:nth-child(1) {{ transform: translateY(3mm); }}
+        .cover-momentum span:nth-child(2) {{ transform: translateY(1mm); }}
+        .cover-momentum span:nth-child(3) {{ transform: translateY(2mm); }}
+        .cover-momentum span:nth-child(4) {{ transform: translateY(-1mm); }}
+        .cover-momentum span:nth-child(5) {{ transform: translateY(-3mm); }}
 
         .cover-mini-bars {{
             width: 100%;
@@ -1809,17 +1824,17 @@ def build_html_report(
                 <div class="cover-panels">
                     <div class="cover-dept-panel footwear-panel">
                         <span class="cover-dept-icon-shell">{cover_section_icon('Footwear')}</span><div class="cover-dept-name">Footwear</div><div class="cover-mini-rule"></div>
-                        <svg class="cover-sparkline" viewBox="0 0 100 40"><polyline points="4,32 20,25 35,29 50,17 67,22 82,10 96,14"/><circle cx="96" cy="14" r="2.5"/></svg>
+                        <div class="cover-momentum"><span></span><span></span><span></span><span></span><span></span></div>
                         <div class="cover-mini-bars"><span style="height:24%"></span><span style="height:38%"></span><span style="height:31%"></span><span style="height:55%"></span><span style="height:70%"></span></div>
                     </div>
                     <div class="cover-dept-panel apparel-panel">
                         <span class="cover-dept-icon-shell">{cover_section_icon('Apparel')}</span><div class="cover-dept-name">Apparel</div><div class="cover-mini-rule"></div>
-                        <svg class="cover-sparkline" viewBox="0 0 100 40"><polyline points="4,31 18,23 34,27 51,16 66,20 82,9 96,5"/><circle cx="96" cy="5" r="2.5"/></svg>
+                        <div class="cover-momentum"><span></span><span></span><span></span><span></span><span></span></div>
                         <div class="cover-mini-bars"><span style="height:22%"></span><span style="height:35%"></span><span style="height:48%"></span><span style="height:66%"></span><span style="height:82%"></span></div>
                     </div>
                     <div class="cover-dept-panel accessories-panel">
                         <span class="cover-dept-icon-shell">{cover_section_icon('Accessories')}</span><div class="cover-dept-name">Accessories</div><div class="cover-mini-rule"></div>
-                        <svg class="cover-sparkline" viewBox="0 0 100 40"><polyline points="4,30 18,18 33,22 48,12 63,17 79,8 96,4"/><circle cx="96" cy="4" r="2.5"/></svg>
+                        <div class="cover-momentum"><span></span><span></span><span></span><span></span><span></span></div>
                         <div class="cover-mini-bars"><span style="height:20%"></span><span style="height:32%"></span><span style="height:46%"></span><span style="height:65%"></span><span style="height:88%"></span></div>
                     </div>
                 </div>
