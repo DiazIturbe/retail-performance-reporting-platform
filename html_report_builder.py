@@ -1786,6 +1786,14 @@ def build_html_report(
                    leaves a nearly blank page behind. */
                 break-inside: auto !important;
                 page-break-inside: auto !important;
+                /* overflow:hidden makes WeasyPrint treat the card like one
+                   non-fragmentable box even when break-inside is overridden. */
+                overflow: visible !important;
+            }}
+
+            .page > .header {{
+                break-after: avoid !important;
+                page-break-after: avoid !important;
             }}
 
             /* Keep each internal unit polished even when the outer department
