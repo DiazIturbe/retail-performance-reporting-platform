@@ -1140,6 +1140,19 @@ def build_html_report(
             flex: 0 0 auto;
         }}
 
+        /* WeasyPrint does not always resolve SVG currentColor consistently. */
+        .department-header .section-icon {{ color: #fff !important; stroke: #fff !important; }}
+        .department-subsection-heading .subsection-heading-icon {{ color: var(--navy); stroke: var(--navy); }}
+        .footwear-seller .subsection-icon,
+        .footwear-seller-section .seller-heading-icon {{ color: var(--footwear); stroke: var(--footwear); }}
+        .apparel-seller .subsection-icon,
+        .apparel-seller-section .seller-heading-icon {{ color: var(--apparel); stroke: var(--apparel); }}
+        .accessories-seller .subsection-icon,
+        .accessories-seller-section .seller-heading-icon {{ color: var(--accessories); stroke: var(--accessories); }}
+        .footwear-gap-row .gap-group-icon {{ color: var(--footwear); stroke: var(--footwear); }}
+        .apparel-gap-row .gap-group-icon {{ color: var(--apparel); stroke: var(--apparel); }}
+        .accessories-gap-row .gap-group-icon {{ color: var(--accessories); stroke: var(--accessories); }}
+
         .footwear {{ color: var(--footwear); }}
         .apparel {{ color: var(--apparel); }}
         .accessories {{ color: var(--accessories); }}
@@ -1276,6 +1289,11 @@ def build_html_report(
         .apparel-seller-section .seller-department-heading {{ color: var(--apparel); }}
         .accessories-seller-section .seller-department-heading {{ color: var(--accessories); }}
 
+        .seller-block .data-table {{
+            border: 0;
+            border-radius: 0;
+        }}
+
         .seller-department-section {{
             margin-bottom: 4mm;
         }}
@@ -1361,6 +1379,10 @@ def build_html_report(
             border-radius: 7px;
             background: var(--soft);
             min-width: 0;
+            min-height: 16mm;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }}
 
         .small-metric-label {{
@@ -1369,12 +1391,13 @@ def build_html_report(
             letter-spacing: .035em;
             font-size: 7.2px;
             line-height: 1.15;
-            min-height: 7mm;
+            min-height: 0;
         }}
 
         .small-metric-value {{
-            margin-top: 1mm;
+            margin-top: 1.5mm;
             font-size: 11px;
+            line-height: 1.1;
             font-weight: 800;
             color: var(--navy);
             white-space: nowrap;
@@ -1443,6 +1466,10 @@ def build_html_report(
         .embedded-sellers.footwear-seller .embedded-sellers-title {{ background: var(--footwear-soft); color: var(--footwear); }}
         .embedded-sellers.apparel-seller .embedded-sellers-title {{ background: var(--apparel-soft); color: var(--apparel); }}
         .embedded-sellers.accessories-seller .embedded-sellers-title {{ background: var(--accessories-soft); color: var(--accessories); }}
+
+        .embedded-sellers.footwear-seller .seller-title-icon {{ color: var(--footwear); stroke: var(--footwear); }}
+        .embedded-sellers.apparel-seller .seller-title-icon {{ color: var(--apparel); stroke: var(--apparel); }}
+        .embedded-sellers.accessories-seller .seller-title-icon {{ color: var(--accessories); stroke: var(--accessories); }}
 
         .embedded-sellers .data-table {{
             border: 0;
