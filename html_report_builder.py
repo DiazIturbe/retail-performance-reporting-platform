@@ -579,7 +579,7 @@ def build_html_report(
     store_name="Store",
     report_period="Selected period",
     generated_date=None,
-    report_title="KPI Performance Report",
+    report_title="Store Performance Report",
 ):
     from datetime import date
 
@@ -742,26 +742,30 @@ def build_html_report(
         .cover-content {{
             flex: 1;
             min-width: 0;
-            padding: 22mm 22mm 16mm 20mm;
+            padding: 13mm 15mm 13mm 16mm;
             display: flex;
             flex-direction: column;
         }}
 
-        .cover-eyebrow {{
+        .cover-topbar {{
             display: flex;
             align-items: center;
-            gap: 3mm;
+            justify-content: space-between;
+            gap: 8mm;
+            margin-bottom: 11mm;
+        }}
+
+        .cover-eyebrow {{
             text-transform: uppercase;
             letter-spacing: .18em;
             font-size: 9px;
             font-weight: 700;
             opacity: .78;
-            margin-bottom: 18mm;
         }}
 
         .cover-logo-shell {{
-            width: 9mm;
-            height: 9mm;
+            width: 10mm;
+            height: 10mm;
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -780,16 +784,32 @@ def build_html_report(
         }}
 
         .cover-title {{
-            font-size: 32px;
+            font-size: 29px;
             line-height: 1.02;
             font-weight: 800;
             letter-spacing: -.04em;
-            max-width: 180mm;
+            max-width: 128mm;
             margin: 0;
         }}
 
+        .cover-kicker {{
+            margin-bottom: 3mm;
+            color: #83bff0;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+        }}
+
+        .cover-subtitle {{
+            margin-top: 4mm;
+            color: #b9cce0;
+            font-size: 13px;
+            font-weight: 500;
+        }}
+
         .cover-store {{
-            font-size: 19px;
+            font-size: 17px;
             font-weight: 600;
             color: #d8e9f8;
             margin-top: 6mm;
@@ -801,7 +821,7 @@ def build_html_report(
             gap: .7mm;
             width: 54mm;
             height: 3px;
-            margin: 10mm 0 12mm;
+            margin: 7mm 0 9mm;
         }}
 
         .cover-rule span {{ border-radius: 99px; }}
@@ -813,7 +833,7 @@ def build_html_report(
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 8mm 14mm;
-            max-width: 130mm;
+            max-width: 122mm;
         }}
 
         .cover-meta-item span {{
@@ -833,7 +853,7 @@ def build_html_report(
 
         .cover-bottom {{
             margin-top: auto;
-            padding-top: 14mm;
+            padding-top: 7mm;
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
@@ -841,7 +861,7 @@ def build_html_report(
         }}
 
         .cover-description {{
-            max-width: 155mm;
+            max-width: 190mm;
             color: #d5e3ef;
             font-size: 10px;
             line-height: 1.55;
@@ -867,6 +887,92 @@ def build_html_report(
             color: #8faac2;
             font-size: 7.5px;
         }}
+
+        .cover-main {{
+            display: grid;
+            grid-template-columns: minmax(0, 1.12fr) minmax(94mm, .88fr);
+            gap: 12mm;
+            align-items: stretch;
+            min-height: 126mm;
+        }}
+
+        .cover-left {{ min-width: 0; }}
+
+        .cover-panels {{
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 3mm;
+            align-items: end;
+            padding-top: 12mm;
+        }}
+
+        .cover-dept-panel {{
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 5mm 3mm 4mm;
+            border: 1px solid rgba(255,255,255,.18);
+            border-radius: 5mm;
+            background: rgba(255,255,255,.035);
+        }}
+
+        .cover-dept-panel.footwear-panel {{ height: 82mm; border-color: rgba(23,111,166,.7); color: var(--footwear); }}
+        .cover-dept-panel.apparel-panel {{ height: 102mm; border-color: rgba(217,106,43,.72); color: var(--apparel); }}
+        .cover-dept-panel.accessories-panel {{ height: 122mm; border-color: rgba(74,148,85,.72); color: var(--accessories); }}
+
+        .cover-dept-icon-shell {{
+            width: 14mm;
+            height: 14mm;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid currentColor;
+            border-radius: 50%;
+            background: rgba(15,39,71,.5);
+        }}
+
+        .cover-dept-icon {{ width: 8mm; height: 8mm; color: currentColor; stroke: currentColor; }}
+
+        .cover-dept-name {{
+            margin-top: 4mm;
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }}
+
+        .cover-mini-rule {{
+            width: 64%;
+            height: 2px;
+            margin-top: 4mm;
+            border-radius: 99px;
+            background: currentColor;
+        }}
+
+        .cover-sparkline {{
+            width: 100%;
+            height: 17mm;
+            margin-top: auto;
+            color: currentColor;
+        }}
+
+        .cover-sparkline polyline {{ fill: none; stroke: currentColor; stroke-width: 2; }}
+        .cover-sparkline circle {{ fill: currentColor; }}
+
+        .cover-mini-bars {{
+            width: 100%;
+            height: 20mm;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 1.4mm;
+            margin-top: 2mm;
+            opacity: .32;
+        }}
+
+        .cover-mini-bars span {{ width: 2.6mm; border-radius: 1mm 1mm 0 0; background: currentColor; }}
 
         .header {{
             display: flex;
@@ -1669,33 +1775,45 @@ def build_html_report(
     <div class="page cover-page">
         <div class="cover-accent"></div>
         <div class="cover-content">
-            <div class="cover-eyebrow">{cover_logo}<span>Store Performance Reporting Platform</span></div>
-            <h1 class="cover-title">{report_title}</h1>
-            <div class="cover-store">{store_name}</div>
-            <div class="cover-rule"><span class="rule-footwear"></span><span class="rule-apparel"></span><span class="rule-accessories"></span></div>
+            <div class="cover-topbar"><div class="cover-eyebrow">Store Performance Reporting Platform</div>{cover_logo}</div>
+            <div class="cover-main">
+                <div class="cover-left">
+                    <div class="cover-kicker">Operational Intelligence</div>
+                    <h1 class="cover-title">{report_title}</h1>
+                    <div class="cover-subtitle">Operational KPI Dashboard</div>
+                    <div class="cover-store">{store_name}</div>
+                    <div class="cover-rule"><span class="rule-footwear"></span><span class="rule-apparel"></span><span class="rule-accessories"></span></div>
 
-            <div class="cover-meta-grid">
-                <div class="cover-meta-item">
-                    <span>Reporting period</span>
-                    <strong>{report_period}</strong>
+                    <div class="cover-meta-grid">
+                        <div class="cover-meta-item"><span>Reporting period</span><strong>{report_period}</strong></div>
+                        <div class="cover-meta-item"><span>Generated</span><strong>{generated_date}</strong></div>
+                        <div class="cover-meta-item"><span>Report scope</span><strong>Sales, budget, brands and inventory</strong></div>
+                        <div class="cover-meta-item"><span>Source</span><strong>Standardized Tableau exports</strong></div>
+                    </div>
                 </div>
-                <div class="cover-meta-item">
-                    <span>Generated</span>
-                    <strong>{generated_date}</strong>
-                </div>
-                <div class="cover-meta-item">
-                    <span>Report scope</span>
-                    <strong>Sales, budget, brands and inventory</strong>
-                </div>
-                <div class="cover-meta-item">
-                    <span>Source</span>
-                    <strong>Standardized Tableau exports</strong>
+
+                <div class="cover-panels">
+                    <div class="cover-dept-panel footwear-panel">
+                        <span class="cover-dept-icon-shell">{section_icon('Footwear', 'cover-dept-icon')}</span><div class="cover-dept-name">Footwear</div><div class="cover-mini-rule"></div>
+                        <svg class="cover-sparkline" viewBox="0 0 100 40"><polyline points="4,32 20,25 35,29 50,17 67,22 82,10 96,14"/><circle cx="96" cy="14" r="2.5"/></svg>
+                        <div class="cover-mini-bars"><span style="height:24%"></span><span style="height:38%"></span><span style="height:31%"></span><span style="height:55%"></span><span style="height:70%"></span></div>
+                    </div>
+                    <div class="cover-dept-panel apparel-panel">
+                        <span class="cover-dept-icon-shell">{section_icon('Apparel', 'cover-dept-icon')}</span><div class="cover-dept-name">Apparel</div><div class="cover-mini-rule"></div>
+                        <svg class="cover-sparkline" viewBox="0 0 100 40"><polyline points="4,31 18,23 34,27 51,16 66,20 82,9 96,5"/><circle cx="96" cy="5" r="2.5"/></svg>
+                        <div class="cover-mini-bars"><span style="height:22%"></span><span style="height:35%"></span><span style="height:48%"></span><span style="height:66%"></span><span style="height:82%"></span></div>
+                    </div>
+                    <div class="cover-dept-panel accessories-panel">
+                        <span class="cover-dept-icon-shell">{section_icon('Accessories', 'cover-dept-icon')}</span><div class="cover-dept-name">Accessories</div><div class="cover-mini-rule"></div>
+                        <svg class="cover-sparkline" viewBox="0 0 100 40"><polyline points="4,30 18,18 33,22 48,12 63,17 79,8 96,4"/><circle cx="96" cy="4" r="2.5"/></svg>
+                        <div class="cover-mini-bars"><span style="height:20%"></span><span style="height:32%"></span><span style="height:46%"></span><span style="height:65%"></span><span style="height:88%"></span></div>
+                    </div>
                 </div>
             </div>
 
             <div class="cover-bottom">
                 <div class="cover-description">
-                    Automated weekly operational report consolidating store KPIs,
+                    Automated operational report consolidating store KPIs,
                     department performance, sales contribution, top brands,
                     top-selling products, budget opportunities and validation checks.
                     <div class="cover-contents">Executive KPIs &nbsp;·&nbsp; Department Performance &nbsp;·&nbsp; Top Sellers &nbsp;·&nbsp; Budget Opportunities</div>
@@ -1716,7 +1834,7 @@ def build_html_report(
 
         <div class="cards">
             {kpi_card("Net Sales", money(net_sales), f"{pct(sales_vs_ly)} vs LY", "sales", budget_attainment, f"{pct(budget_attainment)} Budget attainment", "positive" if budget_attainment >= 1 else "negative")}
-            {kpi_card("Budget", money(budget), "Weekly target", "budget", None, "", "neutral")}
+            {kpi_card("Budget", money(budget), "Reporting-period target", "budget", None, "", "neutral")}
             {kpi_card("Budget Gap", money_signed(budget_gap), f"{pct(budget_gap_pct)} vs budget", "gap", budget_attainment, f"{pct(budget_attainment)} Budget attainment", "positive" if budget_gap >= 0 else "negative")}
             {kpi_card("Conversion", pct(conversion), "Transactions ÷ footfall", "conversion", None, "", "neutral")}
         </div>
