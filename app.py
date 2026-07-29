@@ -222,110 +222,8 @@ st.markdown("""
     .vm-version{font-size:.68rem;}
 }
 
-.executive-panel{
-    margin-top:.4rem;
-    padding:1.15rem;
-    border:1px solid #dbe5ef;
-    border-radius:18px;
-    background:linear-gradient(180deg,#fbfdff 0%,#f7fafc 100%);
-    box-shadow:0 8px 24px rgba(15,23,42,.05);
-}
-.executive-grid{
-    display:grid;
-    grid-template-columns:repeat(4,minmax(0,1fr));
-    gap:.8rem;
-}
-.executive-card{
-    min-height:112px;
-    padding:1rem 1.05rem;
-    border:1px solid #dbe5ef;
-    border-radius:14px;
-    background:#fff;
-    box-shadow:0 3px 10px rgba(15,23,42,.035);
-}
-.executive-card-label{
-    color:#64748b;
-    font-size:.74rem;
-    font-weight:800;
-    letter-spacing:.045em;
-    text-transform:uppercase;
-}
-.executive-card-value{
-    margin-top:.28rem;
-    color:#0f172a;
-    font-size:1.72rem;
-    line-height:1.05;
-    font-weight:850;
-    letter-spacing:-.025em;
-}
-.executive-card-note{
-    margin-top:.55rem;
-    color:#64748b;
-    font-size:.76rem;
-    line-height:1.25;
-    font-weight:650;
-}
-.executive-card-note.positive{color:#15803d;}
-.executive-card-note.negative{color:#b91c1c;}
-.executive-card-note.neutral{color:#64748b;}
-.summary-card{
-    margin-top:1rem;
-    padding:1rem 1.1rem;
-    border-left:4px solid #94a3b8;
-    border-radius:0 12px 12px 0;
-    background:#f8fafc;
-    color:#334155;
-    line-height:1.55;
-    font-size:.93rem;
-}
-.summary-label{
-    display:block;
-    margin-bottom:.35rem;
-    color:#0f172a;
-    font-size:.76rem;
-    font-weight:850;
-    letter-spacing:.04em;
-    text-transform:uppercase;
-}
-div[data-testid="stButton"] > button[kind="primary"]{
-    min-height:3.25rem;
-    border:1px solid rgba(79,70,229,.18);
-    border-radius:13px;
-    background:linear-gradient(135deg,#4f46e5 0%,#2563eb 48%,#14b8a6 100%);
-    color:#fff;
-    font-weight:850;
-    font-size:1rem;
-    letter-spacing:.01em;
-    box-shadow:
-        0 10px 24px rgba(37,99,235,.20),
-        inset 0 1px 0 rgba(255,255,255,.18);
-    transition:all .18s ease;
-}
-div[data-testid="stButton"] > button[kind="primary"]:hover{
-    border-color:rgba(79,70,229,.28);
-    background:linear-gradient(135deg,#4338ca 0%,#1d4ed8 48%,#0f9f91 100%);
-    box-shadow:
-        0 13px 28px rgba(37,99,235,.26),
-        inset 0 1px 0 rgba(255,255,255,.20);
-    transform:translateY(-1px);
-}
-div[data-testid="stButton"] > button[kind="primary"]:active{
-    transform:translateY(0);
-    box-shadow:0 7px 16px rgba(37,99,235,.18);
-}
-div[data-testid="stButton"] > button[kind="primary"]:disabled{
-    border-color:#dbe3ec;
-    background:linear-gradient(135deg,#edf2f7 0%,#e8eef5 100%);
-    color:#9aa8b8;
-    box-shadow:none;
-    transform:none;
-}
-@media(max-width:900px){
-    .executive-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
-}
-@media(max-width:560px){
-    .executive-grid{grid-template-columns:1fr;}
-}
+ .executive-panel{margin-top:.3rem;padding:.7rem;border:1px solid #dbe5ef;border-radius:15px;background:linear-gradient(180deg,#fbfdff 0%,#f7fafc 100%);box-shadow:0 5px 16px rgba(15,23,42,.04)}
+.executive-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.5rem}.executive-card{min-height:84px;padding:.68rem .72rem;border:1px solid #dbe5ef;border-radius:11px;background:#fff;box-shadow:0 2px 7px rgba(15,23,42,.025)}.executive-card-label{color:#64748b;font-size:.65rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase}.executive-card-value{margin-top:.16rem;color:#0f172a;font-size:1.38rem;line-height:1.03;font-weight:850;letter-spacing:-.022em}.executive-card-note{margin-top:.32rem;color:#64748b;font-size:.65rem;line-height:1.2;font-weight:650}.executive-card-note.positive{color:#15803d}.executive-card-note.negative{color:#b91c1c}.executive-card-note.neutral{color:#64748b}.summary-card{margin-top:.65rem;padding:.72rem .82rem;border-left:3px solid #94a3b8;border-radius:0 10px 10px 0;background:#f8fafc;color:#334155;line-height:1.42;font-size:.82rem}.summary-label{display:block;margin-bottom:.22rem;color:#0f172a;font-size:.67rem;font-weight:850;letter-spacing:.04em;text-transform:uppercase}.report-ready-panel{margin:.35rem 0 .65rem;padding:.78rem;border:1px solid #bfdbfe;border-radius:14px;background:linear-gradient(135deg,#eff6ff,#f8fbff 55%,#f0fdfa)}.report-ready-title{font-size:1rem;font-weight:850;color:#0f172a}.report-ready-copy{margin-top:.18rem;color:#526174;font-size:.78rem;line-height:1.4}.format-note{margin:.2rem 0 .45rem;color:#64748b;font-size:.72rem}.recommended-tag{display:inline-block;margin-left:.3rem;padding:.12rem .34rem;border-radius:999px;background:#dbeafe;color:#1d4ed8;font-size:.56rem;font-weight:850;text-transform:uppercase}.st-key-html_report_download button{min-height:2.8rem!important;border-radius:10px!important;border-color:#2563eb!important;background:linear-gradient(135deg,#2563eb,#1d4ed8)!important;color:#fff!important;font-weight:800!important;box-shadow:0 7px 16px rgba(37,99,235,.16)!important}.st-key-pdf_report_download button{min-height:2.8rem!important;border-radius:10px!important;border:1px solid #94a3b8!important;background:#fff!important;color:#263244!important;font-weight:780!important}@media(max-width:900px){.executive-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:560px){.executive-panel{padding:.5rem}.executive-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:.4rem}.executive-card{min-height:76px;padding:.55rem .58rem}.executive-card-label{font-size:.58rem}.executive-card-value{font-size:1.13rem}.executive-card-note{font-size:.57rem;margin-top:.24rem}.summary-card{padding:.6rem .68rem;font-size:.74rem;line-height:1.38}}
 .quick-nav{
     display:flex;align-items:center;justify-content:space-between;gap:1rem;
     margin:.15rem 0 1rem;padding:.82rem 1rem;border:1px solid #dbe5ef;
@@ -1307,19 +1205,14 @@ def show_validation(validation_df: pd.DataFrame) -> None:
     if validation_df.empty:
         st.warning("No validation checks were produced.")
         return
-
     passed_count = int(validation_df["passed"].sum()) if "passed" in validation_df.columns else 0
     total_count = len(validation_df)
-
     if passed_count == total_count:
         st.success(f"Validation passed: {passed_count}/{total_count} checks.")
     else:
-        st.warning(
-            f"Validation warning: {passed_count}/{total_count} checks passed. "
-            "Review differences before sharing the report."
-        )
-
-    st.dataframe(validation_df, use_container_width=True, hide_index=True)
+        st.warning(f"Validation warning: {passed_count}/{total_count} checks passed. Review differences before sharing the report.")
+    with st.expander("View validation details", expanded=False):
+        st.dataframe(validation_df, use_container_width=True, hide_index=True)
 
 
 def show_kpi_cards(kpi_master: pd.DataFrame) -> None:
@@ -1608,104 +1501,55 @@ with generate_tab:
 
     if st.session_state.get("report_ready"):
         outputs = st.session_state["outputs"]
+        report_date_text = report_end.strftime("%Y-%m-%d")
+        base_name = safe_filename(f"{store_name}_VM_KPI_Report_{report_date_text}")
+        pdf_data = st.session_state.get("pdf_report_bytes", b"")
+        pdf_error = str(st.session_state.get("outputs", {}).get("pdf_error", "")).strip()
+
+        st.markdown('<div class="report-ready-panel"><div class="report-ready-title">Your report is ready</div><div class="report-ready-copy">Download the finished report now, or review the executive preview below.</div></div>', unsafe_allow_html=True)
+        html_col, pdf_col = st.columns([1.35, 1], gap="small")
+        with html_col:
+            st.markdown('<div><strong>Interactive HTML report</strong><span class="recommended-tag">Recommended</span><div class="format-note">Best for screen viewing, sharing and mobile access.</div></div>', unsafe_allow_html=True)
+            st.download_button("Download HTML report", data=st.session_state["html_report_bytes"], file_name=f"{base_name}.html", mime="text/html", use_container_width=True, key="html_report_download")
+        with pdf_col:
+            st.markdown('<div><strong>Printable PDF report</strong><div class="format-note">Best for printing and fixed-layout sharing.</div></div>', unsafe_allow_html=True)
+            if pdf_data:
+                st.download_button("Download PDF report", data=pdf_data, file_name=f"{base_name}.pdf", mime="application/pdf", use_container_width=True, key="pdf_report_download")
+            elif pdf_error:
+                st.error("PDF unavailable; the HTML report is ready.")
+                with st.expander("PDF conversion details"):
+                    st.code(pdf_error)
+            else:
+                st.info("PDF export is temporarily unavailable.")
+
+        with st.expander("Supporting Excel files", expanded=False):
+            c1, c2 = st.columns(2, gap="small")
+            with c1:
+                st.download_button("Download data model", data=st.session_state["model_bytes"], file_name=f"{base_name}_Data_Model.xlsx", mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", use_container_width=True, key="data_model_download")
+            with c2:
+                st.download_button("Download calculations", data=st.session_state["calculations_bytes"], file_name=f"{base_name}_Calculations.xlsx", mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", use_container_width=True, key="calculations_download")
 
         st.subheader("Executive preview")
         show_kpi_cards(outputs["kpi_master"])
-
         summary_text = outputs.get("executive_summary_text", "")
         if summary_text:
             safe_summary = html.escape(str(summary_text)).replace("\n", "<br>")
-            st.markdown(
-                f"""
-                <div class="summary-card">
-                    <span class="summary-label">Auto executive summary</span>
-                    {safe_summary}
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
+            st.markdown(f'<div class="summary-card"><span class="summary-label">Auto executive summary</span>{safe_summary}</div>', unsafe_allow_html=True)
 
         st.subheader("Data validation checks")
         show_validation(outputs["validation"])
-
         st.subheader("Report tables")
-
-        tab1, tab2, tab3, tab4, tab5 = st.tabs(
-            ["Department KPIs", "Subdepartment Gaps", "Opportunities", "Top Brands", "Traffic"]
-        )
-
+        tab1, tab2, tab3, tab4, tab5 = st.tabs(["Department KPIs", "Subdepartment Gaps", "Opportunities", "Top Brands", "Traffic"])
         with tab1:
             st.dataframe(outputs["department_kpis"], use_container_width=True, hide_index=True)
-
         with tab2:
             st.dataframe(outputs["sub_department_kpis"], use_container_width=True, hide_index=True)
-
         with tab3:
-            st.caption(
-                "Priority Score = absolute budget gap % weighted by sales mix. "
-                "It ranks areas that are both underperforming and meaningful to the business."
-            )
+            st.caption("Priority Score = absolute budget gap % weighted by sales mix. It ranks areas that are both underperforming and meaningful to the business.")
             st.dataframe(outputs["opportunity_ranking"], use_container_width=True, hide_index=True)
-
         with tab4:
             st.dataframe(outputs["top_brands_fixed"], use_container_width=True, hide_index=True)
-
         with tab5:
             st.dataframe(outputs["traffic_summary"], use_container_width=True, hide_index=True)
             st.dataframe(outputs["hourly_traffic"], use_container_width=True, hide_index=True)
 
-        st.subheader("Download outputs")
-
-        # The requested convention uses the report end date as the report date.
-        report_date_text = report_end.strftime("%Y-%m-%d")
-        base_name = safe_filename(f"{store_name}_VM_KPI_Report_{report_date_text}")
-        col1, col2, col3, col4 = st.columns(4)
-
-        with col1:
-            st.download_button(
-                "Download data model",
-                data=st.session_state["model_bytes"],
-                file_name=f"{base_name}_Data_Model.xlsx",
-                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                use_container_width=True,
-            )
-
-        with col2:
-            st.download_button(
-                "Download calculations",
-                data=st.session_state["calculations_bytes"],
-                file_name=f"{base_name}_Calculations.xlsx",
-                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                use_container_width=True,
-            )
-
-        with col3:
-            st.download_button(
-                "Download HTML report",
-                data=st.session_state["html_report_bytes"],
-                file_name=f"{base_name}.html",
-                mime="text/html",
-                use_container_width=True,
-            )
-
-        with col4:
-            pdf_data = st.session_state.get("pdf_report_bytes", b"")
-            pdf_error = str(st.session_state.get("outputs", {}).get("pdf_error", "")).strip()
-            if pdf_data:
-                st.download_button(
-                    "Download PDF report",
-                    data=pdf_data,
-                    file_name=f"{base_name}.pdf",
-                    mime="application/pdf",
-                    use_container_width=True,
-                )
-            elif pdf_error:
-                st.error("The HTML report was created, but the PDF renderer could not start.")
-                with st.expander("PDF conversion details"):
-                    st.code(pdf_error)
-                    st.caption("On Streamlit Community Cloud, confirm that requirements.txt and packages.txt include the PDF dependencies supplied with this update, then reboot the app.")
-            else:
-                st.info(
-                    "PDF export is temporarily unavailable on this deployment. "
-                    "The HTML report and all Excel outputs are ready."
-                )
