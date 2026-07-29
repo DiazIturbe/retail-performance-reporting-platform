@@ -954,6 +954,83 @@ div[data-testid="stVerticalBlockBorderWrapper"] div[data-testid="stHorizontalBlo
         line-height:1.16!important;
     }
 }
+
+
+/* Completion-flow polish: one clear success state and stronger download hierarchy. */
+.report-complete-card{
+    display:flex;
+    align-items:flex-start;
+    gap:.72rem;
+    margin:.4rem 0 .75rem;
+    padding:.82rem .9rem;
+    border:1px solid #bbf7d0;
+    border-radius:14px;
+    background:linear-gradient(135deg,#f0fdf4 0%,#f8fffb 56%,#eff6ff 100%);
+    box-shadow:0 5px 16px rgba(15,23,42,.045);
+}
+.report-complete-icon{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:2rem;
+    height:2rem;
+    flex:0 0 2rem;
+    border-radius:999px;
+    background:#dcfce7;
+    color:#15803d;
+    font-size:1rem;
+    font-weight:900;
+}
+.report-complete-title{color:#0f172a;font-size:1rem;font-weight:850;line-height:1.2}
+.report-complete-copy{margin-top:.16rem;color:#526174;font-size:.76rem;line-height:1.38}
+.download-hero{
+    margin:.15rem 0 .65rem;
+    padding:.9rem;
+    border:1px solid #bfdbfe;
+    border-radius:15px;
+    background:linear-gradient(145deg,#f8fbff 0%,#eff6ff 100%);
+    box-shadow:0 8px 20px rgba(37,99,235,.07);
+}
+.download-hero-top{display:flex;align-items:center;justify-content:space-between;gap:.6rem;margin-bottom:.18rem}
+.download-format-title{display:flex;align-items:center;gap:.42rem;color:#0f172a;font-size:.95rem;font-weight:850}
+.download-format-icon{font-size:1.05rem;line-height:1}
+.download-feature-list{display:flex;flex-wrap:wrap;gap:.28rem .6rem;margin:.45rem 0 .58rem;color:#526174;font-size:.68rem}
+.download-feature{white-space:nowrap}
+.download-feature::before{content:'✓';margin-right:.2rem;color:#15803d;font-weight:900}
+.pdf-download-row{
+    margin:.2rem 0 .55rem;
+    padding:.7rem .78rem;
+    border:1px solid #e2e8f0;
+    border-radius:12px;
+    background:#fff;
+}
+.pdf-download-row .format-note{margin:.12rem 0 .38rem}
+.section-kicker{margin-top:.85rem;color:#0f172a;font-size:1.12rem;font-weight:850;letter-spacing:-.015em}
+.section-kicker-copy{margin:.12rem 0 .55rem;color:#64748b;font-size:.72rem;line-height:1.35}
+.st-key-regenerate_report button{
+    min-height:2.2rem!important;
+    padding:.32rem .72rem!important;
+    border-radius:9px!important;
+    border:1px solid #cbd5e1!important;
+    background:#fff!important;
+    color:#475569!important;
+    font-size:.72rem!important;
+    font-weight:700!important;
+}
+.st-key-html_report_download button::before{content:'↗';margin-right:.38rem;font-weight:900}
+.st-key-pdf_report_download button::before{content:'↓';margin-right:.38rem;font-weight:900}
+@media(max-width:620px){
+    .report-complete-card{gap:.55rem;padding:.68rem .72rem;margin:.28rem 0 .58rem}
+    .report-complete-icon{width:1.7rem;height:1.7rem;flex-basis:1.7rem;font-size:.86rem}
+    .report-complete-title{font-size:.88rem}
+    .report-complete-copy{font-size:.68rem}
+    .download-hero{padding:.7rem;margin-bottom:.5rem;border-radius:12px}
+    .download-format-title{font-size:.86rem}
+    .download-feature-list{font-size:.62rem;gap:.22rem .48rem;margin:.34rem 0 .45rem}
+    .pdf-download-row{padding:.58rem .62rem}
+    .section-kicker{font-size:1rem;margin-top:.7rem}
+    .section-kicker-copy{font-size:.66rem}
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -1461,12 +1538,22 @@ with generate_tab:
     if not ready_to_generate:
         st.warning("Missing required files or report details. Complete the items above to continue.")
 
-    build_clicked = st.button(
-        "Generate Report",
-        type="primary",
-        use_container_width=True,
-        disabled=not ready_to_generate,
-    )
+    report_is_ready = bool(st.session_state.get("report_ready"))
+    if report_is_ready:
+        build_clicked = st.button(
+            "Regenerate report",
+            type="secondary",
+            use_container_width=False,
+            disabled=not ready_to_generate,
+            key="regenerate_report",
+        )
+    else:
+        build_clicked = st.button(
+            "Generate Report",
+            type="primary",
+            use_container_width=True,
+            disabled=not ready_to_generate,
+        )
 
     if build_clicked:
         with st.spinner("Building data model, calculations, charts and report..."):
@@ -1492,7 +1579,6 @@ with generate_tab:
                 st.session_state["tables"] = tables
                 st.session_state["outputs"] = outputs
                 st.session_state["report_ready"] = True
-                st.success("Report generated successfully.")
 
             except Exception as exc:
                 clear_generated_report()
@@ -1506,30 +1592,71 @@ with generate_tab:
         pdf_data = st.session_state.get("pdf_report_bytes", b"")
         pdf_error = str(st.session_state.get("outputs", {}).get("pdf_error", "")).strip()
 
-        st.markdown('<div class="report-ready-panel"><div class="report-ready-title">Your report is ready</div><div class="report-ready-copy">Download the finished report now, or review the executive preview below.</div></div>', unsafe_allow_html=True)
-        html_col, pdf_col = st.columns([1.35, 1], gap="small")
-        with html_col:
-            st.markdown('<div><strong>Interactive HTML report</strong><span class="recommended-tag">Recommended</span><div class="format-note">Best for screen viewing, sharing and mobile access.</div></div>', unsafe_allow_html=True)
-            st.download_button("Download HTML report", data=st.session_state["html_report_bytes"], file_name=f"{base_name}.html", mime="text/html", use_container_width=True, key="html_report_download")
-        with pdf_col:
-            st.markdown('<div><strong>Printable PDF report</strong><div class="format-note">Best for printing and fixed-layout sharing.</div></div>', unsafe_allow_html=True)
-            if pdf_data:
-                st.download_button("Download PDF report", data=pdf_data, file_name=f"{base_name}.pdf", mime="application/pdf", use_container_width=True, key="pdf_report_download")
-            elif pdf_error:
-                st.error("PDF unavailable; the HTML report is ready.")
-                with st.expander("PDF conversion details"):
-                    st.code(pdf_error)
-            else:
-                st.info("PDF export is temporarily unavailable.")
+        st.markdown(
+            '<div class="report-complete-card">'
+            '<div class="report-complete-icon">✓</div>'
+            '<div><div class="report-complete-title">Report ready</div>'
+            '<div class="report-complete-copy">All eight Tableau exports were validated and the report was generated successfully. Choose a format below or review the highlights.</div></div>'
+            '</div>',
+            unsafe_allow_html=True,
+        )
 
-        with st.expander("Supporting Excel files", expanded=False):
+        st.markdown(
+            '<div class="download-hero">'
+            '<div class="download-hero-top">'
+            '<div class="download-format-title"><span class="download-format-icon">🌐</span>Interactive HTML report</div>'
+            '<span class="recommended-tag">Recommended</span>'
+            '</div>'
+            '<div class="format-note">Best for screen viewing, sharing and mobile access.</div>'
+            '<div class="download-feature-list">'
+            '<span class="download-feature">Mobile friendly</span>'
+            '<span class="download-feature">Interactive</span>'
+            '<span class="download-feature">Easy to share</span>'
+            '</div>',
+            unsafe_allow_html=True,
+        )
+        st.download_button(
+            "Open interactive report",
+            data=st.session_state["html_report_bytes"],
+            file_name=f"{base_name}.html",
+            mime="text/html",
+            use_container_width=True,
+            key="html_report_download",
+        )
+        st.markdown('</div>', unsafe_allow_html=True)
+
+        st.markdown(
+            '<div class="pdf-download-row">'
+            '<div class="download-format-title"><span class="download-format-icon">🖨️</span>Printable PDF report</div>'
+            '<div class="format-note">Fixed layout for printing, email and archiving.</div>',
+            unsafe_allow_html=True,
+        )
+        if pdf_data:
+            st.download_button(
+                "Download printable PDF",
+                data=pdf_data,
+                file_name=f"{base_name}.pdf",
+                mime="application/pdf",
+                use_container_width=True,
+                key="pdf_report_download",
+            )
+        elif pdf_error:
+            st.error("PDF unavailable; the HTML report is ready.")
+            with st.expander("PDF conversion details"):
+                st.code(pdf_error)
+        else:
+            st.info("PDF export is temporarily unavailable.")
+        st.markdown('</div>', unsafe_allow_html=True)
+
+        with st.expander("Advanced downloads", expanded=False):
+            st.caption("Technical workbooks for auditing, analysis and troubleshooting.")
             c1, c2 = st.columns(2, gap="small")
             with c1:
-                st.download_button("Download data model", data=st.session_state["model_bytes"], file_name=f"{base_name}_Data_Model.xlsx", mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", use_container_width=True, key="data_model_download")
+                st.download_button("Data model workbook", data=st.session_state["model_bytes"], file_name=f"{base_name}_Data_Model.xlsx", mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", use_container_width=True, key="data_model_download")
             with c2:
-                st.download_button("Download calculations", data=st.session_state["calculations_bytes"], file_name=f"{base_name}_Calculations.xlsx", mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", use_container_width=True, key="calculations_download")
+                st.download_button("Calculations workbook", data=st.session_state["calculations_bytes"], file_name=f"{base_name}_Calculations.xlsx", mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", use_container_width=True, key="calculations_download")
 
-        st.subheader("Executive preview")
+        st.markdown('<div class="section-kicker">Report highlights</div><div class="section-kicker-copy">A quick view of the most important results before opening the full report.</div>', unsafe_allow_html=True)
         show_kpi_cards(outputs["kpi_master"])
         summary_text = outputs.get("executive_summary_text", "")
         if summary_text:
