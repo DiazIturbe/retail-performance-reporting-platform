@@ -413,6 +413,320 @@ div[data-testid="stTabs"] [data-baseweb="tab-highlight"]{display:none;}
     div[data-testid="stTabs"] button[data-baseweb="tab"]{min-height:39px;padding:.48rem .72rem;font-size:.78rem;}
 }
 
+
+/* ------------------------------------------------------------------
+   Responsive density improvements
+   Preserve the desktop workflow while making the mobile experience
+   faster to scan and less vertically demanding.
+   ------------------------------------------------------------------ */
+
+/* Slightly tighter rhythm on all screen sizes. */
+.block-container{
+    padding-top:.55rem;
+    padding-bottom:2.25rem;
+}
+
+h1, h2, h3{
+    letter-spacing:-.02em;
+}
+
+h2, div[data-testid="stHeadingWithActionElements"] h2{
+    margin-top:1.2rem;
+    margin-bottom:.45rem;
+}
+
+p, .stCaption{
+    line-height:1.45;
+}
+
+/* Streamlit alerts: noticeable, but no longer visually dominant. */
+div[data-testid="stAlert"]{
+    padding:.68rem .82rem;
+    margin:.35rem 0 .55rem;
+    border-radius:11px;
+}
+div[data-testid="stAlert"] [data-testid="stMarkdownContainer"] p{
+    margin:0;
+    font-size:.88rem;
+    line-height:1.38;
+}
+div[data-testid="stAlert"] [data-testid="stAlertContentInfo"],
+div[data-testid="stAlert"] [data-testid="stAlertContentWarning"],
+div[data-testid="stAlert"] [data-testid="stAlertContentError"],
+div[data-testid="stAlert"] [data-testid="stAlertContentSuccess"]{
+    gap:.55rem;
+}
+
+/* Make bordered form containers more efficient without shrinking controls. */
+div[data-testid="stVerticalBlockBorderWrapper"]{
+    border-radius:14px;
+}
+div[data-testid="stVerticalBlockBorderWrapper"] > div{
+    padding:.82rem .9rem;
+}
+div[data-testid="stTextInput"] input,
+div[data-testid="stDateInput"] input{
+    min-height:44px;
+}
+
+/* Compact the explanatory and validation elements on desktop too. */
+.process-strip{
+    gap:.45rem;
+    margin:.35rem 0 .9rem;
+}
+.process-item{
+    padding:.58rem .68rem;
+    font-size:.75rem;
+}
+.process-item b{
+    width:20px;
+    height:20px;
+    margin-right:.34rem;
+}
+.upload-guidance{
+    margin:.15rem 0 .6rem;
+    padding:.62rem .75rem;
+    font-size:.80rem;
+    line-height:1.42;
+}
+.validation-shell{
+    margin:.1rem 0 .7rem;
+    padding:.78rem;
+    border-radius:14px;
+}
+.validation-summary{
+    margin-bottom:.58rem;
+}
+.validation-grid{
+    gap:.48rem;
+}
+.validation-card{
+    gap:.55rem;
+    padding:.62rem .68rem;
+    border-radius:10px;
+}
+.validation-badge{
+    width:25px;
+    height:25px;
+    border-radius:8px;
+}
+.validation-meta strong{
+    font-size:.79rem;
+    line-height:1.25;
+}
+.validation-meta small{
+    margin-top:.12rem;
+    font-size:.69rem;
+}
+div[data-testid="stFileUploader"]{
+    padding:.15rem 0 .05rem;
+}
+div[data-testid="stFileUploaderDropzone"]{
+    min-height:128px;
+}
+
+@media(max-width:620px){
+    /* Keep the product identity, but replace the poster-like hero with a
+       compact mobile header. */
+    .block-container{
+        padding-top:.25rem;
+        padding-left:.85rem;
+        padding-right:.85rem;
+        padding-bottom:1.4rem;
+    }
+    .vm-hero{
+        min-height:132px;
+        margin:0 0 .55rem;
+        border-radius:0 0 15px 15px;
+        box-shadow:0 5px 16px rgba(15,23,42,.10);
+    }
+    .vm-hero-image{
+        background-position:52% center;
+    }
+    .vm-hero-overlay{
+        background:linear-gradient(90deg,rgba(3,12,30,.93),rgba(4,19,45,.70) 68%,rgba(4,18,40,.28));
+    }
+    .vm-hero-copy-overlay,
+    .vm-hero-fallback{
+        padding:1rem 1.05rem;
+        max-width:100%;
+    }
+    .vm-kicker{
+        margin-bottom:.3rem;
+        font-size:.60rem;
+        letter-spacing:.13em;
+    }
+    .vm-title{
+        max-width:92%;
+        margin-bottom:0;
+        font-size:1.28rem;
+        line-height:1.08;
+    }
+    .vm-sub,
+    .vm-author{
+        display:none;
+    }
+
+    /* Tabs remain easy to tap while using less space. */
+    div[data-testid="stTabs"]{
+        margin-top:0;
+    }
+    div[data-testid="stTabs"] [data-baseweb="tab-list"]{
+        margin-bottom:.35rem;
+        border-radius:11px;
+    }
+    div[data-testid="stTabs"] button[data-baseweb="tab"]{
+        min-height:38px;
+        padding:.42rem .56rem;
+        font-size:.74rem;
+    }
+
+    /* Mobile headings: strong hierarchy without poster-sized type. */
+    h1{font-size:1.65rem!important;line-height:1.12!important;}
+    h2, div[data-testid="stHeadingWithActionElements"] h2{
+        margin-top:.85rem!important;
+        margin-bottom:.32rem!important;
+        font-size:1.42rem!important;
+        line-height:1.16!important;
+    }
+    h3{font-size:1.08rem!important;line-height:1.2!important;}
+    .stCaption, div[data-testid="stCaptionContainer"]{
+        font-size:.78rem!important;
+        line-height:1.38!important;
+    }
+
+    /* One compact workflow row rather than four large cards. */
+    .process-strip{
+        grid-template-columns:repeat(4,minmax(0,1fr));
+        gap:.28rem;
+        margin:.15rem 0 .65rem;
+    }
+    .process-item{
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        justify-content:center;
+        min-height:54px;
+        padding:.36rem .18rem;
+        text-align:center;
+        font-size:.60rem;
+        line-height:1.18;
+        border-radius:9px;
+    }
+    .process-item b{
+        width:18px;
+        height:18px;
+        margin:0 0 .2rem;
+        font-size:.62rem;
+    }
+    .process-item:after{display:none!important;}
+
+    /* Form card and widgets stay touch-friendly but lose excess whitespace. */
+    div[data-testid="stVerticalBlockBorderWrapper"] > div{
+        padding:.62rem .68rem;
+    }
+    div[data-testid="stVerticalBlock"]{
+        gap:.55rem;
+    }
+    div[data-testid="stTextInput"],
+    div[data-testid="stDateInput"]{
+        margin-bottom:.1rem;
+    }
+    div[data-testid="stTextInput"] input,
+    div[data-testid="stDateInput"] input{
+        min-height:44px;
+        padding:.55rem .72rem;
+        font-size:.88rem;
+    }
+    label[data-testid="stWidgetLabel"] p{
+        font-size:.82rem;
+        line-height:1.25;
+    }
+
+    /* Shorter guidance panel. The secondary data-handling note remains
+       available on desktop, while mobile focuses on the immediate task. */
+    .upload-guidance{
+        margin:.08rem 0 .45rem;
+        padding:.55rem .62rem;
+        font-size:.76rem;
+        line-height:1.36;
+        border-radius:0 8px 8px 0;
+    }
+    .upload-guidance small{
+        display:none;
+    }
+
+    div[data-testid="stFileUploaderDropzone"]{
+        min-height:88px;
+        padding:.5rem!important;
+        border-width:1px!important;
+    }
+    div[data-testid="stFileUploaderDropzone"] button{
+        padding:.48rem .72rem!important;
+        font-size:.78rem!important;
+    }
+
+    /* Validation becomes a dense status list rather than a stack of cards. */
+    .validation-shell{
+        margin:.08rem 0 .55rem;
+        padding:.58rem;
+        border-radius:12px;
+    }
+    .validation-summary{
+        gap:.5rem;
+        margin-bottom:.45rem;
+    }
+    .validation-title{font-size:.86rem;}
+    .validation-count{
+        padding:.22rem .46rem;
+        font-size:.68rem;
+    }
+    .validation-grid{
+        grid-template-columns:1fr;
+        gap:.34rem;
+    }
+    .validation-card{
+        align-items:center;
+        gap:.48rem;
+        min-height:50px;
+        padding:.43rem .5rem;
+        border-radius:9px;
+    }
+    .validation-badge{
+        width:23px;
+        height:23px;
+        flex:0 0 23px;
+        font-size:.76rem;
+    }
+    .validation-meta strong{
+        font-size:.75rem;
+        line-height:1.2;
+    }
+    .validation-meta small{
+        margin-top:.06rem;
+        font-size:.64rem;
+        line-height:1.18;
+    }
+
+    /* Compact routine system feedback while retaining readable contrast and
+       comfortable line length. */
+    div[data-testid="stAlert"]{
+        padding:.52rem .62rem;
+        margin:.22rem 0 .38rem;
+        border-radius:9px;
+    }
+    div[data-testid="stAlert"] [data-testid="stMarkdownContainer"] p{
+        font-size:.76rem;
+        line-height:1.32;
+    }
+
+    div[data-testid="stButton"] > button[kind="primary"]{
+        min-height:46px;
+        font-size:.88rem;
+        border-radius:11px;
+    }
+}
+
 </style>
 """, unsafe_allow_html=True)
 
