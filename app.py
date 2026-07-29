@@ -727,6 +727,116 @@ div[data-testid="stFileUploaderDropzone"]{
     }
 }
 
+
+
+/* Final density pass: compact report details and source validation. */
+div[data-testid="stVerticalBlockBorderWrapper"] > div{
+    padding:.68rem .78rem;
+}
+div[data-testid="stVerticalBlockBorderWrapper"] div[data-testid="stVerticalBlock"]{
+    gap:.34rem;
+}
+div[data-testid="stVerticalBlockBorderWrapper"] label[data-testid="stWidgetLabel"]{
+    margin-bottom:.12rem;
+}
+div[data-testid="stVerticalBlockBorderWrapper"] div[data-testid="stTextInput"],
+div[data-testid="stVerticalBlockBorderWrapper"] div[data-testid="stDateInput"]{
+    margin-bottom:0;
+}
+div[data-testid="stVerticalBlockBorderWrapper"] div[data-testid="stCaptionContainer"]{
+    margin-top:-.08rem;
+    margin-bottom:.05rem;
+    color:#64748b;
+    font-size:.72rem;
+}
+/* The optional display label is subtly distinguished because it controls
+   the exact wording used in the report header. */
+input[aria-label="Report label (optional — shown in report)"]{
+    background:#f8fbff!important;
+    border-color:#bfdbfe!important;
+    box-shadow:inset 0 0 0 1px rgba(59,130,246,.05)!important;
+}
+label:has(+ div input[aria-label="Report label (optional — shown in report)"]) p{
+    color:#334155!important;
+}
+.validation-shell{
+    padding:.58rem;
+    margin:.05rem 0 .55rem;
+}
+.validation-summary{
+    margin-bottom:.4rem;
+}
+.validation-grid{
+    gap:.34rem;
+}
+.validation-card{
+    min-height:0;
+    padding:.46rem .52rem;
+    gap:.44rem;
+}
+.validation-badge{
+    width:22px;
+    height:22px;
+    flex:0 0 22px;
+    border-radius:7px;
+    font-size:.72rem;
+}
+.validation-meta strong{
+    font-size:.75rem;
+    line-height:1.18;
+}
+.validation-meta small{
+    margin-top:.04rem;
+    font-size:.64rem;
+    line-height:1.14;
+}
+
+@media(max-width:620px){
+    div[data-testid="stVerticalBlockBorderWrapper"] > div{
+        padding:.48rem .54rem;
+    }
+    div[data-testid="stVerticalBlockBorderWrapper"] div[data-testid="stVerticalBlock"]{
+        gap:.26rem;
+    }
+    div[data-testid="stVerticalBlockBorderWrapper"] div[data-testid="stHorizontalBlock"]{
+        gap:.42rem;
+    }
+    div[data-testid="stVerticalBlockBorderWrapper"] label[data-testid="stWidgetLabel"] p{
+        font-size:.76rem;
+    }
+    div[data-testid="stVerticalBlockBorderWrapper"] div[data-testid="stCaptionContainer"]{
+        font-size:.66rem!important;
+        line-height:1.25!important;
+    }
+    .validation-shell{
+        padding:.42rem;
+        margin:.04rem 0 .42rem;
+    }
+    .validation-summary{
+        margin-bottom:.3rem;
+    }
+    .validation-grid{
+        gap:.24rem;
+    }
+    .validation-card{
+        min-height:42px;
+        padding:.32rem .38rem;
+        gap:.38rem;
+        border-radius:8px;
+    }
+    .validation-badge{
+        width:20px;
+        height:20px;
+        flex-basis:20px;
+        font-size:.66rem;
+    }
+    .validation-meta strong{
+        font-size:.71rem;
+    }
+    .validation-meta small{
+        font-size:.60rem;
+    }
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -1155,25 +1265,27 @@ with generate_tab:
     st.caption("Add the location and reporting period that should appear in the report header.")
 
     with st.container(border=True):
-        setup_col1, setup_col2, setup_col3 = st.columns([1.35, 1, 1])
-        with setup_col1:
-            store_name = st.text_input(
-                "Store or location",
-                value="",
-                placeholder="e.g., Sample Store",
-                help="Required. The Tableau exports do not reliably contain the store name.",
-            )
-        with setup_col2:
+        store_name = st.text_input(
+            "Store or location",
+            value="",
+            placeholder="e.g., Sample Store",
+            help="Required. The Tableau exports do not reliably contain the store name.",
+        )
+
+        date_col1, date_col2 = st.columns(2, gap="small")
+        with date_col1:
             report_start = st.date_input("Report start date", value=date.today())
-        with setup_col3:
+        with date_col2:
             report_end = st.date_input("Report end date", value=date.today())
 
         default_report_period = f"{report_start.strftime('%b %d, %Y')} – {report_end.strftime('%b %d, %Y')}"
         report_period = st.text_input(
-            "Custom report label (optional)",
+            "Report label (optional — shown in report)",
             value=default_report_period,
-            help="The date range is supplied automatically. Edit this only if the report needs a custom label.",
+            help="This is the exact period label shown in the report header. Leave the generated date range as-is or edit it when a custom label is needed.",
+            key="report_display_label",
         )
+        st.caption("Uses the selected date range automatically unless you replace it with a custom reporting label.")
         report_period = report_period.strip() or default_report_period
 
     st.subheader("Upload Tableau exports")
