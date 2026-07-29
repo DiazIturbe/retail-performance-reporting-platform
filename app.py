@@ -969,6 +969,93 @@ div[data-testid="stVerticalBlockBorderWrapper"] div[data-testid="stHorizontalBlo
     .validation-meta small{font-size:.54rem!important;}
 }
 
+
+
+/* Report-details layout: authoritative compact rules. */
+.st-key-report_details_card{
+    padding:.48rem .62rem!important;
+}
+.st-key-report_details_card div[data-testid="stVerticalBlock"]{
+    gap:.28rem!important;
+}
+.st-key-report_details_card label[data-testid="stWidgetLabel"]{
+    margin-bottom:0!important;
+}
+.st-key-report_details_card label[data-testid="stWidgetLabel"] p{
+    margin-bottom:0!important;
+    font-size:.86rem!important;
+    line-height:1.2!important;
+}
+.st-key-report_details_card div[data-baseweb="input"]{
+    min-height:42px!important;
+}
+.st-key-report_details_card input{
+    min-height:42px!important;
+    padding:.34rem .58rem!important;
+}
+
+/* Keep the two date controls in a true two-column row on every viewport. */
+.st-key-report_date_row div[data-testid="stHorizontalBlock"]{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+    gap:.48rem!important;
+    width:100%!important;
+    align-items:start!important;
+}
+.st-key-report_date_row div[data-testid="stElementContainer"]{
+    width:100%!important;
+    min-width:0!important;
+}
+.st-key-report_date_row div[data-testid="stDateInput"]{
+    width:100%!important;
+    min-width:0!important;
+}
+.st-key-report_label_area{
+    margin-top:.08rem!important;
+    padding:.28rem .36rem .16rem!important;
+    border:1px solid #e3ebf5!important;
+    border-radius:9px!important;
+    background:#f8fbff!important;
+}
+.st-key-report_label_area div[data-testid="stCaptionContainer"]{
+    margin-top:-.08rem!important;
+    color:#718096!important;
+    font-size:.72rem!important;
+    line-height:1.25!important;
+}
+
+@media(max-width:620px){
+    .st-key-report_details_card{
+        padding:.34rem .42rem!important;
+    }
+    .st-key-report_details_card div[data-testid="stVerticalBlock"]{
+        gap:.16rem!important;
+    }
+    .st-key-report_details_card label[data-testid="stWidgetLabel"] p{
+        font-size:.72rem!important;
+        line-height:1.12!important;
+    }
+    .st-key-report_details_card div[data-baseweb="input"],
+    .st-key-report_details_card input{
+        min-height:38px!important;
+    }
+    .st-key-report_details_card input{
+        padding:.26rem .42rem!important;
+        font-size:.76rem!important;
+    }
+    .st-key-report_date_row div[data-testid="stHorizontalBlock"]{
+        grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+        gap:.34rem!important;
+    }
+    .st-key-report_label_area{
+        padding:.20rem .28rem .10rem!important;
+        border-radius:8px!important;
+    }
+    .st-key-report_label_area div[data-testid="stCaptionContainer"]{
+        font-size:.62rem!important;
+        line-height:1.16!important;
+    }
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -1396,28 +1483,46 @@ with generate_tab:
     st.subheader("Report details")
     st.caption("Add the location and reporting period that should appear in the report header.")
 
-    with st.container(border=True):
+    with st.container(border=True, key="report_details_card"):
         store_name = st.text_input(
             "Store or location",
             value="",
             placeholder="e.g., Sample Store",
             help="Required. The Tableau exports do not reliably contain the store name.",
+            key="report_store_name",
         )
 
-        date_col1, date_col2 = st.columns(2, gap="small")
-        with date_col1:
-            report_start = st.date_input("Report start date", value=date.today())
-        with date_col2:
-            report_end = st.date_input("Report end date", value=date.today())
+        # A horizontal container is used instead of st.columns so the two short
+        # date controls remain on one row on narrow screens in Streamlit 1.58.
+        with st.container(
+            horizontal=True,
+            horizontal_alignment="distribute",
+            vertical_alignment="top",
+            gap="xsmall",
+            key="report_date_row",
+        ):
+            report_start = st.date_input(
+                "Report start date",
+                value=date.today(),
+                key="report_start_date",
+                width="stretch",
+            )
+            report_end = st.date_input(
+                "Report end date",
+                value=date.today(),
+                key="report_end_date",
+                width="stretch",
+            )
 
         default_report_period = f"{report_start.strftime('%b %d, %Y')} – {report_end.strftime('%b %d, %Y')}"
-        report_period = st.text_input(
-            "Report label (optional — shown in report)",
-            value=default_report_period,
-            help="This is the exact period label shown in the report header. Leave the generated date range as-is or edit it when a custom label is needed.",
-            key="report_display_label",
-        )
-        st.caption("Uses the selected date range automatically unless you replace it with a custom reporting label.")
+        with st.container(key="report_label_area"):
+            report_period = st.text_input(
+                "Report label (optional — shown in report)",
+                value=default_report_period,
+                help="This is the exact period label shown in the report header. Leave the generated date range as-is or edit it when a custom label is needed.",
+                key="report_display_label",
+            )
+            st.caption("Uses the selected date range automatically unless you replace it with a custom reporting label.")
         report_period = report_period.strip() or default_report_period
 
     st.subheader("Upload Tableau exports")
