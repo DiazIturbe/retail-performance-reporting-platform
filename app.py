@@ -837,6 +837,138 @@ label:has(+ div input[aria-label="Report label (optional — shown in report)"])
         font-size:.60rem;
     }
 }
+
+
+/* Final mobile-form correction: denser inputs and dates kept side by side. */
+div[data-testid="stVerticalBlockBorderWrapper"] > div{
+    padding:.44rem .56rem!important;
+}
+div[data-testid="stVerticalBlockBorderWrapper"] div[data-testid="stVerticalBlock"]{
+    gap:.16rem!important;
+}
+div[data-testid="stVerticalBlockBorderWrapper"] label[data-testid="stWidgetLabel"]{
+    margin-bottom:.02rem!important;
+}
+div[data-testid="stVerticalBlockBorderWrapper"] div[data-testid="stTextInput"],
+div[data-testid="stVerticalBlockBorderWrapper"] div[data-testid="stDateInput"]{
+    margin-top:0!important;
+    margin-bottom:0!important;
+}
+div[data-testid="stVerticalBlockBorderWrapper"] div[data-baseweb="input"]{
+    min-height:40px!important;
+}
+div[data-testid="stVerticalBlockBorderWrapper"] div[data-testid="stTextInput"] input,
+div[data-testid="stVerticalBlockBorderWrapper"] div[data-testid="stDateInput"] input{
+    min-height:40px!important;
+    padding:.38rem .62rem!important;
+    line-height:1.2!important;
+}
+
+/* Streamlit normally stacks columns on narrow screens. The two report-date
+   controls are short enough to remain usable as a two-column mobile row. */
+div[data-testid="stVerticalBlockBorderWrapper"] div[data-testid="stHorizontalBlock"]{
+    display:flex!important;
+    flex-direction:row!important;
+    flex-wrap:nowrap!important;
+    align-items:flex-start!important;
+    gap:.42rem!important;
+}
+div[data-testid="stVerticalBlockBorderWrapper"] div[data-testid="stHorizontalBlock"] > div[data-testid="stColumn"]{
+    flex:1 1 0!important;
+    width:0!important;
+    min-width:0!important;
+}
+
+/* Source-file validation is a status list, not a content panel: keep it terse. */
+.validation-shell{
+    padding:.34rem!important;
+    margin:.02rem 0 .38rem!important;
+    border-radius:11px!important;
+}
+.validation-summary{
+    margin-bottom:.22rem!important;
+    gap:.4rem!important;
+}
+.validation-grid{
+    gap:.20rem!important;
+}
+.validation-card{
+    min-height:0!important;
+    padding:.28rem .34rem!important;
+    gap:.32rem!important;
+    border-radius:7px!important;
+}
+.validation-badge{
+    width:18px!important;
+    height:18px!important;
+    flex:0 0 18px!important;
+    border-radius:6px!important;
+    font-size:.61rem!important;
+}
+.validation-meta strong{
+    font-size:.69rem!important;
+    line-height:1.12!important;
+}
+.validation-meta small{
+    margin-top:0!important;
+    font-size:.57rem!important;
+    line-height:1.08!important;
+}
+
+@media(max-width:620px){
+    div[data-testid="stVerticalBlockBorderWrapper"] > div{
+        padding:.34rem .40rem!important;
+    }
+    div[data-testid="stVerticalBlockBorderWrapper"] div[data-testid="stVerticalBlock"]{
+        gap:.11rem!important;
+    }
+    div[data-testid="stVerticalBlockBorderWrapper"] div[data-testid="stHorizontalBlock"]{
+        gap:.34rem!important;
+    }
+    div[data-testid="stVerticalBlockBorderWrapper"] label[data-testid="stWidgetLabel"] p{
+        font-size:.72rem!important;
+        line-height:1.16!important;
+    }
+    div[data-testid="stVerticalBlockBorderWrapper"] div[data-baseweb="input"],
+    div[data-testid="stVerticalBlockBorderWrapper"] div[data-testid="stTextInput"] input,
+    div[data-testid="stVerticalBlockBorderWrapper"] div[data-testid="stDateInput"] input{
+        min-height:39px!important;
+    }
+    div[data-testid="stVerticalBlockBorderWrapper"] div[data-testid="stTextInput"] input,
+    div[data-testid="stVerticalBlockBorderWrapper"] div[data-testid="stDateInput"] input{
+        padding:.32rem .48rem!important;
+        font-size:.78rem!important;
+    }
+    div[data-testid="stVerticalBlockBorderWrapper"] div[data-testid="stCaptionContainer"]{
+        margin-top:-.02rem!important;
+        font-size:.62rem!important;
+        line-height:1.18!important;
+    }
+    .validation-shell{
+        padding:.26rem!important;
+        margin:.02rem 0 .30rem!important;
+    }
+    .validation-summary{
+        margin-bottom:.17rem!important;
+    }
+    .validation-grid{
+        gap:.16rem!important;
+    }
+    .validation-card{
+        min-height:34px!important;
+        padding:.22rem .28rem!important;
+        gap:.27rem!important;
+    }
+    .validation-badge{
+        width:17px!important;
+        height:17px!important;
+        flex-basis:17px!important;
+        font-size:.57rem!important;
+    }
+    .validation-meta strong{font-size:.66rem!important;}
+    .validation-meta small{font-size:.54rem!important;}
+}
+
 </style>
 """, unsafe_allow_html=True)
 
