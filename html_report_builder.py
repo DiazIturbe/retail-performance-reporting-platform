@@ -1740,21 +1740,20 @@ def build_html_report(
 
         html {{
             scroll-behavior: smooth;
-            --report-text-scale: 1;
+            --report-zoom: 1;
         }}
 
         body.interactive-report {{
-            padding-top: 92px;
+            padding-top: 58px;
         }}
 
         .interactive-shell {{
             position: fixed;
             inset: 0 0 auto 0;
             z-index: 2000;
-            padding: 10px 14px;
-            background: rgba(232, 237, 243, .92);
-            backdrop-filter: blur(14px);
-            border-bottom: 1px solid rgba(148, 163, 184, .28);
+            padding: 6px 12px;
+            background: transparent;
+            pointer-events: none;
         }}
 
         .interactive-toolbar {{
@@ -1763,12 +1762,24 @@ def build_html_report(
             display: grid;
             grid-template-columns: auto minmax(0, 1fr) auto;
             align-items: center;
-            gap: 12px;
-            padding: 9px 10px;
+            gap: 8px;
+            padding: 5px 7px;
             background: rgba(255, 255, 255, .78);
             border: 1px solid rgba(255, 255, 255, .72);
-            border-radius: 13px;
-            box-shadow: 0 6px 20px rgba(15, 39, 71, .07);
+            border-radius: 11px;
+            box-shadow: 0 3px 12px rgba(15, 39, 71, .045);
+            backdrop-filter: blur(12px) saturate(115%);
+            -webkit-backdrop-filter: blur(12px) saturate(115%);
+            opacity: .62;
+            pointer-events: auto;
+            transition: opacity .18s ease, background .18s ease, box-shadow .18s ease;
+        }}
+
+        .interactive-toolbar:hover,
+        .interactive-toolbar:focus-within {{
+            opacity: 1;
+            background: rgba(255, 255, 255, .88);
+            box-shadow: 0 5px 18px rgba(15, 39, 71, .08);
         }}
 
         .interactive-brand {{
@@ -1803,8 +1814,8 @@ def build_html_report(
 
         .interactive-button,
         .department-filter {{
-            min-height: 32px;
-            padding: 7px 10px;
+            min-height: 29px;
+            padding: 5px 9px;
             border: 1px solid rgba(148, 163, 184, .28);
             border-radius: 8px;
             background: rgba(255, 255, 255, .48);
@@ -1872,9 +1883,9 @@ def build_html_report(
         }}
 
         .text-size-button {{
-            min-width: 32px;
-            min-height: 32px;
-            padding: 5px 8px;
+            min-width: 29px;
+            min-height: 29px;
+            padding: 4px 7px;
             border: 0;
             border-right: 1px solid rgba(148, 163, 184, .22);
             background: transparent;
@@ -1887,9 +1898,9 @@ def build_html_report(
         .text-size-button:last-child {{ border-right: 0; }}
         .text-size-button:hover {{ background: rgba(255, 255, 255, .72); }}
 
-        /* Text sizing affects the browser report only; PDF dimensions remain fixed. */
+        /* Scale the complete browser report: text, cards, tables and charts. */
         body.interactive-report .page {{
-            font-size: calc(11px * var(--report-text-scale));
+            zoom: var(--report-zoom);
         }}
 
         .interaction-panel {{
@@ -2108,17 +2119,12 @@ def build_html_report(
 
         @media screen and (max-width: 1100px) {{
             body.interactive-report {{
-                padding-top: 132px;
+                padding-top: 58px;
             }}
 
             .interactive-toolbar {{
-                grid-template-columns: 1fr;
-                gap: 7px;
-            }}
-
-            .interactive-brand,
-            .interactive-actions {{
-                justify-content: center;
+                grid-template-columns: auto minmax(0, 1fr) auto;
+                gap: 6px;
             }}
 
             .page {{
@@ -2142,6 +2148,10 @@ def build_html_report(
             .brand-grid {{
                 grid-template-columns: repeat(2, minmax(0, 1fr));
             }}
+        }}
+
+        @media screen and (max-width: 900px) and (min-width: 721px) {{
+            .interactive-brand {{ display: none; }}
         }}
 
         @media screen and (max-width: 720px) {{
@@ -2311,7 +2321,7 @@ def build_html_report(
             }}
 
             body.interactive-report .page {{
-                font-size: 11px !important;
+                zoom: 1 !important;
             }}
 
             .section.is-collapsed > :not(.section-title),
@@ -2476,9 +2486,9 @@ def build_html_report(
             </div>
 
             <div class="interactive-actions">
-                <div class="text-size-controls" role="group" aria-label="Report text size">
-                    <button class="text-size-button" id="decreaseText" type="button" aria-label="Decrease report text size">A−</button>
-                    <button class="text-size-button" id="increaseText" type="button" aria-label="Increase report text size">A+</button>
+                <div class="text-size-controls" role="group" aria-label="Report zoom">
+                    <button class="text-size-button" id="decreaseText" type="button" aria-label="Zoom report out">A−</button>
+                    <button class="text-size-button" id="increaseText" type="button" aria-label="Zoom report in">A+</button>
                 </div>
                 <button class="interactive-button primary" id="printReport" type="button">Print / PDF</button>
             </div>
@@ -2883,26 +2893,26 @@ def build_html_report(
 
         // Discreet accessibility control for report text. The setting is kept
         // for the next time the same report is opened in this browser.
-        const scaleKey = "ddi-report-text-scale";
-        const clampScale = (value) => Math.min(1.25, Math.max(.9, value));
+        const scaleKey = "ddi-report-zoom";
+        const clampScale = (value) => Math.min(1.3, Math.max(.8, value));
         const readSavedScale = () => {{
             try {{ return Number(localStorage.getItem(scaleKey)) || 1; }}
             catch (_error) {{ return 1; }}
         }};
         let textScale = clampScale(readSavedScale());
         const applyTextScale = () => {{
-            document.documentElement.style.setProperty("--report-text-scale", textScale);
+            document.documentElement.style.setProperty("--report-zoom", textScale);
             try {{ localStorage.setItem(scaleKey, String(textScale)); }}
             catch (_error) {{ /* Local files may block storage; sizing still works. */ }}
         }};
 
         document.getElementById("decreaseText")?.addEventListener("click", () => {{
-            textScale = clampScale(textScale - .05);
+            textScale = clampScale(textScale - .1);
             applyTextScale();
         }});
 
         document.getElementById("increaseText")?.addEventListener("click", () => {{
-            textScale = clampScale(textScale + .05);
+            textScale = clampScale(textScale + .1);
             applyTextScale();
         }});
 
