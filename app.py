@@ -1031,6 +1031,376 @@ div[data-testid="stVerticalBlockBorderWrapper"] div[data-testid="stHorizontalBlo
     .section-kicker{font-size:1rem;margin-top:.7rem}
     .section-kicker-copy{font-size:.66rem}
 }
+
+
+/* ================================================================
+   Final product polish
+   A unified spacing system, softer surfaces, restrained gradients,
+   and clearer desktop/mobile action hierarchy.
+   ================================================================ */
+
+:root{
+    --app-bg:#fbfcfe;
+    --surface:#ffffff;
+    --surface-soft:rgba(248,250,252,.88);
+    --line-soft:rgba(148,163,184,.28);
+    --ink:#172033;
+    --muted:#64748b;
+    --brand-red:#e5484d;
+    --brand-red-deep:#d93f45;
+    --brand-blue:#2f6feb;
+    --brand-blue-deep:#2457d6;
+    --radius-sm:10px;
+    --radius-md:14px;
+    --radius-lg:18px;
+    --shadow-soft:0 8px 24px rgba(15,23,42,.055);
+    --shadow-button:0 8px 20px rgba(15,23,42,.10);
+}
+
+html, body, [data-testid="stAppViewContainer"]{
+    background:var(--app-bg)!important;
+}
+
+.block-container{
+    max-width:1450px!important;
+    padding-top:.55rem!important;
+    padding-bottom:2.6rem!important;
+}
+
+/* Consistent section rhythm. */
+h2, div[data-testid="stHeadingWithActionElements"] h2{
+    margin-top:1.65rem!important;
+    margin-bottom:.55rem!important;
+}
+h3{
+    margin-top:1.15rem!important;
+    margin-bottom:.42rem!important;
+}
+.stCaption, div[data-testid="stCaptionContainer"]{
+    margin-bottom:.55rem!important;
+}
+
+/* Shared soft-surface language. */
+div[data-testid="stVerticalBlockBorderWrapper"],
+.validation-shell,
+.executive-panel,
+.download-hero,
+.pdf-download-row,
+.report-complete-card,
+div[data-testid="stExpander"]{
+    box-shadow:var(--shadow-soft)!important;
+}
+
+/* Generate action: compact, centered and visually related to the rest of
+   the product rather than a full-width warning-red bar. */
+.st-key-generate_report{
+    display:flex!important;
+    justify-content:center!important;
+    margin:.35rem 0 .8rem!important;
+}
+.st-key-generate_report button{
+    width:min(100%,460px)!important;
+    min-height:48px!important;
+    padding:.68rem 1.4rem!important;
+    border:1px solid rgba(172,43,48,.22)!important;
+    border-radius:13px!important;
+    background:linear-gradient(180deg,rgba(239,87,92,.96),rgba(222,66,72,.96))!important;
+    color:#fff!important;
+    font-size:.92rem!important;
+    font-weight:800!important;
+    letter-spacing:.005em!important;
+    box-shadow:0 9px 22px rgba(229,72,77,.20)!important;
+    transition:transform .18s ease, box-shadow .18s ease, filter .18s ease!important;
+}
+.st-key-generate_report button:hover:not(:disabled){
+    transform:translateY(-1px)!important;
+    box-shadow:0 12px 26px rgba(229,72,77,.25)!important;
+    filter:saturate(.96) brightness(1.02)!important;
+}
+.st-key-generate_report button:disabled{
+    opacity:.48!important;
+    box-shadow:none!important;
+}
+
+/* Regenerate remains intentionally quiet. */
+.st-key-regenerate_report{
+    display:flex!important;
+    justify-content:flex-end!important;
+    margin:.1rem 0 .35rem!important;
+}
+.st-key-regenerate_report button{
+    background:rgba(255,255,255,.78)!important;
+    backdrop-filter:blur(6px)!important;
+    box-shadow:0 3px 10px rgba(15,23,42,.04)!important;
+}
+
+/* Softer, faded action buttons with restrained motion. */
+.st-key-html_report_download button{
+    min-height:48px!important;
+    border:1px solid rgba(37,87,214,.22)!important;
+    border-radius:13px!important;
+    background:linear-gradient(180deg,rgba(58,117,239,.96),rgba(36,87,214,.96))!important;
+    box-shadow:0 10px 24px rgba(47,111,235,.18)!important;
+    transition:transform .18s ease, box-shadow .18s ease, filter .18s ease!important;
+}
+.st-key-html_report_download button:hover{
+    transform:translateY(-1px)!important;
+    box-shadow:0 13px 28px rgba(47,111,235,.23)!important;
+    filter:brightness(1.025)!important;
+}
+
+.st-key-pdf_report_download button{
+    min-height:46px!important;
+    border:1px solid rgba(100,116,139,.34)!important;
+    border-radius:13px!important;
+    background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(247,249,252,.96))!important;
+    box-shadow:0 6px 16px rgba(15,23,42,.055)!important;
+    transition:transform .18s ease, box-shadow .18s ease, background .18s ease!important;
+}
+.st-key-pdf_report_download button:hover{
+    transform:translateY(-1px)!important;
+    background:linear-gradient(180deg,#fff,#f1f5f9)!important;
+    box-shadow:0 9px 20px rgba(15,23,42,.08)!important;
+}
+
+/* Completion/download surfaces use matching padding and radii. */
+.report-complete-card{
+    margin:.35rem 0 .65rem!important;
+    padding:.72rem .82rem!important;
+    border-radius:var(--radius-md)!important;
+    background:linear-gradient(135deg,rgba(240,253,244,.92),rgba(248,255,251,.92) 55%,rgba(239,246,255,.90))!important;
+}
+.download-hero{
+    margin:.15rem 0 .62rem!important;
+    padding:.78rem .84rem .72rem!important;
+    border-radius:var(--radius-md)!important;
+    background:linear-gradient(145deg,rgba(248,251,255,.94),rgba(238,246,255,.90))!important;
+}
+.pdf-download-row{
+    margin:.18rem 0 .58rem!important;
+    padding:.72rem .82rem!important;
+    border-radius:var(--radius-md)!important;
+    background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(250,251,253,.94))!important;
+}
+.download-feature-list{
+    margin:.38rem 0 .52rem!important;
+}
+.pdf-features{
+    margin-bottom:.48rem!important;
+}
+.pdf-features .download-feature::before{
+    color:#64748b!important;
+}
+
+/* Advanced downloads should read as a tertiary utility. */
+div[data-testid="stExpander"]{
+    border-color:rgba(148,163,184,.32)!important;
+    background:rgba(255,255,255,.80)!important;
+    backdrop-filter:blur(7px);
+}
+div[data-testid="stExpander"] summary{
+    min-height:44px!important;
+    padding:.52rem .72rem!important;
+}
+
+/* Step indicators: softer and more cohesive. */
+.process-strip{
+    gap:.52rem!important;
+    margin:.45rem 0 1.35rem!important;
+}
+.process-item{
+    min-height:74px!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    border-color:rgba(148,163,184,.30)!important;
+    background:linear-gradient(180deg,rgba(255,255,255,.93),rgba(249,251,253,.90))!important;
+    box-shadow:0 5px 16px rgba(15,23,42,.035)!important;
+    transition:transform .18s ease, box-shadow .18s ease!important;
+}
+.process-item:hover{
+    transform:translateY(-1px);
+    box-shadow:0 8px 20px rgba(15,23,42,.055)!important;
+}
+.process-item b{
+    background:linear-gradient(135deg,#eef5ff,#e7f0ff)!important;
+    box-shadow:inset 0 0 0 1px rgba(37,99,235,.06)!important;
+}
+
+/* Validation list: consistent compact spacing and softer success tint. */
+.validation-shell{
+    margin:.08rem 0 .72rem!important;
+    padding:.52rem!important;
+    border-radius:var(--radius-md)!important;
+    background:linear-gradient(180deg,rgba(251,253,255,.94),rgba(248,250,252,.92))!important;
+}
+.validation-grid{
+    gap:.34rem!important;
+}
+.validation-card{
+    padding:.40rem .46rem!important;
+    border-radius:9px!important;
+}
+.validation-card.detected{
+    border-color:rgba(74,222,128,.44)!important;
+    background:rgba(240,253,244,.78)!important;
+}
+.detected .validation-badge{
+    background:rgba(220,252,231,.92)!important;
+}
+
+/* Executive highlight cards: tighter, softer and visually consistent. */
+.executive-panel{
+    margin-top:.25rem!important;
+    padding:.62rem!important;
+    border-radius:var(--radius-md)!important;
+    background:linear-gradient(180deg,rgba(251,253,255,.95),rgba(247,250,252,.92))!important;
+}
+.executive-grid{
+    gap:.55rem!important;
+}
+.executive-card{
+    min-height:78px!important;
+    padding:.62rem .68rem!important;
+    border-color:rgba(148,163,184,.28)!important;
+    background:rgba(255,255,255,.92)!important;
+    box-shadow:0 5px 16px rgba(15,23,42,.035)!important;
+    transition:transform .18s ease, box-shadow .18s ease!important;
+}
+.executive-card:hover{
+    transform:translateY(-1px);
+    box-shadow:0 8px 20px rgba(15,23,42,.055)!important;
+}
+.executive-card-value{
+    margin-top:.12rem!important;
+}
+.executive-card-note{
+    margin-top:.22rem!important;
+}
+
+/* Summary: more readable measure and restrained padding. */
+.summary-card{
+    max-width:1100px!important;
+    margin:.62rem 0 0!important;
+    padding:.66rem .78rem!important;
+    font-size:.79rem!important;
+    line-height:1.42!important;
+    background:rgba(248,250,252,.90)!important;
+}
+
+/* Keep validation warning and details visually connected. */
+div[data-testid="stAlert"] + div[data-testid="stExpander"]{
+    margin-top:-.1rem!important;
+}
+
+/* Report tables get a quieter, product-style tab treatment. */
+div[data-testid="stTabs"] [data-baseweb="tab-list"]{
+    border:0!important;
+    border-bottom:1px solid rgba(148,163,184,.28)!important;
+    border-radius:0!important;
+    background:transparent!important;
+    box-shadow:none!important;
+    padding:0!important;
+}
+div[data-testid="stTabs"] button[data-baseweb="tab"]{
+    min-height:40px!important;
+    border-radius:9px 9px 0 0!important;
+    background:transparent!important;
+    box-shadow:none!important;
+    transition:background .18s ease,color .18s ease!important;
+}
+div[data-testid="stTabs"] button[data-baseweb="tab"][aria-selected="true"]{
+    color:var(--brand-red)!important;
+    background:rgba(255,255,255,.66)!important;
+    box-shadow:inset 0 -3px 0 var(--brand-red)!important;
+}
+div[data-testid="stTabs"] button[data-baseweb="tab"]:first-child,
+div[data-testid="stTabs"] button[data-baseweb="tab"]:first-child[aria-selected="true"]{
+    background:transparent!important;
+    color:inherit!important;
+}
+div[data-testid="stTabs"] button[data-baseweb="tab"]:first-child[aria-selected="true"]{
+    color:var(--brand-red)!important;
+    box-shadow:inset 0 -3px 0 var(--brand-red)!important;
+}
+
+/* Dataframes and upload surfaces use the same radius family. */
+div[data-testid="stDataFrame"],
+div[data-testid="stFileUploaderDropzone"]{
+    border-radius:var(--radius-md)!important;
+}
+
+/* Desktop form and uploader spacing normalization. */
+.st-key-report_details_card{
+    padding:.52rem .66rem!important;
+}
+.st-key-report_details_card div[data-testid="stVerticalBlock"]{
+    gap:.25rem!important;
+}
+.upload-guidance{
+    margin:.18rem 0 .58rem!important;
+}
+div[data-testid="stFileUploader"]{
+    margin-bottom:.2rem!important;
+}
+
+/* Mobile keeps clear hierarchy but avoids oversized blocks. */
+@media(max-width:620px){
+    .block-container{
+        padding-left:.82rem!important;
+        padding-right:.82rem!important;
+        padding-bottom:1.55rem!important;
+    }
+    h2, div[data-testid="stHeadingWithActionElements"] h2{
+        margin-top:1.15rem!important;
+        margin-bottom:.34rem!important;
+    }
+    .st-key-generate_report button{
+        width:100%!important;
+        min-height:45px!important;
+        font-size:.86rem!important;
+    }
+    .process-strip{
+        gap:.28rem!important;
+        margin:.25rem 0 .78rem!important;
+    }
+    .process-item{
+        min-height:58px!important;
+        padding:.36rem .16rem!important;
+    }
+    .report-complete-card{
+        padding:.62rem .68rem!important;
+    }
+    .download-hero,
+    .pdf-download-row{
+        padding:.62rem .68rem!important;
+    }
+    .executive-panel{
+        padding:.46rem!important;
+    }
+    .executive-grid{
+        gap:.38rem!important;
+    }
+    .executive-card{
+        min-height:72px!important;
+        padding:.52rem .56rem!important;
+    }
+    .summary-card{
+        max-width:100%!important;
+        font-size:.74rem!important;
+        padding:.58rem .64rem!important;
+    }
+    .validation-shell{
+        padding:.34rem!important;
+    }
+    .validation-card{
+        padding:.28rem .34rem!important;
+    }
+    div[data-testid="stTabs"] button[data-baseweb="tab"]{
+        padding:.42rem .58rem!important;
+    }
+}
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -1534,11 +1904,11 @@ with generate_tab:
         and not dates_invalid
     )
 
-    st.subheader("Generate and download")
+    report_is_ready = bool(st.session_state.get("report_ready"))
+    st.subheader("Download report" if report_is_ready else "Generate report")
     if not ready_to_generate:
         st.warning("Missing required files or report details. Complete the items above to continue.")
 
-    report_is_ready = bool(st.session_state.get("report_ready"))
     if report_is_ready:
         build_clicked = st.button(
             "Regenerate report",
@@ -1551,8 +1921,9 @@ with generate_tab:
         build_clicked = st.button(
             "Generate Report",
             type="primary",
-            use_container_width=True,
+            use_container_width=False,
             disabled=not ready_to_generate,
+            key="generate_report",
         )
 
     if build_clicked:
@@ -1628,7 +1999,12 @@ with generate_tab:
         st.markdown(
             '<div class="pdf-download-row">'
             '<div class="download-format-title"><span class="download-format-icon">🖨️</span>Printable PDF report</div>'
-            '<div class="format-note">Fixed layout for printing, email and archiving.</div>',
+            '<div class="format-note">Fixed layout for printing, email and archiving.</div>'
+            '<div class="download-feature-list pdf-features">'
+            '<span class="download-feature">Print ready</span>'
+            '<span class="download-feature">Email friendly</span>'
+            '<span class="download-feature">Fixed layout</span>'
+            '</div>',
             unsafe_allow_html=True,
         )
         if pdf_data:
@@ -1666,6 +2042,7 @@ with generate_tab:
         st.subheader("Data validation checks")
         show_validation(outputs["validation"])
         st.subheader("Report tables")
+        st.caption("Browse the detailed calculations and supporting tables used to build the report.")
         tab1, tab2, tab3, tab4, tab5 = st.tabs(["Department KPIs", "Subdepartment Gaps", "Opportunities", "Top Brands", "Traffic"])
         with tab1:
             st.dataframe(outputs["department_kpis"], use_container_width=True, hide_index=True)
