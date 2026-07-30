@@ -2294,6 +2294,140 @@ def build_html_report(
             .page {{ padding: 10px; }}
         }}
 
+        /* ==========================================================
+           Collapsible navigation rail
+           ========================================================== */
+        body.interactive-report {{
+            padding-top: 0;
+            padding-left: 176px;
+            transition: padding-left .2s ease;
+        }}
+
+        body.interactive-report.nav-collapsed {{
+            padding-left: 48px;
+        }}
+
+        .interactive-shell {{
+            inset: 0 auto 0 0;
+            width: 176px;
+            padding: 10px 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 8px;
+            pointer-events: none;
+            transition: width .2s ease;
+        }}
+
+        .nav-toggle {{
+            width: 36px;
+            height: 36px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            align-self: flex-start;
+            border: 1px solid rgba(148, 163, 184, .28);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, .58);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            color: var(--navy);
+            box-shadow: 0 3px 12px rgba(15, 39, 71, .06);
+            font: inherit;
+            font-size: 15px;
+            cursor: pointer;
+            pointer-events: auto;
+        }}
+
+        .interactive-toolbar {{
+            width: 100%;
+            margin: 0;
+            grid-template-columns: 1fr;
+            align-items: stretch;
+            padding: 8px;
+        }}
+
+        .interactive-brand {{
+            justify-content: flex-start;
+            padding: 3px 4px 7px;
+        }}
+
+        .interactive-tabs,
+        .interactive-actions {{
+            width: 100%;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 5px;
+        }}
+
+        .department-filter,
+        .interactive-button {{
+            width: 100%;
+            text-align: left;
+        }}
+
+        .text-size-controls {{
+            width: 100%;
+            margin-top: 3px;
+        }}
+
+        .text-size-button {{ flex: 1; }}
+
+        .interactive-shell.is-collapsed {{ width: 48px; }}
+        .interactive-shell.is-collapsed .interactive-toolbar {{ display: none; }}
+
+        .screen-section {{ scroll-margin-top: 14px; }}
+
+        @media screen and (max-width: 720px) {{
+            body.interactive-report,
+            body.interactive-report.nav-collapsed {{
+                padding-left: 0;
+                padding-top: 0;
+            }}
+
+            .interactive-shell,
+            .interactive-shell.is-collapsed {{
+                position: fixed;
+                inset: 8px auto auto 8px;
+                width: 42px;
+                height: auto;
+                padding: 0;
+                z-index: 3000;
+            }}
+
+            .interactive-shell.is-open {{
+                width: min(250px, calc(100vw - 16px));
+            }}
+
+            .nav-toggle {{
+                width: 40px;
+                height: 40px;
+                background: rgba(255, 255, 255, .82);
+            }}
+
+            .interactive-shell .interactive-toolbar {{ display: none; }}
+            .interactive-shell.is-open .interactive-toolbar {{
+                display: grid;
+                width: 100%;
+                margin-top: 2px;
+                opacity: 1;
+                background: rgba(255, 255, 255, .94);
+            }}
+
+            .interactive-shell.is-open .interactive-brand {{ display: flex; }}
+            .interactive-shell.is-open .interactive-tabs,
+            .interactive-shell.is-open .interactive-actions {{
+                flex-direction: column;
+            }}
+
+            .interactive-shell.is-open .department-filter,
+            .interactive-shell.is-open .interactive-button {{
+                width: 100%;
+                min-height: 38px;
+                text-align: left;
+            }}
+        }}
+
         @media (prefers-reduced-motion: reduce) {{
             html {{
                 scroll-behavior: auto;
@@ -2469,8 +2603,9 @@ def build_html_report(
 </head>
 <body class="interactive-report">
 
-    <div class="interactive-shell" role="region" aria-label="Interactive report controls">
-        <div class="interactive-toolbar">
+    <div class="interactive-shell" id="navigationRail" role="region" aria-label="Interactive report controls">
+        <button class="nav-toggle" id="navigationToggle" type="button" aria-expanded="true" aria-controls="reportToolbar" aria-label="Collapse report navigation">☰</button>
+        <div class="interactive-toolbar" id="reportToolbar">
             <div class="interactive-brand">
                 <span class="live-dot" aria-hidden="true"></span>
                 <span>Interactive Report</span>
@@ -2704,7 +2839,37 @@ def build_html_report(
         const tables = Array.from(document.querySelectorAll("table"));
         const sections = Array.from(document.querySelectorAll(".section"));
         const backToTop = document.getElementById("backToTop");
+        const navigationRail = document.getElementById("navigationRail");
+        const navigationToggle = document.getElementById("navigationToggle");
+        const mobileNavigation = window.matchMedia("(max-width: 720px)");
         let activeDepartment = "all";
+
+        const setNavigationState = (open) => {{
+            if (mobileNavigation.matches) {{
+                navigationRail?.classList.toggle("is-open", open);
+                navigationRail?.classList.remove("is-collapsed");
+                document.body.classList.remove("nav-collapsed");
+            }} else {{
+                navigationRail?.classList.toggle("is-collapsed", !open);
+                navigationRail?.classList.remove("is-open");
+                document.body.classList.toggle("nav-collapsed", !open);
+            }}
+            navigationToggle?.setAttribute("aria-expanded", String(open));
+            navigationToggle?.setAttribute(
+                "aria-label",
+                `${{open ? "Collapse" : "Expand"}} report navigation`
+            );
+        }};
+
+        navigationToggle?.addEventListener("click", () => {{
+            const currentlyOpen = mobileNavigation.matches
+                ? navigationRail?.classList.contains("is-open")
+                : !navigationRail?.classList.contains("is-collapsed");
+            setNavigationState(!currentlyOpen);
+        }});
+
+        mobileNavigation.addEventListener?.("change", () => setNavigationState(false));
+        setNavigationState(!mobileNavigation.matches);
 
         // Tag table rows with department context where their content makes it clear.
         const departmentFromText = (text) => {{
@@ -2830,6 +2995,7 @@ def build_html_report(
                         block: "start"
                     }});
                 }}
+                if (mobileNavigation.matches) setNavigationState(false);
             }});
         }});
 
@@ -2865,6 +3031,7 @@ def build_html_report(
                     behavior: "smooth",
                     block: "start"
                 }});
+                if (mobileNavigation.matches) setNavigationState(false);
             }});
         }});
 
