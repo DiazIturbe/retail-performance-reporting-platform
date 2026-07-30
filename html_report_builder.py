@@ -1740,6 +1740,7 @@ def build_html_report(
 
         html {{
             scroll-behavior: smooth;
+            --report-text-scale: 1;
         }}
 
         body.interactive-report {{
@@ -1760,14 +1761,14 @@ def build_html_report(
             width: min(1180px, calc(100% - 16px));
             margin: 0 auto;
             display: grid;
-            grid-template-columns: auto minmax(260px, 1fr) auto;
+            grid-template-columns: auto minmax(0, 1fr) auto;
             align-items: center;
             gap: 12px;
             padding: 9px 10px;
-            background: rgba(255, 255, 255, .96);
-            border: 1px solid rgba(148, 163, 184, .32);
+            background: rgba(255, 255, 255, .78);
+            border: 1px solid rgba(255, 255, 255, .72);
             border-radius: 13px;
-            box-shadow: 0 8px 26px rgba(15, 39, 71, .11);
+            box-shadow: 0 6px 20px rgba(15, 39, 71, .07);
         }}
 
         .interactive-brand {{
@@ -1804,9 +1805,9 @@ def build_html_report(
         .department-filter {{
             min-height: 32px;
             padding: 7px 10px;
-            border: 1px solid #d6e0ea;
+            border: 1px solid rgba(148, 163, 184, .28);
             border-radius: 8px;
-            background: linear-gradient(180deg, #fff, #f6f8fb);
+            background: rgba(255, 255, 255, .48);
             color: var(--navy);
             font: inherit;
             font-size: 9px;
@@ -1832,31 +1833,63 @@ def build_html_report(
         }}
 
         .department-filter[aria-pressed="true"] {{
-            color: #fff;
-            border-color: var(--navy);
-            background: var(--navy);
-            box-shadow: 0 5px 12px rgba(15, 39, 71, .18);
+            color: var(--navy);
+            border-color: rgba(15, 39, 71, .22);
+            background: rgba(255, 255, 255, .92);
+            box-shadow: 0 3px 9px rgba(15, 39, 71, .09);
         }}
 
         .department-filter[data-filter="footwear"][aria-pressed="true"] {{
-            border-color: var(--footwear);
-            background: var(--footwear);
+            color: var(--footwear);
+            border-color: rgba(23, 111, 166, .30);
+            background: rgba(238, 245, 251, .92);
         }}
 
         .department-filter[data-filter="apparel"][aria-pressed="true"] {{
-            border-color: var(--apparel);
-            background: var(--apparel);
+            color: var(--apparel);
+            border-color: rgba(217, 106, 43, .30);
+            background: rgba(255, 243, 234, .92);
         }}
 
         .department-filter[data-filter="accessories"][aria-pressed="true"] {{
-            border-color: var(--accessories);
-            background: var(--accessories);
+            color: var(--accessories);
+            border-color: rgba(74, 148, 85, .30);
+            background: rgba(237, 248, 242, .92);
         }}
 
         .interactive-button.primary {{
-            color: #fff;
-            border-color: #1d4ed8;
-            background: linear-gradient(180deg, #3b82f6, #2563eb);
+            color: #1d4ed8;
+            border-color: rgba(37, 99, 235, .24);
+            background: rgba(234, 242, 255, .72);
+        }}
+
+        .text-size-controls {{
+            display: inline-flex;
+            overflow: hidden;
+            border: 1px solid rgba(148, 163, 184, .28);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, .42);
+        }}
+
+        .text-size-button {{
+            min-width: 32px;
+            min-height: 32px;
+            padding: 5px 8px;
+            border: 0;
+            border-right: 1px solid rgba(148, 163, 184, .22);
+            background: transparent;
+            color: var(--navy);
+            font: inherit;
+            font-weight: 800;
+            cursor: pointer;
+        }}
+
+        .text-size-button:last-child {{ border-right: 0; }}
+        .text-size-button:hover {{ background: rgba(255, 255, 255, .72); }}
+
+        /* Text sizing affects the browser report only; PDF dimensions remain fixed. */
+        body.interactive-report .page {{
+            font-size: calc(11px * var(--report-text-scale));
         }}
 
         .interaction-panel {{
@@ -2127,6 +2160,8 @@ def build_html_report(
 
             .interactive-toolbar {{
                 width: 100%;
+                grid-template-columns: 1fr;
+                padding: 7px;
             }}
 
             .interactive-tabs,
@@ -2136,8 +2171,8 @@ def build_html_report(
 
             .department-filter,
             .interactive-button {{
-                flex: 1 1 calc(50% - 6px);
-                min-height: 39px;
+                flex: 1 1 auto;
+                min-height: 36px;
                 font-size: 10px;
             }}
 
@@ -2189,13 +2224,22 @@ def build_html_report(
             }}
 
             .cover-meta-grid,
-            .cards,
             .chart-row,
             .table-grid,
             .store-insights-grid,
             .seller-grid,
             .brand-grid {{
                 grid-template-columns: 1fr;
+            }}
+
+            .cards {{
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 8px;
+            }}
+
+            .card {{
+                min-height: 0;
+                padding: 12px;
             }}
 
             .cover-bottom,
@@ -2228,6 +2272,18 @@ def build_html_report(
             }}
         }}
 
+        @media screen and (max-width: 430px) {{
+            .interactive-brand {{ display: none; }}
+            .interactive-tabs {{ gap: 4px; }}
+            .department-filter {{
+                flex: 1 1 calc(50% - 4px);
+                padding-inline: 7px;
+            }}
+            .interactive-actions {{ gap: 4px; }}
+            .interactive-button {{ padding-inline: 7px; }}
+            .page {{ padding: 10px; }}
+        }}
+
         @media (prefers-reduced-motion: reduce) {{
             html {{
                 scroll-behavior: auto;
@@ -2252,6 +2308,10 @@ def build_html_report(
 
             body.interactive-report {{
                 padding-top: 0 !important;
+            }}
+
+            body.interactive-report .page {{
+                font-size: 11px !important;
             }}
 
             .section.is-collapsed > :not(.section-title),
@@ -2407,36 +2467,21 @@ def build_html_report(
             </div>
 
             <div class="interactive-tabs" role="group" aria-label="Department view">
-                <button class="department-filter" type="button" data-filter="all" aria-pressed="true">Overall</button>
+                <button class="department-filter" type="button" data-filter="all" data-jump="overview" aria-pressed="true">Overview</button>
                 <button class="department-filter" type="button" data-filter="footwear" aria-pressed="false">Footwear</button>
                 <button class="department-filter" type="button" data-filter="apparel" aria-pressed="false">Apparel</button>
                 <button class="department-filter" type="button" data-filter="accessories" aria-pressed="false">Accessories</button>
+                <button class="interactive-button" type="button" data-jump="departments">Departments</button>
+                <button class="interactive-button" type="button" data-jump="opportunities">Opportunities</button>
             </div>
 
             <div class="interactive-actions">
-                <button class="interactive-button" type="button" data-jump="overview">Overview</button>
-                <button class="interactive-button" type="button" data-jump="departments">Departments</button>
-                <button class="interactive-button" type="button" data-jump="opportunities">Opportunities</button>
+                <div class="text-size-controls" role="group" aria-label="Report text size">
+                    <button class="text-size-button" id="decreaseText" type="button" aria-label="Decrease report text size">A−</button>
+                    <button class="text-size-button" id="increaseText" type="button" aria-label="Increase report text size">A+</button>
+                </div>
                 <button class="interactive-button primary" id="printReport" type="button">Print / PDF</button>
             </div>
-        </div>
-    </div>
-
-    <div class="interaction-panel">
-        <div class="search-group">
-            <label for="reportSearch"><strong>Search</strong></label>
-            <input
-                class="report-search"
-                id="reportSearch"
-                type="search"
-                placeholder="Search Nike, Mens Apparel, product code…"
-                autocomplete="off"
-            >
-            <span class="interaction-status" id="searchStatus" aria-live="polite"></span>
-        </div>
-        <div class="active-view-message">
-            <span>Current view</span>
-            <span class="active-view-badge" id="activeViewBadge">Overall report</span>
         </div>
     </div>
 
@@ -2836,10 +2881,36 @@ def build_html_report(
             }});
         }});
 
+        // Discreet accessibility control for report text. The setting is kept
+        // for the next time the same report is opened in this browser.
+        const scaleKey = "ddi-report-text-scale";
+        const clampScale = (value) => Math.min(1.25, Math.max(.9, value));
+        const readSavedScale = () => {{
+            try {{ return Number(localStorage.getItem(scaleKey)) || 1; }}
+            catch (_error) {{ return 1; }}
+        }};
+        let textScale = clampScale(readSavedScale());
+        const applyTextScale = () => {{
+            document.documentElement.style.setProperty("--report-text-scale", textScale);
+            try {{ localStorage.setItem(scaleKey, String(textScale)); }}
+            catch (_error) {{ /* Local files may block storage; sizing still works. */ }}
+        }};
+
+        document.getElementById("decreaseText")?.addEventListener("click", () => {{
+            textScale = clampScale(textScale - .05);
+            applyTextScale();
+        }});
+
+        document.getElementById("increaseText")?.addEventListener("click", () => {{
+            textScale = clampScale(textScale + .05);
+            applyTextScale();
+        }});
+
         window.addEventListener("beforeprint", () => {{
             sections.forEach((section) => section.classList.remove("is-collapsed"));
         }});
 
+        applyTextScale();
         applyView();
     }})();
     </script>
