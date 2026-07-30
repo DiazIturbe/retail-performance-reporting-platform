@@ -344,7 +344,7 @@ def build_department_card(row, top_brands_fixed, top_sellers_department=None):
             """
 
     return f"""
-    <div class="department-card {css_class}-department-card">
+    <div class="department-card {css_class}-department-card" data-department="{css_class}">
         <div class="department-header {css_class}">{section_icon(dept_name)}<span>{dept_name}</span></div>
 
         <div class="metric-row">
@@ -562,7 +562,7 @@ def build_grouped_top_sellers(df, level="group"):
         for group_name, g in work.groupby("group", sort=False):
             css = department_class(group_name)
             blocks.append(
-                f'<div class="seller-block {css}-seller">'
+                f'<div class="seller-block {css}-seller" data-department="{css}">'
                 f'<div class="seller-block-title">{section_icon(group_name, "seller-title-icon")}<span>{group_name}</span></div>'
                 f'{build_top_sellers_table(g)}</div>'
             )
@@ -574,12 +574,12 @@ def build_grouped_top_sellers(df, level="group"):
         blocks = []
         for department_name, g in group_df.groupby("department", sort=False):
             blocks.append(
-                f'<div class="seller-block {css}-seller">'
+                f'<div class="seller-block {css}-seller" data-department="{css}">'
                 f'<div class="seller-block-title">{subsection_icon(department_name)}<span>{group_name} · {department_name}</span></div>'
                 f'{build_top_sellers_table(g)}</div>'
             )
         sections.append(
-            f'<div class="seller-department-section {css}-seller-section">'
+            f'<div class="seller-department-section {css}-seller-section" data-department="{css}">'
             f'<div class="seller-department-heading">{section_icon(group_name, "seller-heading-icon")}<span>{group_name}</span></div>'
             f'<div class="seller-grid">{"".join(blocks)}</div></div>'
         )
@@ -1735,105 +1735,190 @@ def build_html_report(
 
 
         /* ==========================================================
-           Interactive browser experience
-           Print/PDF retains the fixed Letter landscape layout below.
+           Interactive analytics experience — browser only
            ========================================================== */
 
-        .screen-toolbar {{
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            width: min(100% - 24px, 1180px);
-            margin: 0 auto 14px;
-            padding: 9px 11px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-            border: 1px solid rgba(148, 163, 184, .34);
-            border-radius: 12px;
-            background: rgba(255, 255, 255, .94);
-            box-shadow: 0 8px 24px rgba(15, 39, 71, .10);
-            backdrop-filter: blur(12px);
+        html {{
+            scroll-behavior: smooth;
         }}
 
-        .screen-nav,
-        .screen-actions {{
+        body.interactive-report {{
+            padding-top: 92px;
+        }}
+
+        .interactive-shell {{
+            position: fixed;
+            inset: 0 0 auto 0;
+            z-index: 2000;
+            padding: 10px 14px;
+            background: rgba(232, 237, 243, .92);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(148, 163, 184, .28);
+        }}
+
+        .interactive-toolbar {{
+            width: min(1180px, calc(100% - 16px));
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: auto minmax(260px, 1fr) auto;
+            align-items: center;
+            gap: 12px;
+            padding: 9px 10px;
+            background: rgba(255, 255, 255, .96);
+            border: 1px solid rgba(148, 163, 184, .32);
+            border-radius: 13px;
+            box-shadow: 0 8px 26px rgba(15, 39, 71, .11);
+        }}
+
+        .interactive-brand {{
             display: flex;
             align-items: center;
+            gap: 8px;
+            color: var(--navy);
+            font-weight: 800;
+            white-space: nowrap;
+        }}
+
+        .live-dot {{
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--green);
+            box-shadow: 0 0 0 4px var(--green-soft);
+        }}
+
+        .interactive-tabs,
+        .interactive-actions {{
+            display: flex;
+            align-items: center;
+            justify-content: center;
             flex-wrap: wrap;
             gap: 6px;
         }}
 
-        .screen-toolbar button,
-        .screen-toolbar a {{
+        .interactive-actions {{
+            justify-content: flex-end;
+        }}
+
+        .interactive-button,
+        .department-filter {{
             min-height: 32px;
-            padding: 6px 10px;
-            border: 1px solid #d7e0ea;
+            padding: 7px 10px;
+            border: 1px solid #d6e0ea;
             border-radius: 8px;
-            background: linear-gradient(180deg, #ffffff, #f7f9fc);
+            background: linear-gradient(180deg, #fff, #f6f8fb);
             color: var(--navy);
             font: inherit;
             font-size: 9px;
             font-weight: 700;
-            line-height: 1;
-            text-decoration: none;
             cursor: pointer;
-            transition: transform .16s ease, box-shadow .16s ease, background .16s ease;
+            transition: transform .15s ease, border-color .15s ease,
+                        background .15s ease, box-shadow .15s ease;
         }}
 
-        .screen-toolbar button:hover,
-        .screen-toolbar a:hover {{
+        .interactive-button:hover,
+        .department-filter:hover {{
             transform: translateY(-1px);
-            background: #f0f5fb;
-            box-shadow: 0 5px 12px rgba(15, 39, 71, .08);
+            border-color: #aebfd1;
+            box-shadow: 0 4px 10px rgba(15, 39, 71, .08);
         }}
 
-        .screen-toolbar button:focus-visible,
-        .screen-toolbar a:focus-visible,
-        .section-toggle:focus-visible,
-        .table-search:focus-visible {{
+        .interactive-button:focus-visible,
+        .department-filter:focus-visible,
+        .report-search:focus-visible,
+        .section-toggle:focus-visible {{
             outline: 2px solid var(--blue);
             outline-offset: 2px;
         }}
 
-        .screen-toolbar .primary-screen-action {{
-            border-color: rgba(37, 99, 235, .26);
-            background: linear-gradient(180deg, #3478ee, #2563eb);
+        .department-filter[aria-pressed="true"] {{
             color: #fff;
+            border-color: var(--navy);
+            background: var(--navy);
+            box-shadow: 0 5px 12px rgba(15, 39, 71, .18);
         }}
 
-        .table-search-wrap {{
-            width: min(100% - 24px, 1180px);
-            margin: 0 auto 12px;
+        .department-filter[data-filter="footwear"][aria-pressed="true"] {{
+            border-color: var(--footwear);
+            background: var(--footwear);
+        }}
+
+        .department-filter[data-filter="apparel"][aria-pressed="true"] {{
+            border-color: var(--apparel);
+            background: var(--apparel);
+        }}
+
+        .department-filter[data-filter="accessories"][aria-pressed="true"] {{
+            border-color: var(--accessories);
+            background: var(--accessories);
+        }}
+
+        .interactive-button.primary {{
+            color: #fff;
+            border-color: #1d4ed8;
+            background: linear-gradient(180deg, #3b82f6, #2563eb);
+        }}
+
+        .interaction-panel {{
+            width: min(1180px, calc(100% - 24px));
+            margin: -2px auto 14px;
+            display: grid;
+            grid-template-columns: minmax(240px, 1fr) auto;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            background: rgba(255, 255, 255, .95);
+            border: 1px solid rgba(148, 163, 184, .30);
+            border-top: 0;
+            border-radius: 0 0 12px 12px;
+        }}
+
+        .search-group {{
             display: flex;
             align-items: center;
             gap: 8px;
         }}
 
-        .table-search-label {{
-            color: var(--muted);
-            font-size: 9px;
-            font-weight: 700;
-            white-space: nowrap;
-        }}
-
-        .table-search {{
-            width: min(420px, 100%);
+        .report-search {{
+            width: min(460px, 100%);
             min-height: 34px;
             padding: 7px 10px;
-            border: 1px solid #d7e0ea;
-            border-radius: 9px;
-            background: rgba(255, 255, 255, .94);
+            border: 1px solid #d6e0ea;
+            border-radius: 8px;
+            background: #fff;
             color: var(--ink);
             font: inherit;
             font-size: 10px;
         }}
 
-        .search-status {{
-            min-width: 88px;
+        .interaction-status {{
             color: var(--muted);
             font-size: 8.5px;
+            white-space: nowrap;
+        }}
+
+        .active-view-message {{
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            color: var(--muted);
+            font-size: 9px;
+            text-align: right;
+        }}
+
+        .active-view-badge {{
+            display: inline-flex;
+            align-items: center;
+            min-height: 24px;
+            padding: 4px 8px;
+            border-radius: 99px;
+            background: var(--blue-soft);
+            color: var(--blue);
+            font-weight: 800;
+        }}
+
+        .screen-section {{
+            scroll-margin-top: 118px;
         }}
 
         .section-title {{
@@ -1843,26 +1928,21 @@ def build_html_report(
 
         .section-toggle {{
             position: absolute;
-            right: 0;
             top: 50%;
+            right: 0;
             width: 24px;
             height: 24px;
             transform: translateY(-50%);
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            border: 1px solid #d7e0ea;
+            border: 1px solid #d6e0ea;
             border-radius: 7px;
-            background: linear-gradient(180deg, #fff, #f6f8fb);
+            background: #fff;
             color: var(--navy);
             font-size: 13px;
             line-height: 1;
             cursor: pointer;
-            transition: background .16s ease, transform .16s ease;
-        }}
-
-        .section-toggle:hover {{
-            background: #eef4fa;
         }}
 
         .section.is-collapsed > :not(.section-title) {{
@@ -1873,39 +1953,23 @@ def build_html_report(
             transform: translateY(-50%) rotate(-90deg);
         }}
 
-        .sortable-table th[data-sortable="true"] {{
-            position: relative;
-            padding-right: 4mm;
-            cursor: pointer;
-            user-select: none;
+        [data-department].is-filtered-out,
+        .department-chart.is-filtered-out,
+        .filterable-report-row.is-filtered-out {{
+            display: none !important;
         }}
 
-        .sortable-table th[data-sortable="true"]::after {{
-            content: "↕";
-            position: absolute;
-            right: 1.2mm;
-            color: #94a3b8;
-            font-size: 7px;
+        .department-grid.filtered-view {{
+            grid-template-columns: 1fr;
         }}
 
-        .sortable-table th[data-sort-direction="asc"]::after {{
-            content: "↑";
-            color: var(--blue);
+        .department-grid.filtered-view .department-card {{
+            animation: reportReveal .22s ease-out;
         }}
 
-        .sortable-table th[data-sort-direction="desc"]::after {{
-            content: "↓";
-            color: var(--blue);
-        }}
-
-        .data-table tbody tr,
-        .mini-table tbody tr {{
-            transition: background .14s ease;
-        }}
-
-        .data-table tbody tr:hover td,
-        .mini-table tbody tr:hover td {{
-            background: #f1f6fb !important;
+        @keyframes reportReveal {{
+            from {{ opacity: 0; transform: translateY(5px); }}
+            to {{ opacity: 1; transform: translateY(0); }}
         }}
 
         .table-scroll {{
@@ -1915,24 +1979,94 @@ def build_html_report(
             -webkit-overflow-scrolling: touch;
         }}
 
-        .back-to-top {{
+        table.interactive-table th[data-sortable="true"] {{
+            position: relative;
+            padding-right: 4mm;
+            cursor: pointer;
+            user-select: none;
+        }}
+
+        table.interactive-table th[data-sortable="true"]::after {{
+            content: "↕";
+            position: absolute;
+            right: 1.2mm;
+            color: #94a3b8;
+            font-size: 7px;
+        }}
+
+        table.interactive-table th[data-sort-direction="asc"]::after {{
+            content: "↑";
+            color: var(--blue);
+        }}
+
+        table.interactive-table th[data-sort-direction="desc"]::after {{
+            content: "↓";
+            color: var(--blue);
+        }}
+
+        table.interactive-table tbody tr {{
+            transition: background .14s ease, opacity .14s ease;
+        }}
+
+        table.interactive-table tbody tr:hover td {{
+            background: #eef5fb !important;
+        }}
+
+        .interactive-help {{
             position: fixed;
             right: 18px;
             bottom: 18px;
-            z-index: 900;
-            width: 38px;
-            height: 38px;
+            z-index: 1900;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 7px;
+        }}
+
+        .help-card {{
             display: none;
+            width: min(300px, calc(100vw - 36px));
+            padding: 12px;
+            border: 1px solid #d6e0ea;
+            border-radius: 11px;
+            background: rgba(255,255,255,.97);
+            box-shadow: 0 10px 28px rgba(15,39,71,.14);
+            color: var(--muted);
+            font-size: 9px;
+            line-height: 1.5;
+        }}
+
+        .help-card.is-open {{
+            display: block;
+        }}
+
+        .help-card strong {{
+            display: block;
+            margin-bottom: 4px;
+            color: var(--navy);
+            font-size: 10px;
+        }}
+
+        .help-trigger,
+        .back-to-top {{
+            width: 40px;
+            height: 40px;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            border: 1px solid rgba(37, 99, 235, .28);
+            border: 1px solid #d6e0ea;
             border-radius: 50%;
-            background: rgba(255, 255, 255, .95);
-            color: var(--blue);
-            box-shadow: 0 8px 20px rgba(15, 39, 71, .14);
-            font-size: 16px;
+            background: #fff;
+            color: var(--navy);
+            box-shadow: 0 7px 18px rgba(15,39,71,.13);
+            font: inherit;
+            font-size: 14px;
             font-weight: 800;
             cursor: pointer;
+        }}
+
+        .back-to-top {{
+            display: none;
         }}
 
         .back-to-top.is-visible {{
@@ -1940,24 +2074,28 @@ def build_html_report(
         }}
 
         @media screen and (max-width: 1100px) {{
-            body {{
-                padding: 12px 0 28px;
+            body.interactive-report {{
+                padding-top: 132px;
+            }}
+
+            .interactive-toolbar {{
+                grid-template-columns: 1fr;
+                gap: 7px;
+            }}
+
+            .interactive-brand,
+            .interactive-actions {{
+                justify-content: center;
             }}
 
             .page {{
                 width: calc(100% - 24px);
                 min-height: auto;
-                margin: 0 auto 14px;
-                padding: 18px;
+                padding: 22px;
             }}
 
             .cover-page {{
-                min-height: 620px;
-            }}
-
-            .cover-main {{
-                grid-template-columns: minmax(0, 1fr) minmax(300px, .72fr);
-                gap: 24px;
+                min-height: 640px;
             }}
 
             .cards {{
@@ -1973,48 +2111,56 @@ def build_html_report(
             }}
         }}
 
-        @media screen and (max-width: 760px) {{
+        @media screen and (max-width: 720px) {{
             html, body {{
                 font-size: 13px;
-                line-height: 1.45;
             }}
 
-            body {{
-                background: #f2f5f8;
-                padding: 8px 0 22px;
+            body.interactive-report {{
+                padding-top: 0;
             }}
 
-            .screen-toolbar {{
+            .interactive-shell {{
                 position: static;
-                width: calc(100% - 16px);
-                margin-bottom: 8px;
-                align-items: stretch;
-                flex-direction: column;
+                padding: 8px;
             }}
 
-            .screen-nav,
-            .screen-actions {{
+            .interactive-toolbar {{
                 width: 100%;
             }}
 
-            .screen-toolbar button,
-            .screen-toolbar a {{
-                flex: 1 1 auto;
-                min-height: 38px;
+            .interactive-tabs,
+            .interactive-actions {{
+                width: 100%;
+            }}
+
+            .department-filter,
+            .interactive-button {{
+                flex: 1 1 calc(50% - 6px);
+                min-height: 39px;
                 font-size: 10px;
             }}
 
-            .table-search-wrap {{
+            .interaction-panel {{
                 width: calc(100% - 16px);
-                margin-bottom: 8px;
+                grid-template-columns: 1fr;
+                margin-top: 0;
+            }}
+
+            .search-group {{
                 align-items: stretch;
                 flex-direction: column;
             }}
 
-            .table-search {{
+            .report-search {{
                 width: 100%;
-                min-height: 40px;
+                min-height: 41px;
                 font-size: 12px;
+            }}
+
+            .active-view-message {{
+                justify-content: space-between;
+                text-align: left;
             }}
 
             .page {{
@@ -2022,7 +2168,6 @@ def build_html_report(
                 margin-bottom: 10px;
                 padding: 14px;
                 border-radius: 10px;
-                box-shadow: 0 5px 16px rgba(15, 39, 71, .08);
                 overflow: visible;
             }}
 
@@ -2039,38 +2184,11 @@ def build_html_report(
                 min-height: auto;
             }}
 
-            .cover-title {{
-                max-width: none;
-                font-size: 29px;
-            }}
-
-            .cover-meta-grid {{
-                grid-template-columns: 1fr;
-                gap: 14px;
-            }}
-
             .cover-panels {{
                 display: none;
             }}
 
-            .cover-bottom {{
-                margin-top: 30px;
-                align-items: flex-start;
-                flex-direction: column;
-                gap: 8px;
-            }}
-
-            .header {{
-                align-items: flex-start;
-                flex-direction: column;
-                gap: 8px;
-            }}
-
-            .header-meta {{
-                min-width: 0;
-                text-align: left;
-            }}
-
+            .cover-meta-grid,
             .cards,
             .chart-row,
             .table-grid,
@@ -2080,97 +2198,71 @@ def build_html_report(
                 grid-template-columns: 1fr;
             }}
 
+            .cover-bottom,
+            .header {{
+                align-items: flex-start;
+                flex-direction: column;
+            }}
+
+            .header-meta {{
+                min-width: 0;
+                text-align: left;
+            }}
+
             .single-chart-row .chart-card {{
                 max-width: none;
             }}
 
-            .card {{
-                min-height: 104px;
-                padding: 14px;
-            }}
-
-            .card-value {{
-                font-size: 22px;
-            }}
-
             .metric-row {{
                 grid-template-columns: repeat(2, minmax(0, 1fr));
-                padding: 10px;
-            }}
-
-            .small-metric {{
-                min-height: 68px;
-                padding: 10px;
-            }}
-
-            .chart-card {{
-                padding: 12px;
-            }}
-
-            .chart-card img {{
-                max-height: none;
-            }}
-
-            .section {{
-                margin-top: 18px;
-            }}
-
-            .section-title {{
-                min-height: 34px;
-                margin-bottom: 8px;
-                font-size: 16px;
-                white-space: normal;
-            }}
-
-            .subsection-label,
-            .note-box,
-            .summary {{
-                font-size: 11px;
-            }}
-
-            .table-scroll {{
-                margin: 0 -2px;
             }}
 
             .data-table,
             .mini-table {{
-                min-width: 680px;
+                min-width: 700px;
             }}
 
-            .product-table {{
-                min-width: 720px;
-            }}
-
-            .department-performance-table {{
-                min-width: 820px;
-            }}
-
-            .back-to-top {{
+            .interactive-help {{
                 right: 10px;
                 bottom: 10px;
             }}
         }}
 
         @media (prefers-reduced-motion: reduce) {{
+            html {{
+                scroll-behavior: auto;
+            }}
+
             *,
             *::before,
             *::after {{
-                scroll-behavior: auto !important;
+                animation: none !important;
                 transition: none !important;
             }}
         }}
 
         @media print {{
 
-            .screen-toolbar,
-            .table-search-wrap,
-            .section-toggle,
-            .back-to-top {{
+            .interactive-shell,
+            .interaction-panel,
+            .interactive-help,
+            .section-toggle {{
                 display: none !important;
             }}
 
-            .section.is-collapsed > :not(.section-title) {{
+            body.interactive-report {{
+                padding-top: 0 !important;
+            }}
+
+            .section.is-collapsed > :not(.section-title),
+            [data-department].is-filtered-out,
+            .department-chart.is-filtered-out,
+            .filterable-report-row.is-filtered-out {{
                 display: block !important;
+            }}
+
+            tr.filterable-report-row.is-filtered-out {{
+                display: table-row !important;
             }}
 
             .table-scroll {{
@@ -2305,32 +2397,47 @@ def build_html_report(
     </style>
 
 </head>
-<body>
+<body class="interactive-report">
 
-    <nav class="screen-toolbar" aria-label="Report navigation">
-        <div class="screen-nav">
-            <a href="#overview">Overview</a>
-            <a href="#departments">Departments</a>
-            <a href="#sellers">Top sellers</a>
-            <a href="#opportunities">Opportunities</a>
-        </div>
-        <div class="screen-actions">
-            <button type="button" id="expandAll">Expand all</button>
-            <button type="button" id="collapseAll">Collapse all</button>
-            <button type="button" id="printReport" class="primary-screen-action">Print / Save PDF</button>
-        </div>
-    </nav>
+    <div class="interactive-shell" role="region" aria-label="Interactive report controls">
+        <div class="interactive-toolbar">
+            <div class="interactive-brand">
+                <span class="live-dot" aria-hidden="true"></span>
+                <span>Interactive Report</span>
+            </div>
 
-    <div class="table-search-wrap">
-        <label class="table-search-label" for="reportTableSearch">Search report tables</label>
-        <input
-            class="table-search"
-            id="reportTableSearch"
-            type="search"
-            placeholder="Search products, brands or departments"
-            autocomplete="off"
-        >
-        <span class="search-status" id="searchStatus" aria-live="polite"></span>
+            <div class="interactive-tabs" role="group" aria-label="Department view">
+                <button class="department-filter" type="button" data-filter="all" aria-pressed="true">Overall</button>
+                <button class="department-filter" type="button" data-filter="footwear" aria-pressed="false">Footwear</button>
+                <button class="department-filter" type="button" data-filter="apparel" aria-pressed="false">Apparel</button>
+                <button class="department-filter" type="button" data-filter="accessories" aria-pressed="false">Accessories</button>
+            </div>
+
+            <div class="interactive-actions">
+                <button class="interactive-button" type="button" data-jump="overview">Overview</button>
+                <button class="interactive-button" type="button" data-jump="departments">Departments</button>
+                <button class="interactive-button" type="button" data-jump="opportunities">Opportunities</button>
+                <button class="interactive-button primary" id="printReport" type="button">Print / PDF</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="interaction-panel">
+        <div class="search-group">
+            <label for="reportSearch"><strong>Search</strong></label>
+            <input
+                class="report-search"
+                id="reportSearch"
+                type="search"
+                placeholder="Search Nike, Mens Apparel, product code…"
+                autocomplete="off"
+            >
+            <span class="interaction-status" id="searchStatus" aria-live="polite"></span>
+        </div>
+        <div class="active-view-message">
+            <span>Current view</span>
+            <span class="active-view-badge" id="activeViewBadge">Overall report</span>
+        </div>
     </div>
 
 
@@ -2386,7 +2493,7 @@ def build_html_report(
         </div>
     </div>
 
-    <div class="page page-break" id="overview">
+    <div class="page page-break screen-section" id="overview">
         <div class="header">
             <div><div class="title">{store_name} KPI Report</div><div class="subtitle">{report_title}</div></div>
             <div class="header-actions">
@@ -2429,7 +2536,7 @@ def build_html_report(
             </div>
         </div>
 
-        <div class="section store-insights-section" id="sellers">
+        <div class="section store-insights-section">
             <div class="store-insights-grid">
                 <div class="store-insight-panel sellers-panel">
                     <div class="section-title">Top Sellers — Store</div>
@@ -2446,7 +2553,7 @@ def build_html_report(
         <div class="footer">Generated automatically from Tableau exports and report data model.</div>
     </div>
 
-    <div class="page page-break" id="departments">
+    <div class="page page-break screen-section" id="departments">
         <div class="header">
             <div><div class="title">Department Detail</div><div class="subtitle">Footwear, Apparel and Accessories Performance</div></div>
             <div class="header-meta"><div><strong>Store:</strong> {store_name}</div><div><strong>Period:</strong> {report_period}</div></div>
@@ -2458,18 +2565,18 @@ def build_html_report(
             <div class="section-title">Subdepartment Contribution</div>
 
             <div class="chart-row">
-                <div class="chart-card compact-chart"><h3>{section_icon("Footwear", "chart-heading-icon")}<span>Footwear Contribution</span></h3><img src="../assets/charts/footwear_mix.png" alt="Footwear Contribution"></div>
-                <div class="chart-card compact-chart"><h3>{section_icon("Apparel", "chart-heading-icon")}<span>Apparel Contribution</span></h3><img src="../assets/charts/apparel_mix.png" alt="Apparel Contribution"></div>
+                <div class="chart-card compact-chart department-chart" data-department="footwear"><h3>{section_icon("Footwear", "chart-heading-icon")}<span>Footwear Contribution</span></h3><img src="../assets/charts/footwear_mix.png" alt="Footwear Contribution"></div>
+                <div class="chart-card compact-chart department-chart" data-department="apparel"><h3>{section_icon("Apparel", "chart-heading-icon")}<span>Apparel Contribution</span></h3><img src="../assets/charts/apparel_mix.png" alt="Apparel Contribution"></div>
             </div>
 
             <div class="chart-row single-chart-row">
-                <div class="chart-card compact-chart"><h3>{section_icon("Accessories", "chart-heading-icon")}<span>Accessories Contribution</span></h3><img src="../assets/charts/accessories_mix.png" alt="Accessories Contribution"></div>
+                <div class="chart-card compact-chart department-chart" data-department="accessories"><h3>{section_icon("Accessories", "chart-heading-icon")}<span>Accessories Contribution</span></h3><img src="../assets/charts/accessories_mix.png" alt="Accessories Contribution"></div>
             </div>
         </div>
         <div class="footer">Department sections generated automatically from Tableau brand exports.</div>
     </div>
 
-    <div class="page page-break">
+    <div class="page page-break screen-section" id="opportunities">
         <div class="header">
             <div><div class="title">Budget Gap Detail</div><div class="subtitle">Subdepartment performance with visual variance bars</div></div>
             <div class="header-meta"><div><strong>Store:</strong> {store_name}</div><div><strong>Period:</strong> {report_period}</div></div>
@@ -2482,7 +2589,7 @@ def build_html_report(
 
         <div class="section"><div class="section-title">Top Sellers by Subdepartment</div><div class="note-box">Top three products are shown for each Men’s, Women’s, Junior, Children’s/Infants and Accessories subdepartment where data is available.</div>{subdepartment_sellers_html}</div>
 
-        <div class="section" id="opportunities">
+        <div class="section">
             <div class="section-title">Top Opportunities Ranking</div>
             <div class="note-box">
                 Priority Score weighs budget gap severity by contribution to total sales. Larger and more underperforming subdepartments rank higher.
@@ -2495,26 +2602,35 @@ def build_html_report(
         <div class="footer">Opportunity ranking generated automatically from budget gap, contribution to total sales and priority score.</div>
     </div>
 
-    <button class="back-to-top" id="backToTop" type="button" aria-label="Back to overview">↑</button>
+    <div class="interactive-help">
+        <div class="help-card" id="helpCard">
+            <strong>How to interact</strong>
+            Choose a department to focus the detail pages, search across every
+            table, click a table heading to sort it, collapse sections using the
+            arrow beside their title, or jump directly to a report area.
+        </div>
+        <button class="help-trigger" id="helpTrigger" type="button" aria-expanded="false" aria-controls="helpCard" aria-label="Show interaction help">?</button>
+        <button class="back-to-top" id="backToTop" type="button" aria-label="Back to overview">↑</button>
+    </div>
 
     <script>
     (() => {{
         "use strict";
 
-        const sections = Array.from(document.querySelectorAll(".section"));
-        const tables = Array.from(document.querySelectorAll("table"));
-        const searchInput = document.getElementById("reportTableSearch");
-        const searchStatus = document.getElementById("searchStatus");
-        const backToTop = document.getElementById("backToTop");
+        const departmentNames = {{
+            all: "Overall report",
+            footwear: "Footwear",
+            apparel: "Apparel",
+            accessories: "Accessories"
+        }};
 
         const normalize = (value) =>
             String(value ?? "")
                 .trim()
                 .toLocaleLowerCase()
-                .replace(/[$,%]/g, "")
                 .replace(/\\s+/g, " ");
 
-        const numericValue = (value) => {{
+        const parseNumber = (value) => {{
             const cleaned = String(value ?? "")
                 .replace(/[$,%]/g, "")
                 .replace(/,/g, "")
@@ -2523,17 +2639,158 @@ def build_html_report(
             return Number.isFinite(parsed) ? parsed : null;
         }};
 
-        // Make report sections collapsible.
-        sections.forEach((section, index) => {{
+        const filterButtons = Array.from(document.querySelectorAll(".department-filter"));
+        const departmentElements = Array.from(document.querySelectorAll("[data-department]"))
+            .filter((element) => !element.classList.contains("department-filter"));
+        const departmentGrid = document.querySelector(".department-grid");
+        const activeViewBadge = document.getElementById("activeViewBadge");
+        const searchInput = document.getElementById("reportSearch");
+        const searchStatus = document.getElementById("searchStatus");
+        const tables = Array.from(document.querySelectorAll("table"));
+        const sections = Array.from(document.querySelectorAll(".section"));
+        const backToTop = document.getElementById("backToTop");
+        let activeDepartment = "all";
+
+        // Tag table rows with department context where their content makes it clear.
+        const departmentFromText = (text) => {{
+            const value = normalize(text);
+            if (value.includes("footwear")) return "footwear";
+            if (value.includes("apparel")) return "apparel";
+            if (value.includes("accessories")) return "accessories";
+            return "";
+        }};
+
+        tables.forEach((table) => {{
+            table.classList.add("interactive-table");
+
+            if (!table.parentElement?.classList.contains("table-scroll")) {{
+                const wrapper = document.createElement("div");
+                wrapper.className = "table-scroll";
+                table.parentNode.insertBefore(wrapper, table);
+                wrapper.appendChild(table);
+            }}
+
+            Array.from(table.tBodies).forEach((body) => {{
+                Array.from(body.rows).forEach((row) => {{
+                    row.classList.add("filterable-report-row");
+                    const inferredDepartment = departmentFromText(row.textContent);
+                    if (inferredDepartment) row.dataset.rowDepartment = inferredDepartment;
+                }});
+            }});
+
+            const body = table.tBodies[0];
+            if (!body) return;
+
+            const headers = Array.from(table.querySelectorAll("thead th"));
+            headers.forEach((header, columnIndex) => {{
+                header.dataset.sortable = "true";
+                header.setAttribute("role", "button");
+                header.tabIndex = 0;
+                header.setAttribute("aria-label", `Sort by ${{header.textContent.trim()}}`);
+
+                const sort = () => {{
+                    const direction = header.dataset.sortDirection === "asc" ? "desc" : "asc";
+                    headers.forEach((item) => delete item.dataset.sortDirection);
+                    header.dataset.sortDirection = direction;
+
+                    const rows = Array.from(body.rows);
+                    rows.sort((rowA, rowB) => {{
+                        const rawA = rowA.cells[columnIndex]?.textContent ?? "";
+                        const rawB = rowB.cells[columnIndex]?.textContent ?? "";
+                        const numA = parseNumber(rawA);
+                        const numB = parseNumber(rawB);
+                        const comparison =
+                            numA !== null && numB !== null
+                                ? numA - numB
+                                : rawA.localeCompare(rawB, undefined, {{
+                                    numeric: true,
+                                    sensitivity: "base"
+                                }});
+                        return direction === "asc" ? comparison : -comparison;
+                    }});
+
+                    rows.forEach((row) => body.appendChild(row));
+                }};
+
+                header.addEventListener("click", sort);
+                header.addEventListener("keydown", (event) => {{
+                    if (event.key === "Enter" || event.key === " ") {{
+                        event.preventDefault();
+                        sort();
+                    }}
+                }});
+            }});
+        }});
+
+        const applyView = () => {{
+            const query = normalize(searchInput?.value);
+            let visibleRows = 0;
+            let totalRows = 0;
+
+            departmentElements.forEach((element) => {{
+                const matchesDepartment =
+                    activeDepartment === "all" ||
+                    element.dataset.department === activeDepartment;
+                element.classList.toggle("is-filtered-out", !matchesDepartment);
+            }});
+
+            departmentGrid?.classList.toggle("filtered-view", activeDepartment !== "all");
+
+            document.querySelectorAll(".filterable-report-row").forEach((row) => {{
+                totalRows += 1;
+                const matchesSearch = !query || normalize(row.textContent).includes(query);
+                const rowDepartment = row.dataset.rowDepartment || "";
+                const matchesDepartment =
+                    activeDepartment === "all" ||
+                    !rowDepartment ||
+                    rowDepartment === activeDepartment;
+                const visible = matchesSearch && matchesDepartment;
+                row.classList.toggle("is-filtered-out", !visible);
+                if (visible) visibleRows += 1;
+            }});
+
+            if (searchStatus) {{
+                searchStatus.textContent =
+                    query || activeDepartment !== "all"
+                        ? `${{visibleRows}} of ${{totalRows}} rows shown`
+                        : `${{totalRows}} searchable rows`;
+            }}
+
+            if (activeViewBadge) {{
+                activeViewBadge.textContent = departmentNames[activeDepartment];
+            }}
+        }};
+
+        filterButtons.forEach((button) => {{
+            button.addEventListener("click", () => {{
+                activeDepartment = button.dataset.filter || "all";
+                filterButtons.forEach((item) =>
+                    item.setAttribute("aria-pressed", String(item === button))
+                );
+                applyView();
+
+                if (activeDepartment !== "all") {{
+                    document.getElementById("departments")?.scrollIntoView({{
+                        behavior: "smooth",
+                        block: "start"
+                    }});
+                }}
+            }});
+        }});
+
+        searchInput?.addEventListener("input", applyView);
+
+        // Each report section can be collapsed independently.
+        sections.forEach((section) => {{
             const title = section.querySelector(":scope > .section-title");
             if (!title) return;
 
             const button = document.createElement("button");
-            button.type = "button";
             button.className = "section-toggle";
-            button.setAttribute("aria-label", `Collapse ${{title.textContent.trim()}}`);
-            button.setAttribute("aria-expanded", "true");
+            button.type = "button";
             button.innerHTML = "⌄";
+            button.setAttribute("aria-expanded", "true");
+            button.setAttribute("aria-label", `Collapse ${{title.textContent.trim()}}`);
 
             button.addEventListener("click", () => {{
                 const collapsed = section.classList.toggle("is-collapsed");
@@ -2545,125 +2802,27 @@ def build_html_report(
             }});
 
             title.appendChild(button);
-            section.dataset.sectionIndex = String(index);
         }});
 
-        const setAllSections = (collapsed) => {{
-            sections.forEach((section) => {{
-                section.classList.toggle("is-collapsed", collapsed);
-                const button = section.querySelector(":scope > .section-title .section-toggle");
-                if (button) {{
-                    button.setAttribute("aria-expanded", String(!collapsed));
-                }}
+        document.querySelectorAll("[data-jump]").forEach((button) => {{
+            button.addEventListener("click", () => {{
+                document.getElementById(button.dataset.jump)?.scrollIntoView({{
+                    behavior: "smooth",
+                    block: "start"
+                }});
             }});
-        }};
+        }});
 
-        document.getElementById("expandAll")?.addEventListener("click", () => setAllSections(false));
-        document.getElementById("collapseAll")?.addEventListener("click", () => setAllSections(true));
         document.getElementById("printReport")?.addEventListener("click", () => {{
-            setAllSections(false);
+            sections.forEach((section) => section.classList.remove("is-collapsed"));
             window.print();
         }});
 
-        // Add local horizontal wrappers only where tables need them.
-        tables.forEach((table) => {{
-            if (!table.parentElement?.classList.contains("table-scroll")) {{
-                const wrapper = document.createElement("div");
-                wrapper.className = "table-scroll";
-                table.parentNode.insertBefore(wrapper, table);
-                wrapper.appendChild(table);
-            }}
-        }});
-
-        // Enable sorting on every table column.
-        tables.forEach((table) => {{
-            table.classList.add("sortable-table");
-            const headers = Array.from(table.querySelectorAll("thead th"));
-            const body = table.tBodies[0];
-            if (!body) return;
-
-            headers.forEach((header, columnIndex) => {{
-                header.dataset.sortable = "true";
-                header.tabIndex = 0;
-                header.setAttribute("role", "button");
-                header.setAttribute("aria-label", `Sort by ${{header.textContent.trim()}}`);
-
-                const sortColumn = () => {{
-                    const direction =
-                        header.dataset.sortDirection === "asc" ? "desc" : "asc";
-
-                    headers.forEach((item) => delete item.dataset.sortDirection);
-                    header.dataset.sortDirection = direction;
-
-                    const rows = Array.from(body.rows);
-                    rows.sort((rowA, rowB) => {{
-                        const rawA = rowA.cells[columnIndex]?.textContent ?? "";
-                        const rawB = rowB.cells[columnIndex]?.textContent ?? "";
-                        const numberA = numericValue(rawA);
-                        const numberB = numericValue(rawB);
-
-                        let comparison;
-                        if (numberA !== null && numberB !== null) {{
-                            comparison = numberA - numberB;
-                        }} else {{
-                            comparison = rawA.localeCompare(rawB, undefined, {{
-                                numeric: true,
-                                sensitivity: "base",
-                            }});
-                        }}
-                        return direction === "asc" ? comparison : -comparison;
-                    }});
-
-                    rows.forEach((row) => body.appendChild(row));
-                }};
-
-                header.addEventListener("click", sortColumn);
-                header.addEventListener("keydown", (event) => {{
-                    if (event.key === "Enter" || event.key === " ") {{
-                        event.preventDefault();
-                        sortColumn();
-                    }}
-                }});
-            }});
-        }});
-
-        // Search all data rows without altering the underlying report.
-        const applySearch = () => {{
-            const query = normalize(searchInput?.value);
-            let shown = 0;
-            let total = 0;
-
-            tables.forEach((table) => {{
-                Array.from(table.tBodies).forEach((body) => {{
-                    Array.from(body.rows).forEach((row) => {{
-                        total += 1;
-                        const matches = !query || normalize(row.textContent).includes(query);
-                        row.hidden = !matches;
-                        if (matches) shown += 1;
-                    }});
-                }});
-            }});
-
-            if (searchStatus) {{
-                searchStatus.textContent = query
-                    ? `${{shown}} of ${{total}} rows`
-                    : `${{total}} table rows`;
-            }}
-        }};
-
-        searchInput?.addEventListener("input", applySearch);
-        applySearch();
-
-        // Smooth in-report navigation while preserving keyboard focus.
-        document.querySelectorAll('.screen-nav a[href^="#"]').forEach((link) => {{
-            link.addEventListener("click", (event) => {{
-                const target = document.querySelector(link.getAttribute("href"));
-                if (!target) return;
-                event.preventDefault();
-                target.scrollIntoView({{ behavior: "smooth", block: "start" }});
-                target.setAttribute("tabindex", "-1");
-                target.focus({{ preventScroll: true }});
-            }});
+        const helpTrigger = document.getElementById("helpTrigger");
+        const helpCard = document.getElementById("helpCard");
+        helpTrigger?.addEventListener("click", () => {{
+            const open = helpCard?.classList.toggle("is-open") ?? false;
+            helpTrigger.setAttribute("aria-expanded", String(open));
         }});
 
         window.addEventListener("scroll", () => {{
@@ -2673,11 +2832,15 @@ def build_html_report(
         backToTop?.addEventListener("click", () => {{
             document.getElementById("overview")?.scrollIntoView({{
                 behavior: "smooth",
-                block: "start",
+                block: "start"
             }});
         }});
 
-        window.addEventListener("beforeprint", () => setAllSections(false));
+        window.addEventListener("beforeprint", () => {{
+            sections.forEach((section) => section.classList.remove("is-collapsed"));
+        }});
+
+        applyView();
     }})();
     </script>
 
