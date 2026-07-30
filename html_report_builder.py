@@ -2428,6 +2428,101 @@ def build_html_report(
             }}
         }}
 
+        /* Navigation stays completely out of the report until requested. */
+        body.interactive-report,
+        body.interactive-report.nav-collapsed {{
+            padding-left: 0;
+        }}
+
+        .interactive-shell,
+        .interactive-shell.is-collapsed {{
+            position: fixed;
+            inset: auto 18px 112px auto;
+            width: 42px;
+            height: auto;
+            padding: 0;
+            z-index: 3000;
+            overflow: visible;
+        }}
+
+        .interactive-shell .interactive-toolbar,
+        .interactive-shell.is-collapsed .interactive-toolbar {{
+            display: none;
+        }}
+
+        .interactive-shell.is-open {{
+            width: 42px;
+        }}
+
+        .interactive-shell.is-open .interactive-toolbar {{
+            position: absolute;
+            right: 0;
+            bottom: 48px;
+            display: grid;
+            width: 220px;
+            max-height: calc(100vh - 150px);
+            overflow-y: auto;
+            opacity: 1;
+            background: rgba(255, 255, 255, .95);
+            box-shadow: 0 10px 30px rgba(15, 39, 71, .16);
+        }}
+
+        .nav-toggle {{
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .88);
+        }}
+
+        @media screen and (max-width: 720px) {{
+            .interactive-shell,
+            .interactive-shell.is-collapsed,
+            .interactive-shell.is-open {{
+                inset: auto 10px 108px auto;
+                width: 42px;
+            }}
+
+            .interactive-shell.is-open .interactive-toolbar {{
+                right: 0;
+                bottom: 48px;
+                width: min(230px, calc(100vw - 24px));
+            }}
+
+            /* Keep wide analytical tables inside the report canvas even when
+               JavaScript is unavailable in a mobile document preview. */
+            .section,
+            .table-grid,
+            .seller-block,
+            .embedded-sellers {{
+                min-width: 0;
+                max-width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }}
+
+            .data-table,
+            .mini-table {{
+                width: 100%;
+                min-width: 620px;
+                font-size: 8px;
+            }}
+
+            .product-table {{ min-width: 560px; }}
+
+            .data-table th,
+            .data-table td,
+            .mini-table th,
+            .mini-table td {{
+                padding: 7px 6px;
+            }}
+
+            .page {{
+                width: calc(100% - 16px);
+                max-width: calc(100% - 16px);
+                overflow-x: hidden;
+            }}
+        }}
+
         @media (prefers-reduced-motion: reduce) {{
             html {{
                 scroll-behavior: auto;
@@ -2845,15 +2940,9 @@ def build_html_report(
         let activeDepartment = "all";
 
         const setNavigationState = (open) => {{
-            if (mobileNavigation.matches) {{
-                navigationRail?.classList.toggle("is-open", open);
-                navigationRail?.classList.remove("is-collapsed");
-                document.body.classList.remove("nav-collapsed");
-            }} else {{
-                navigationRail?.classList.toggle("is-collapsed", !open);
-                navigationRail?.classList.remove("is-open");
-                document.body.classList.toggle("nav-collapsed", !open);
-            }}
+            navigationRail?.classList.toggle("is-open", open);
+            navigationRail?.classList.toggle("is-collapsed", !open);
+            document.body.classList.remove("nav-collapsed");
             navigationToggle?.setAttribute("aria-expanded", String(open));
             navigationToggle?.setAttribute(
                 "aria-label",
@@ -2862,14 +2951,12 @@ def build_html_report(
         }};
 
         navigationToggle?.addEventListener("click", () => {{
-            const currentlyOpen = mobileNavigation.matches
-                ? navigationRail?.classList.contains("is-open")
-                : !navigationRail?.classList.contains("is-collapsed");
+            const currentlyOpen = navigationRail?.classList.contains("is-open");
             setNavigationState(!currentlyOpen);
         }});
 
         mobileNavigation.addEventListener?.("change", () => setNavigationState(false));
-        setNavigationState(!mobileNavigation.matches);
+        setNavigationState(false);
 
         // Tag table rows with department context where their content makes it clear.
         const departmentFromText = (text) => {{
