@@ -20,6 +20,7 @@ from typing import Dict, Tuple
 
 import pandas as pd
 import streamlit as st
+import streamlit.components.v1 as components
 from PIL import Image
 
 from upload_classifier import (
@@ -45,7 +46,7 @@ FAVICON_PATH = ASSETS_DIR / "ddi_favicon.png"
 EXAMPLE_ASSET_DIR = ASSETS_DIR / "example_report"
 SAMPLE_REPORT_PDF = EXAMPLE_ASSET_DIR / "Synthetic_Store_Performance_Report.pdf"
 SAMPLE_REPORT_HTML = EXAMPLE_ASSET_DIR / "Synthetic_Store_Performance_Report.html"
-REPORT_TEMPLATE_VERSION = "2026-07-27.10"
+REPORT_TEMPLATE_VERSION = "2026-07-30.1"
 
 try:
     PAGE_ICON = Image.open(FAVICON_PATH) if FAVICON_PATH.exists() else "📈"
@@ -1973,21 +1974,64 @@ with generate_tab:
         )
 
         st.markdown(
+            '<div class="download-format-title">'
+            '<span class="download-format-icon">📱</span>'
+            'View interactive report in the app'
+            '<span class="recommended-tag">Best on mobile</span>'
+            '</div>'
+            '<div class="format-note">'
+            'Opens the report in a browser-safe viewer so navigation, filters, '
+            'sorting, collapsing and zoom controls remain available on phones.'
+            '</div>',
+            unsafe_allow_html=True,
+        )
+
+        show_interactive_report = st.toggle(
+            "Show interactive report",
+            value=False,
+            key="show_interactive_report",
+            help=(
+                "Use this view on mobile. Downloaded HTML files opened in "
+                "WhatsApp, Files or email previews may have JavaScript disabled."
+            ),
+        )
+
+        if show_interactive_report:
+            html_report_data = st.session_state.get("html_report_bytes", b"")
+            if html_report_data:
+                if isinstance(html_report_data, bytes):
+                    interactive_html = html_report_data.decode("utf-8", errors="replace")
+                else:
+                    interactive_html = str(html_report_data)
+
+                components.html(
+                    interactive_html,
+                    height=900,
+                    scrolling=True,
+                )
+                st.caption(
+                    "The in-app viewer preserves report interaction on mobile. "
+                    "For printing, use the dedicated PDF download below."
+                )
+            else:
+                st.warning("The interactive report is not available in this session.")
+
+        st.markdown(
             '<div class="download-hero">'
             '<div class="download-hero-top">'
             '<div class="download-format-title"><span class="download-format-icon">🌐</span>Interactive HTML report</div>'
             '<span class="recommended-tag">Recommended</span>'
             '</div>'
-            '<div class="format-note">Best for screen viewing, sharing and mobile access.</div>'
+            '<div class="format-note">Standalone file for browser viewing, sharing and desktop access.</div>'
             '<div class="download-feature-list">'
-            '<span class="download-feature">Mobile friendly</span>'
+            '<span class="download-feature">Browser ready</span>'
             '<span class="download-feature">Interactive</span>'
             '<span class="download-feature">Easy to share</span>'
             '</div>',
             unsafe_allow_html=True,
         )
         st.download_button(
-            "Open interactive report",
+            "Download standalone HTML",
             data=st.session_state["html_report_bytes"],
             file_name=f"{base_name}.html",
             mime="text/html",
@@ -2056,4 +2100,3 @@ with generate_tab:
         with tab5:
             st.dataframe(outputs["traffic_summary"], use_container_width=True, hide_index=True)
             st.dataframe(outputs["hourly_traffic"], use_container_width=True, hide_index=True)
-
