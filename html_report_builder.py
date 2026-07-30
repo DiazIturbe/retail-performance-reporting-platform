@@ -679,9 +679,10 @@ def build_html_report(
 
     html = f"""
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{store_name} KPI Report</title>
 
     <style>
@@ -1732,7 +1733,450 @@ def build_html_report(
             @bottom-right {{ content: none; }}
         }}
 
+
+        /* ==========================================================
+           Interactive browser experience
+           Print/PDF retains the fixed Letter landscape layout below.
+           ========================================================== */
+
+        .screen-toolbar {{
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: min(100% - 24px, 1180px);
+            margin: 0 auto 14px;
+            padding: 9px 11px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            border: 1px solid rgba(148, 163, 184, .34);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, .94);
+            box-shadow: 0 8px 24px rgba(15, 39, 71, .10);
+            backdrop-filter: blur(12px);
+        }}
+
+        .screen-nav,
+        .screen-actions {{
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 6px;
+        }}
+
+        .screen-toolbar button,
+        .screen-toolbar a {{
+            min-height: 32px;
+            padding: 6px 10px;
+            border: 1px solid #d7e0ea;
+            border-radius: 8px;
+            background: linear-gradient(180deg, #ffffff, #f7f9fc);
+            color: var(--navy);
+            font: inherit;
+            font-size: 9px;
+            font-weight: 700;
+            line-height: 1;
+            text-decoration: none;
+            cursor: pointer;
+            transition: transform .16s ease, box-shadow .16s ease, background .16s ease;
+        }}
+
+        .screen-toolbar button:hover,
+        .screen-toolbar a:hover {{
+            transform: translateY(-1px);
+            background: #f0f5fb;
+            box-shadow: 0 5px 12px rgba(15, 39, 71, .08);
+        }}
+
+        .screen-toolbar button:focus-visible,
+        .screen-toolbar a:focus-visible,
+        .section-toggle:focus-visible,
+        .table-search:focus-visible {{
+            outline: 2px solid var(--blue);
+            outline-offset: 2px;
+        }}
+
+        .screen-toolbar .primary-screen-action {{
+            border-color: rgba(37, 99, 235, .26);
+            background: linear-gradient(180deg, #3478ee, #2563eb);
+            color: #fff;
+        }}
+
+        .table-search-wrap {{
+            width: min(100% - 24px, 1180px);
+            margin: 0 auto 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }}
+
+        .table-search-label {{
+            color: var(--muted);
+            font-size: 9px;
+            font-weight: 700;
+            white-space: nowrap;
+        }}
+
+        .table-search {{
+            width: min(420px, 100%);
+            min-height: 34px;
+            padding: 7px 10px;
+            border: 1px solid #d7e0ea;
+            border-radius: 9px;
+            background: rgba(255, 255, 255, .94);
+            color: var(--ink);
+            font: inherit;
+            font-size: 10px;
+        }}
+
+        .search-status {{
+            min-width: 88px;
+            color: var(--muted);
+            font-size: 8.5px;
+        }}
+
+        .section-title {{
+            position: relative;
+            padding-right: 30px;
+        }}
+
+        .section-toggle {{
+            position: absolute;
+            right: 0;
+            top: 50%;
+            width: 24px;
+            height: 24px;
+            transform: translateY(-50%);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #d7e0ea;
+            border-radius: 7px;
+            background: linear-gradient(180deg, #fff, #f6f8fb);
+            color: var(--navy);
+            font-size: 13px;
+            line-height: 1;
+            cursor: pointer;
+            transition: background .16s ease, transform .16s ease;
+        }}
+
+        .section-toggle:hover {{
+            background: #eef4fa;
+        }}
+
+        .section.is-collapsed > :not(.section-title) {{
+            display: none !important;
+        }}
+
+        .section.is-collapsed .section-toggle {{
+            transform: translateY(-50%) rotate(-90deg);
+        }}
+
+        .sortable-table th[data-sortable="true"] {{
+            position: relative;
+            padding-right: 4mm;
+            cursor: pointer;
+            user-select: none;
+        }}
+
+        .sortable-table th[data-sortable="true"]::after {{
+            content: "↕";
+            position: absolute;
+            right: 1.2mm;
+            color: #94a3b8;
+            font-size: 7px;
+        }}
+
+        .sortable-table th[data-sort-direction="asc"]::after {{
+            content: "↑";
+            color: var(--blue);
+        }}
+
+        .sortable-table th[data-sort-direction="desc"]::after {{
+            content: "↓";
+            color: var(--blue);
+        }}
+
+        .data-table tbody tr,
+        .mini-table tbody tr {{
+            transition: background .14s ease;
+        }}
+
+        .data-table tbody tr:hover td,
+        .mini-table tbody tr:hover td {{
+            background: #f1f6fb !important;
+        }}
+
+        .table-scroll {{
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 8px;
+            -webkit-overflow-scrolling: touch;
+        }}
+
+        .back-to-top {{
+            position: fixed;
+            right: 18px;
+            bottom: 18px;
+            z-index: 900;
+            width: 38px;
+            height: 38px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(37, 99, 235, .28);
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .95);
+            color: var(--blue);
+            box-shadow: 0 8px 20px rgba(15, 39, 71, .14);
+            font-size: 16px;
+            font-weight: 800;
+            cursor: pointer;
+        }}
+
+        .back-to-top.is-visible {{
+            display: inline-flex;
+        }}
+
+        @media screen and (max-width: 1100px) {{
+            body {{
+                padding: 12px 0 28px;
+            }}
+
+            .page {{
+                width: calc(100% - 24px);
+                min-height: auto;
+                margin: 0 auto 14px;
+                padding: 18px;
+            }}
+
+            .cover-page {{
+                min-height: 620px;
+            }}
+
+            .cover-main {{
+                grid-template-columns: minmax(0, 1fr) minmax(300px, .72fr);
+                gap: 24px;
+            }}
+
+            .cards {{
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }}
+
+            .metric-row {{
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }}
+
+            .brand-grid {{
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }}
+        }}
+
+        @media screen and (max-width: 760px) {{
+            html, body {{
+                font-size: 13px;
+                line-height: 1.45;
+            }}
+
+            body {{
+                background: #f2f5f8;
+                padding: 8px 0 22px;
+            }}
+
+            .screen-toolbar {{
+                position: static;
+                width: calc(100% - 16px);
+                margin-bottom: 8px;
+                align-items: stretch;
+                flex-direction: column;
+            }}
+
+            .screen-nav,
+            .screen-actions {{
+                width: 100%;
+            }}
+
+            .screen-toolbar button,
+            .screen-toolbar a {{
+                flex: 1 1 auto;
+                min-height: 38px;
+                font-size: 10px;
+            }}
+
+            .table-search-wrap {{
+                width: calc(100% - 16px);
+                margin-bottom: 8px;
+                align-items: stretch;
+                flex-direction: column;
+            }}
+
+            .table-search {{
+                width: 100%;
+                min-height: 40px;
+                font-size: 12px;
+            }}
+
+            .page {{
+                width: calc(100% - 16px);
+                margin-bottom: 10px;
+                padding: 14px;
+                border-radius: 10px;
+                box-shadow: 0 5px 16px rgba(15, 39, 71, .08);
+                overflow: visible;
+            }}
+
+            .cover-page {{
+                min-height: auto;
+            }}
+
+            .cover-content {{
+                padding: 22px 18px;
+            }}
+
+            .cover-main {{
+                display: block;
+                min-height: auto;
+            }}
+
+            .cover-title {{
+                max-width: none;
+                font-size: 29px;
+            }}
+
+            .cover-meta-grid {{
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }}
+
+            .cover-panels {{
+                display: none;
+            }}
+
+            .cover-bottom {{
+                margin-top: 30px;
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 8px;
+            }}
+
+            .header {{
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 8px;
+            }}
+
+            .header-meta {{
+                min-width: 0;
+                text-align: left;
+            }}
+
+            .cards,
+            .chart-row,
+            .table-grid,
+            .store-insights-grid,
+            .seller-grid,
+            .brand-grid {{
+                grid-template-columns: 1fr;
+            }}
+
+            .single-chart-row .chart-card {{
+                max-width: none;
+            }}
+
+            .card {{
+                min-height: 104px;
+                padding: 14px;
+            }}
+
+            .card-value {{
+                font-size: 22px;
+            }}
+
+            .metric-row {{
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                padding: 10px;
+            }}
+
+            .small-metric {{
+                min-height: 68px;
+                padding: 10px;
+            }}
+
+            .chart-card {{
+                padding: 12px;
+            }}
+
+            .chart-card img {{
+                max-height: none;
+            }}
+
+            .section {{
+                margin-top: 18px;
+            }}
+
+            .section-title {{
+                min-height: 34px;
+                margin-bottom: 8px;
+                font-size: 16px;
+                white-space: normal;
+            }}
+
+            .subsection-label,
+            .note-box,
+            .summary {{
+                font-size: 11px;
+            }}
+
+            .table-scroll {{
+                margin: 0 -2px;
+            }}
+
+            .data-table,
+            .mini-table {{
+                min-width: 680px;
+            }}
+
+            .product-table {{
+                min-width: 720px;
+            }}
+
+            .department-performance-table {{
+                min-width: 820px;
+            }}
+
+            .back-to-top {{
+                right: 10px;
+                bottom: 10px;
+            }}
+        }}
+
+        @media (prefers-reduced-motion: reduce) {{
+            *,
+            *::before,
+            *::after {{
+                scroll-behavior: auto !important;
+                transition: none !important;
+            }}
+        }}
+
         @media print {{
+
+            .screen-toolbar,
+            .table-search-wrap,
+            .section-toggle,
+            .back-to-top {{
+                display: none !important;
+            }}
+
+            .section.is-collapsed > :not(.section-title) {{
+                display: block !important;
+            }}
+
+            .table-scroll {{
+                overflow: visible !important;
+            }}
+
             * {{
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
@@ -1863,6 +2307,33 @@ def build_html_report(
 </head>
 <body>
 
+    <nav class="screen-toolbar" aria-label="Report navigation">
+        <div class="screen-nav">
+            <a href="#overview">Overview</a>
+            <a href="#departments">Departments</a>
+            <a href="#sellers">Top sellers</a>
+            <a href="#opportunities">Opportunities</a>
+        </div>
+        <div class="screen-actions">
+            <button type="button" id="expandAll">Expand all</button>
+            <button type="button" id="collapseAll">Collapse all</button>
+            <button type="button" id="printReport" class="primary-screen-action">Print / Save PDF</button>
+        </div>
+    </nav>
+
+    <div class="table-search-wrap">
+        <label class="table-search-label" for="reportTableSearch">Search report tables</label>
+        <input
+            class="table-search"
+            id="reportTableSearch"
+            type="search"
+            placeholder="Search products, brands or departments"
+            autocomplete="off"
+        >
+        <span class="search-status" id="searchStatus" aria-live="polite"></span>
+    </div>
+
+
     <div class="page cover-page">
         <div class="cover-accent"></div>
         <div class="cover-content">
@@ -1915,7 +2386,7 @@ def build_html_report(
         </div>
     </div>
 
-    <div class="page page-break">
+    <div class="page page-break" id="overview">
         <div class="header">
             <div><div class="title">{store_name} KPI Report</div><div class="subtitle">{report_title}</div></div>
             <div class="header-actions">
@@ -1958,7 +2429,7 @@ def build_html_report(
             </div>
         </div>
 
-        <div class="section store-insights-section">
+        <div class="section store-insights-section" id="sellers">
             <div class="store-insights-grid">
                 <div class="store-insight-panel sellers-panel">
                     <div class="section-title">Top Sellers — Store</div>
@@ -1975,7 +2446,7 @@ def build_html_report(
         <div class="footer">Generated automatically from Tableau exports and report data model.</div>
     </div>
 
-    <div class="page page-break">
+    <div class="page page-break" id="departments">
         <div class="header">
             <div><div class="title">Department Detail</div><div class="subtitle">Footwear, Apparel and Accessories Performance</div></div>
             <div class="header-meta"><div><strong>Store:</strong> {store_name}</div><div><strong>Period:</strong> {report_period}</div></div>
@@ -2011,7 +2482,7 @@ def build_html_report(
 
         <div class="section"><div class="section-title">Top Sellers by Subdepartment</div><div class="note-box">Top three products are shown for each Men’s, Women’s, Junior, Children’s/Infants and Accessories subdepartment where data is available.</div>{subdepartment_sellers_html}</div>
 
-        <div class="section">
+        <div class="section" id="opportunities">
             <div class="section-title">Top Opportunities Ranking</div>
             <div class="note-box">
                 Priority Score weighs budget gap severity by contribution to total sales. Larger and more underperforming subdepartments rank higher.
@@ -2023,6 +2494,193 @@ def build_html_report(
         <div class="section"><div class="section-title">Data Quality / Validation Checks</div>{validation_html}</div>
         <div class="footer">Opportunity ranking generated automatically from budget gap, contribution to total sales and priority score.</div>
     </div>
+
+    <button class="back-to-top" id="backToTop" type="button" aria-label="Back to overview">↑</button>
+
+    <script>
+    (() => {{
+        "use strict";
+
+        const sections = Array.from(document.querySelectorAll(".section"));
+        const tables = Array.from(document.querySelectorAll("table"));
+        const searchInput = document.getElementById("reportTableSearch");
+        const searchStatus = document.getElementById("searchStatus");
+        const backToTop = document.getElementById("backToTop");
+
+        const normalize = (value) =>
+            String(value ?? "")
+                .trim()
+                .toLocaleLowerCase()
+                .replace(/[$,%]/g, "")
+                .replace(/\\s+/g, " ");
+
+        const numericValue = (value) => {{
+            const cleaned = String(value ?? "")
+                .replace(/[$,%]/g, "")
+                .replace(/,/g, "")
+                .replace(/[^\\d.+-]/g, "");
+            const parsed = Number(cleaned);
+            return Number.isFinite(parsed) ? parsed : null;
+        }};
+
+        // Make report sections collapsible.
+        sections.forEach((section, index) => {{
+            const title = section.querySelector(":scope > .section-title");
+            if (!title) return;
+
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = "section-toggle";
+            button.setAttribute("aria-label", `Collapse ${{title.textContent.trim()}}`);
+            button.setAttribute("aria-expanded", "true");
+            button.innerHTML = "⌄";
+
+            button.addEventListener("click", () => {{
+                const collapsed = section.classList.toggle("is-collapsed");
+                button.setAttribute("aria-expanded", String(!collapsed));
+                button.setAttribute(
+                    "aria-label",
+                    `${{collapsed ? "Expand" : "Collapse"}} ${{title.textContent.trim()}}`
+                );
+            }});
+
+            title.appendChild(button);
+            section.dataset.sectionIndex = String(index);
+        }});
+
+        const setAllSections = (collapsed) => {{
+            sections.forEach((section) => {{
+                section.classList.toggle("is-collapsed", collapsed);
+                const button = section.querySelector(":scope > .section-title .section-toggle");
+                if (button) {{
+                    button.setAttribute("aria-expanded", String(!collapsed));
+                }}
+            }});
+        }};
+
+        document.getElementById("expandAll")?.addEventListener("click", () => setAllSections(false));
+        document.getElementById("collapseAll")?.addEventListener("click", () => setAllSections(true));
+        document.getElementById("printReport")?.addEventListener("click", () => {{
+            setAllSections(false);
+            window.print();
+        }});
+
+        // Add local horizontal wrappers only where tables need them.
+        tables.forEach((table) => {{
+            if (!table.parentElement?.classList.contains("table-scroll")) {{
+                const wrapper = document.createElement("div");
+                wrapper.className = "table-scroll";
+                table.parentNode.insertBefore(wrapper, table);
+                wrapper.appendChild(table);
+            }}
+        }});
+
+        // Enable sorting on every table column.
+        tables.forEach((table) => {{
+            table.classList.add("sortable-table");
+            const headers = Array.from(table.querySelectorAll("thead th"));
+            const body = table.tBodies[0];
+            if (!body) return;
+
+            headers.forEach((header, columnIndex) => {{
+                header.dataset.sortable = "true";
+                header.tabIndex = 0;
+                header.setAttribute("role", "button");
+                header.setAttribute("aria-label", `Sort by ${{header.textContent.trim()}}`);
+
+                const sortColumn = () => {{
+                    const direction =
+                        header.dataset.sortDirection === "asc" ? "desc" : "asc";
+
+                    headers.forEach((item) => delete item.dataset.sortDirection);
+                    header.dataset.sortDirection = direction;
+
+                    const rows = Array.from(body.rows);
+                    rows.sort((rowA, rowB) => {{
+                        const rawA = rowA.cells[columnIndex]?.textContent ?? "";
+                        const rawB = rowB.cells[columnIndex]?.textContent ?? "";
+                        const numberA = numericValue(rawA);
+                        const numberB = numericValue(rawB);
+
+                        let comparison;
+                        if (numberA !== null && numberB !== null) {{
+                            comparison = numberA - numberB;
+                        }} else {{
+                            comparison = rawA.localeCompare(rawB, undefined, {{
+                                numeric: true,
+                                sensitivity: "base",
+                            }});
+                        }}
+                        return direction === "asc" ? comparison : -comparison;
+                    }});
+
+                    rows.forEach((row) => body.appendChild(row));
+                }};
+
+                header.addEventListener("click", sortColumn);
+                header.addEventListener("keydown", (event) => {{
+                    if (event.key === "Enter" || event.key === " ") {{
+                        event.preventDefault();
+                        sortColumn();
+                    }}
+                }});
+            }});
+        }});
+
+        // Search all data rows without altering the underlying report.
+        const applySearch = () => {{
+            const query = normalize(searchInput?.value);
+            let shown = 0;
+            let total = 0;
+
+            tables.forEach((table) => {{
+                Array.from(table.tBodies).forEach((body) => {{
+                    Array.from(body.rows).forEach((row) => {{
+                        total += 1;
+                        const matches = !query || normalize(row.textContent).includes(query);
+                        row.hidden = !matches;
+                        if (matches) shown += 1;
+                    }});
+                }});
+            }});
+
+            if (searchStatus) {{
+                searchStatus.textContent = query
+                    ? `${{shown}} of ${{total}} rows`
+                    : `${{total}} table rows`;
+            }}
+        }};
+
+        searchInput?.addEventListener("input", applySearch);
+        applySearch();
+
+        // Smooth in-report navigation while preserving keyboard focus.
+        document.querySelectorAll('.screen-nav a[href^="#"]').forEach((link) => {{
+            link.addEventListener("click", (event) => {{
+                const target = document.querySelector(link.getAttribute("href"));
+                if (!target) return;
+                event.preventDefault();
+                target.scrollIntoView({{ behavior: "smooth", block: "start" }});
+                target.setAttribute("tabindex", "-1");
+                target.focus({{ preventScroll: true }});
+            }});
+        }});
+
+        window.addEventListener("scroll", () => {{
+            backToTop?.classList.toggle("is-visible", window.scrollY > 500);
+        }}, {{ passive: true }});
+
+        backToTop?.addEventListener("click", () => {{
+            document.getElementById("overview")?.scrollIntoView({{
+                behavior: "smooth",
+                block: "start",
+            }});
+        }});
+
+        window.addEventListener("beforeprint", () => setAllSections(false));
+    }})();
+    </script>
+
 </body>
 </html>
 """
