@@ -20,7 +20,6 @@ from typing import Dict, Tuple
 
 import pandas as pd
 import streamlit as st
-import streamlit.components.v1 as components
 from PIL import Image
 
 from upload_classifier import (
@@ -1345,6 +1344,35 @@ div[data-testid="stFileUploader"]{
     margin-bottom:.2rem!important;
 }
 
+/* Compact, balanced report-format cards. Download actions no longer stretch
+   into full-width bars on desktop. */
+.st-key-html_format_card,
+.st-key-pdf_format_card{
+    min-height:174px;
+    padding:.78rem .84rem!important;
+    border:1px solid rgba(148,163,184,.26)!important;
+    border-radius:14px!important;
+    background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(248,250,252,.92))!important;
+    box-shadow:0 5px 16px rgba(15,23,42,.045)!important;
+}
+.st-key-html_format_card{
+    border-color:rgba(37,99,235,.24)!important;
+    background:linear-gradient(145deg,rgba(248,251,255,.96),rgba(239,246,255,.90))!important;
+}
+.st-key-html_report_download,
+.st-key-pdf_report_download{
+    display:flex!important;
+    justify-content:flex-start!important;
+}
+.st-key-html_report_download button,
+.st-key-pdf_report_download button{
+    width:auto!important;
+    min-width:180px!important;
+    max-width:230px!important;
+    padding-left:1rem!important;
+    padding-right:1rem!important;
+}
+
 /* Mobile keeps clear hierarchy but avoids oversized blocks. */
 @media(max-width:620px){
     .block-container{
@@ -1375,6 +1403,16 @@ div[data-testid="stFileUploader"]{
     .download-hero,
     .pdf-download-row{
         padding:.62rem .68rem!important;
+    }
+    .st-key-html_format_card,
+    .st-key-pdf_format_card{
+        min-height:0;
+        padding:.68rem .72rem!important;
+    }
+    .st-key-html_report_download button,
+    .st-key-pdf_report_download button{
+        width:100%!important;
+        max-width:none!important;
     }
     .executive-panel{
         padding:.46rem!important;
@@ -1973,100 +2011,59 @@ with generate_tab:
             unsafe_allow_html=True,
         )
 
-        st.markdown(
-            '<div class="download-format-title">'
-            '<span class="download-format-icon">📱</span>'
-            'View interactive report in the app'
-            '<span class="recommended-tag">Best on mobile</span>'
-            '</div>'
-            '<div class="format-note">'
-            'Opens the report in a browser-safe viewer so navigation, filters, '
-            'sorting, collapsing and zoom controls remain available on phones.'
-            '</div>',
-            unsafe_allow_html=True,
-        )
+        html_column, pdf_column = st.columns(2, gap="medium")
 
-        show_interactive_report = st.toggle(
-            "Show interactive report",
-            value=False,
-            key="show_interactive_report",
-            help=(
-                "Use this view on mobile. Downloaded HTML files opened in "
-                "WhatsApp, Files or email previews may have JavaScript disabled."
-            ),
-        )
+        with html_column:
+            with st.container(border=True, key="html_format_card"):
+                st.markdown(
+                    '<div class="download-hero-top">'
+                    '<div class="download-format-title"><span class="download-format-icon">🌐</span>Interactive HTML report</div>'
+                    '<span class="recommended-tag">Recommended</span>'
+                    '</div>'
+                    '<div class="format-note">Standalone file for browser viewing, sharing and desktop access.</div>'
+                    '<div class="download-feature-list">'
+                    '<span class="download-feature">Browser ready</span>'
+                    '<span class="download-feature">Interactive</span>'
+                    '<span class="download-feature">Easy to share</span>'
+                    '</div>',
+                    unsafe_allow_html=True,
+                )
+                st.download_button(
+                    "Download HTML",
+                    data=st.session_state["html_report_bytes"],
+                    file_name=f"{base_name}.html",
+                    mime="text/html",
+                    use_container_width=False,
+                    key="html_report_download",
+                )
 
-        if show_interactive_report:
-            html_report_data = st.session_state.get("html_report_bytes", b"")
-            if html_report_data:
-                if isinstance(html_report_data, bytes):
-                    interactive_html = html_report_data.decode("utf-8", errors="replace")
+        with pdf_column:
+            with st.container(border=True, key="pdf_format_card"):
+                st.markdown(
+                    '<div class="download-format-title"><span class="download-format-icon">🖨️</span>Printable PDF report</div>'
+                    '<div class="format-note">Fixed layout for printing, email and archiving.</div>'
+                    '<div class="download-feature-list pdf-features">'
+                    '<span class="download-feature">Print ready</span>'
+                    '<span class="download-feature">Email friendly</span>'
+                    '<span class="download-feature">Fixed layout</span>'
+                    '</div>',
+                    unsafe_allow_html=True,
+                )
+                if pdf_data:
+                    st.download_button(
+                        "Download PDF",
+                        data=pdf_data,
+                        file_name=f"{base_name}.pdf",
+                        mime="application/pdf",
+                        use_container_width=False,
+                        key="pdf_report_download",
+                    )
+                elif pdf_error:
+                    st.error("PDF unavailable; the HTML report is ready.")
+                    with st.expander("PDF conversion details"):
+                        st.code(pdf_error)
                 else:
-                    interactive_html = str(html_report_data)
-
-                components.html(
-                    interactive_html,
-                    height=900,
-                    scrolling=True,
-                )
-                st.caption(
-                    "The in-app viewer preserves report interaction on mobile. "
-                    "For printing, use the dedicated PDF download below."
-                )
-            else:
-                st.warning("The interactive report is not available in this session.")
-
-        st.markdown(
-            '<div class="download-hero">'
-            '<div class="download-hero-top">'
-            '<div class="download-format-title"><span class="download-format-icon">🌐</span>Interactive HTML report</div>'
-            '<span class="recommended-tag">Recommended</span>'
-            '</div>'
-            '<div class="format-note">Standalone file for browser viewing, sharing and desktop access.</div>'
-            '<div class="download-feature-list">'
-            '<span class="download-feature">Browser ready</span>'
-            '<span class="download-feature">Interactive</span>'
-            '<span class="download-feature">Easy to share</span>'
-            '</div>',
-            unsafe_allow_html=True,
-        )
-        st.download_button(
-            "Download standalone HTML",
-            data=st.session_state["html_report_bytes"],
-            file_name=f"{base_name}.html",
-            mime="text/html",
-            use_container_width=True,
-            key="html_report_download",
-        )
-        st.markdown('</div>', unsafe_allow_html=True)
-
-        st.markdown(
-            '<div class="pdf-download-row">'
-            '<div class="download-format-title"><span class="download-format-icon">🖨️</span>Printable PDF report</div>'
-            '<div class="format-note">Fixed layout for printing, email and archiving.</div>'
-            '<div class="download-feature-list pdf-features">'
-            '<span class="download-feature">Print ready</span>'
-            '<span class="download-feature">Email friendly</span>'
-            '<span class="download-feature">Fixed layout</span>'
-            '</div>',
-            unsafe_allow_html=True,
-        )
-        if pdf_data:
-            st.download_button(
-                "Download printable PDF",
-                data=pdf_data,
-                file_name=f"{base_name}.pdf",
-                mime="application/pdf",
-                use_container_width=True,
-                key="pdf_report_download",
-            )
-        elif pdf_error:
-            st.error("PDF unavailable; the HTML report is ready.")
-            with st.expander("PDF conversion details"):
-                st.code(pdf_error)
-        else:
-            st.info("PDF export is temporarily unavailable.")
-        st.markdown('</div>', unsafe_allow_html=True)
+                    st.info("PDF export is temporarily unavailable.")
 
         with st.expander("Advanced downloads", expanded=False):
             st.caption("Technical workbooks for auditing, analysis and troubleshooting.")
