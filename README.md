@@ -1,5 +1,7 @@
 # Store Performance Reporting Platform
 
+### Executive Retail Analytics & KPI Reporting
+
 Transforming raw Tableau exports into executive-ready retail performance reports.
 
 **Python • Streamlit • Tableau • Pandas • HTML Reporting**
@@ -37,28 +39,58 @@ The result is a standardized reporting process that produces consistent, executi
 
 ---
 
+# Dashboard Overview
+
+The executive dashboard provides a high-level view of store performance, highlighting the most important KPIs, budget performance, sales contribution, and operational metrics in a single page.
+
+![Executive Dashboard](assets/dashboard-overview.png)
+
+---
+
+# Executive Summary
+
+Automatically generated executive summaries highlight the week's most important insights, allowing managers to understand store performance at a glance.
+
+![Executive Summary](assets/executive-summary.png)
+
+---
+
+# Department Analysis
+
+Detailed department and subdepartment analysis provides visibility into sales performance, budget attainment, product contribution, and operational KPIs.
+
+![Department Analysis](assets/department-analysis.png)
+
+---
+
+# Product Performance
+
+The platform automatically identifies the top-performing products for every department and subdepartment, supporting merchandising and inventory decisions.
+
+![Top Products](assets/top-products.png)
+
+---
+
 ## Workflow
 
 ```text
-Tableau Exports
-        │
-        ▼
-File Validation
-        │
-        ▼
-Data Processing
-        │
-        ▼
-KPI Calculations
-        │
-        ▼
-Charts & Visualizations
-        │
-        ▼
-Executive HTML Report
-        │
-        ▼
-Excel Output
+          Tableau Exports
+                  │
+                  ▼
+        Upload & Validation
+                  │
+                  ▼
+        Data Processing Engine
+                  │
+                  ▼
+       KPI Calculations & Metrics
+                  │
+      ┌───────────┴───────────┐
+      ▼                       ▼
+ HTML Executive Report   Excel Report
+                  │
+                  ▼
+      Management Decision Support
 ```
 
 ---
@@ -74,12 +106,6 @@ Excel Output
 - Brand performance summaries
 - Interactive HTML reporting
 - Excel report generation
-
----
-
-## Screenshots
-
-> *(Screenshots of the dashboard, executive report, and department analysis will be added here.)*
 
 ---
 
@@ -127,7 +153,7 @@ html_report_builder.py     HTML report generation
 
 ---
 
-## Future Improvements
+## Roadmap
 
 - PDF report generation
 - District performance comparisons
@@ -142,4 +168,4 @@ html_report_builder.py     HTML report generation
 
 **Diego Díaz Iturbe**
 
-Data Analytics | Automation | Cloud | GIS
+Data Analytics • Automation • Cloud • GIS
