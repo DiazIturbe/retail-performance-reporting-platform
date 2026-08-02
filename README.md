@@ -13,15 +13,12 @@ The **Store Performance Reporting Platform** automates the transformation of mul
 
 ---
 
-## 🚀 Quick Links
+## Quick Links
 
-🌐 **Live Application**  
+**Live Application**  
 https://retail-performance-reporting.streamlit.app/
 
-📂 **Repository**  
-https://github.com/DiazIturbe/store-performance-reporting-platform
-
-💼 **Portfolio Case Study** *(Coming Soon)*
+**Portfolio Case Study** *(Coming Soon)*
 
 ---
 
@@ -47,17 +44,19 @@ This repetitive workflow consumes valuable management time, increases the risk o
 
 The platform transforms a traditionally manual reporting workflow into an automated analytics pipeline that validates incoming data, consolidates multiple Tableau exports into a unified reporting model, calculates key business metrics, and produces executive-ready dashboards and reports.
 
-## Workflow
+---
+
+# Workflow
 
 ```mermaid
 flowchart TD
-    A[📥 Tableau Exports] --> B[🔍 File Identification & Validation]
-    B --> C[🗄️ Unified Reporting Dataset]
-    C --> D[📊 KPI Calculations & Analytics]
-    D --> E[📈 Dashboard & Visualization Generation]
-    E --> F[🌐 Interactive HTML Report]
-    E --> G[📄 Formatted Excel Report]
-    F --> H[🎯 Operational Decision Support]
+    A[Tableau Exports] --> B[File Identification & Validation]
+    B --> C[Unified Reporting Dataset]
+    C --> D[KPI Calculations & Analytics]
+    D --> E[Dashboard & Visualization Generation]
+    E --> F[Interactive HTML Report]
+    E --> G[Formatted Excel Report]
+    F --> H[Operational Decision Support]
     G --> H
 ```
 
@@ -193,8 +192,8 @@ The Store Performance Reporting Platform replaces a repetitive manual reporting 
 
 Building practical decision-support systems through analytics, automation, and visualization.
 
-🌐 Portfolio  
+**Portfolio**  
 https://impactomex.wixsite.com/eportfolio
 
-💼 LinkedIn  
-https://www.linkedin.com/in/diaziturbe/
+**LinkedIn**  
+https://www.linkedin.com/in/diaziturbe/<img width="1810" height="15698" alt="image" src="https://github.com/user-attachments/assets/2396495a-ce0c-42bb-950f-7d35d616f716" />
