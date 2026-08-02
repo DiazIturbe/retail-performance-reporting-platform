@@ -2,24 +2,32 @@
 
 ### Executive Retail Analytics & Decision Support
 
-Transforming raw Tableau exports into executive-ready retail performance intelligence.
+> Transforming raw Tableau exports into executive-ready retail performance intelligence.
 
-> **Automating the journey from operational data to executive decision-making.**
+![Python](https://img.shields.io/badge/Python-3.x-3776AB?logo=python&logoColor=white)
+![Streamlit](https://img.shields.io/badge/Streamlit-Live-FF4B4B?logo=streamlit&logoColor=white)
+![Status](https://img.shields.io/badge/Status-Active-success)
+![License](https://img.shields.io/badge/License-MIT-blue)
 
-**Python • Streamlit • Tableau • Pandas • HTML Reporting**
+The **Store Performance Reporting Platform** automates the transformation of multiple Tableau exports into standardized executive dashboards, interactive HTML reports, and formatted Excel reporting packages, enabling managers to spend less time preparing reports and more time making informed business decisions.
 
 ---
 
-## 🚀 Live Application
+## 🚀 Quick Links
 
-🌐 **Try the application:**  
+🌐 **Live Application**  
 https://retail-performance-reporting.streamlit.app/
 
+📂 **Repository**  
+https://github.com/DiazIturbe/store-performance-reporting-platform
+
+💼 **Portfolio Case Study** *(Coming Soon)*
+
 ---
 
-## Executive Summary
+# Executive Summary
 
-The **Store Performance Reporting Platform** is an end-to-end reporting solution that transforms raw Tableau exports into executive-ready retail performance reports.
+The Store Performance Reporting Platform is an end-to-end retail analytics solution that transforms raw operational data into executive-ready performance reports.
 
 Developed to eliminate repetitive reporting work, the platform automates data validation, KPI calculations, visualization, and report generation, allowing managers to focus on interpreting results rather than preparing reports.
 
@@ -27,7 +35,7 @@ The result is a standardized reporting workflow that delivers consistent, accura
 
 ---
 
-## The Challenge
+# The Challenge
 
 Every reporting cycle requires managers to download multiple Tableau exports, validate each dataset, consolidate information, calculate KPIs, format reports, and prepare executive summaries.
 
@@ -35,11 +43,11 @@ This repetitive workflow consumes valuable management time, increases the risk o
 
 ---
 
-## The Solution
+# The Solution
 
 The platform transforms a traditionally manual reporting workflow into an automated analytics pipeline.
 
-**Workflow**
+## Workflow
 
 ```text
           Tableau Exports
@@ -61,7 +69,7 @@ The platform transforms a traditionally manual reporting workflow into an automa
     Operational Decision Support
 ```
 
-By automating each stage of the reporting process, the platform produces standardized executive reports while significantly reducing manual effort.
+By automating every stage of the reporting process, the platform produces standardized executive reports while significantly reducing manual effort and improving reporting consistency.
 
 ---
 
@@ -97,7 +105,7 @@ Supports merchandising decisions by automatically identifying the highest-perfor
 
 ---
 
-## Business Impact
+# Business Impact
 
 The Store Performance Reporting Platform replaces a repetitive manual reporting workflow with a standardized analytics pipeline that delivers consistent, executive-ready insights.
 
@@ -108,14 +116,15 @@ The Store Performance Reporting Platform replaces a repetitive manual reporting 
 - Improved reporting consistency
 - Executive-ready dashboards
 - Better operational decision support
-- Reduced manual processing and reporting effort
+- Reduced manual reporting effort
 
 ---
 
-## Key Capabilities
+# Key Capabilities
 
 - Automated Tableau export validation
 - Guided upload workflow
+- Unified reporting data model
 - Executive KPI dashboard
 - Department performance analysis
 - Budget performance monitoring
@@ -126,26 +135,26 @@ The Store Performance Reporting Platform replaces a repetitive manual reporting 
 
 ---
 
-## Technology Stack
+# Technology Stack
 
 | Layer | Technologies |
 |--------|--------------|
 | **Backend** | Python |
 | **User Interface** | Streamlit |
-| **Data Processing** | Pandas, NumPy |
+| **Data Processing** | Pandas · NumPy |
 | **Visualization** | Matplotlib |
-| **Reporting** | HTML, OpenPyXL, XlsxWriter |
+| **Reporting** | HTML · OpenPyXL · XlsxWriter |
 
 ---
 
-## Repository Structure
+# Repository Structure
 
 ```text
 📁 app.py
    Main Streamlit application
 
 📁 upload_classifier.py
-   Upload validation
+   Upload validation and file identification
 
 📁 vm_report_data_model_v2.py
    Data model construction
@@ -165,26 +174,26 @@ The Store Performance Reporting Platform replaces a repetitive manual reporting 
 
 ---
 
-## Roadmap
+# Roadmap
 
-### Next Release
+## Next Release
 
-- Improved PDF publishing
-- Historical reporting
-- Interactive filtering
+- Enhanced PDF publishing
+- Historical trend analysis
+- Interactive report filtering
 - Performance optimization
 
-### Future Vision
+## Future Vision
 
 - District performance comparisons
-- Multi-store reporting
-- Configurable KPI templates
+- Multi-store analytics
 - Scheduled report generation
 - Cloud deployment
+- Configurable KPI templates
 
 ---
 
-## About the Author
+# About the Author
 
 **Diego Díaz Iturbe**
 
@@ -192,6 +201,8 @@ The Store Performance Reporting Platform replaces a repetitive manual reporting 
 
 Building practical decision-support systems through analytics, automation, and visualization.
 
-🌐 Portfolio: https://impactomex.wixsite.com/eportfolio
+🌐 Portfolio  
+https://impactomex.wixsite.com/eportfolio
 
-💼 LinkedIn: *(Add your LinkedIn URL here)*
+💼 LinkedIn  
+https://www.linkedin.com/in/diaziturbe/
