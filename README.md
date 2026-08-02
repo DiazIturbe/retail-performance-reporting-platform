@@ -45,31 +45,23 @@ This repetitive workflow consumes valuable management time, increases the risk o
 
 # The Solution
 
-The platform transforms a traditionally manual reporting workflow into an automated analytics pipeline.
+The platform transforms a traditionally manual reporting workflow into an automated analytics pipeline that validates incoming data, consolidates multiple Tableau exports into a unified reporting model, calculates key business metrics, and produces executive-ready dashboards and reports.
 
 ## Workflow
 
-```text
-          Tableau Exports
-                  │
-                  ▼
-        Upload & Validation
-                  │
-                  ▼
-      Unified Reporting Dataset
-                  │
-                  ▼
-       KPI Calculations & Metrics
-                  │
-      ┌───────────┴───────────┐
-      ▼                       ▼
- HTML Executive Report   Excel Report
-                  │
-                  ▼
-    Operational Decision Support
+```mermaid
+flowchart TD
+    A[📥 Tableau Exports] --> B[🔍 File Identification & Validation]
+    B --> C[🗄️ Unified Reporting Dataset]
+    C --> D[📊 KPI Calculations & Analytics]
+    D --> E[📈 Dashboard & Visualization Generation]
+    E --> F[🌐 Interactive HTML Report]
+    E --> G[📄 Formatted Excel Report]
+    F --> H[🎯 Operational Decision Support]
+    G --> H
 ```
 
-By automating every stage of the reporting process, the platform produces standardized executive reports while significantly reducing manual effort and improving reporting consistency.
+From raw operational data to executive decision support, every stage of the reporting process is automated to improve consistency, reduce manual effort, and deliver reliable business insights in minutes.
 
 ---
 
