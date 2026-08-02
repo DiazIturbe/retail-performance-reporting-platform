@@ -63,7 +63,7 @@ Detailed department and subdepartment analysis provides visibility into sales pe
 
 ---
 
-# Product Performance
+# Top Products & Brand Performance
 
 The platform automatically identifies the top-performing products for every department and subdepartment, supporting merchandising and inventory decisions.
 
@@ -138,29 +138,41 @@ The platform automatically identifies the top-performing products for every depa
 ## Repository Structure
 
 ```text
-app.py                     Main Streamlit application
+📁 app.py
+Main Streamlit application
 
-upload_classifier.py       Upload validation
+📁 upload_classifier.py
+Upload validation
 
-vm_report_data_model_v2.py Data model construction
+📁 vm_report_data_model_v2.py
+Data model construction
 
-report_calculations.py     KPI calculations
+📁 report_calculations.py
+KPI calculations
 
-chart_builder.py           Chart generation
+📁 chart_builder.py
+Chart generation
 
-html_report_builder.py     HTML report generation
+📁 html_report_builder.py
+HTML report generation
 ```
 
 ---
 
 ## Roadmap
 
-- PDF report generation
-- District performance comparisons
+- PDF report enhancements
 - Historical trend analysis
-- Forecasting capabilities
-- Azure cloud deployment
-- Interactive filtering and drill-down
+- District performance comparisons
+- Interactive filtering
+- Performance optimization
+- Configurable KPI templates
+- PDF report enhancements
+- Historical trend analysis
+- District performance comparisons
+- Interactive filtering
+- Performance optimization
+- Configurable KPI templates
 
 ---
 
