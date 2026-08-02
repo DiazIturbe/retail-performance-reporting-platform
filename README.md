@@ -43,7 +43,7 @@ The result is a standardized reporting process that produces consistent, executi
 
 The executive dashboard provides a high-level view of store performance, highlighting the most important KPIs, budget performance, sales contribution, and operational metrics in a single page.
 
-![Executive Dashboard](assets/dashboard-overview.png)
+![Executive Dashboard](assets/readme/executive-dashboard.png)
 
 ---
 
@@ -51,7 +51,7 @@ The executive dashboard provides a high-level view of store performance, highlig
 
 Automatically generated executive summaries highlight the week's most important insights, allowing managers to understand store performance at a glance.
 
-![Executive Summary](assets/executive-summary.png)
+![Executive Summary](assets/readme/executive-summary.png)
 
 ---
 
@@ -59,7 +59,7 @@ Automatically generated executive summaries highlight the week's most important 
 
 Detailed department and subdepartment analysis provides visibility into sales performance, budget attainment, product contribution, and operational KPIs.
 
-![Department Analysis](assets/department-analysis.png)
+![Department Analysis](assets/readme/department-analysis.png)
 
 ---
 
@@ -67,7 +67,7 @@ Detailed department and subdepartment analysis provides visibility into sales pe
 
 The platform automatically identifies the top-performing products for every department and subdepartment, supporting merchandising and inventory decisions.
 
-![Top Products](assets/top-products.png)
+![Product Performance](assets/readme/product-performance.png)
 
 ---
 
