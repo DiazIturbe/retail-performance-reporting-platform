@@ -196,4 +196,4 @@ Building practical decision-support systems through analytics, automation, and v
 https://impactomex.wixsite.com/eportfolio
 
 **LinkedIn**  
-https://www.linkedin.com/in/diaziturbe/<img width="1810" height="15698" alt="image" src="https://github.com/user-attachments/assets/2396495a-ce0c-42bb-950f-7d35d616f716" />
+https://www.linkedin.com/in/diaziturbe
