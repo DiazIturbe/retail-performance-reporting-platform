@@ -1,77 +1,45 @@
 # Store Performance Reporting Platform
 
-### Executive Retail Analytics & KPI Reporting
+### Executive Retail Analytics & Decision Support
 
-Transforming raw Tableau exports into executive-ready retail performance reports.
+Transforming raw Tableau exports into executive-ready retail performance intelligence.
+
+> **Automating the journey from operational data to executive decision-making.**
 
 **Python • Streamlit • Tableau • Pandas • HTML Reporting**
 
 ---
 
+## 🚀 Live Application
+
+🌐 **Try the application:**  
+https://retail-performance-reporting.streamlit.app/
+
+---
+
 ## Executive Summary
 
-The **Store Performance Reporting Platform** automates the creation of weekly retail performance reports by transforming multiple Tableau exports into a single executive-ready dashboard.
+The **Store Performance Reporting Platform** is an end-to-end reporting solution that transforms raw Tableau exports into executive-ready retail performance reports.
 
-Designed for retail operations, the platform streamlines data validation, KPI calculations, report generation, and visualization, allowing managers to focus on decision-making rather than manual reporting.
+Developed to eliminate repetitive reporting work, the platform automates data validation, KPI calculations, visualization, and report generation, allowing managers to focus on interpreting results rather than preparing reports.
+
+The result is a standardized reporting workflow that delivers consistent, accurate, and decision-ready business insights in minutes.
 
 ---
 
 ## The Challenge
 
-Weekly retail reporting often requires manually downloading, validating, and consolidating multiple Tableau exports before producing management reports.
+Every reporting cycle requires managers to download multiple Tableau exports, validate each dataset, consolidate information, calculate KPIs, format reports, and prepare executive summaries.
 
-This repetitive process is time-consuming, prone to errors, and makes it difficult to maintain a consistent reporting standard across reporting periods.
+This repetitive workflow consumes valuable management time, increases the risk of manual errors, and makes it difficult to maintain consistent reporting standards across reporting periods.
 
 ---
 
 ## The Solution
 
-The Store Performance Reporting Platform automates the reporting workflow by:
+The platform transforms a traditionally manual reporting workflow into an automated analytics pipeline.
 
-- Validating uploaded Tableau exports
-- Consolidating multiple datasets into a unified data model
-- Calculating operational KPIs
-- Generating executive dashboards
-- Producing interactive HTML reports
-- Exporting formatted Excel reports
-
-The result is a standardized reporting process that produces consistent, executive-ready outputs in minutes.
-
----
-
-# Dashboard Overview
-
-The executive dashboard provides a high-level view of store performance, highlighting the most important KPIs, budget performance, sales contribution, and operational metrics in a single page.
-
-![Executive Dashboard](assets/readme/executive_dashboard.png)
-
----
-
-# Executive Summary
-
-Automatically generated executive summaries highlight the week's most important insights, allowing managers to understand store performance at a glance.
-
-![Executive Summary](assets/readme/executive_summary.png)
-
----
-
-# Department Analysis
-
-Detailed department and subdepartment analysis provides visibility into sales performance, budget attainment, product contribution, and operational KPIs.
-
-![Department Analysis](assets/readme/department_analysis.png)
-
----
-
-# Top Products & Brand Performance
-
-The platform automatically identifies the top-performing products for every department and subdepartment, supporting merchandising and inventory decisions.
-
-![Product Performance](assets/readme/brands_products.png)
-
----
-
-## Workflow
+**Workflow**
 
 ```text
           Tableau Exports
@@ -80,7 +48,7 @@ The platform automatically identifies the top-performing products for every depa
         Upload & Validation
                   │
                   ▼
-        Data Processing Engine
+      Unified Reporting Dataset
                   │
                   ▼
        KPI Calculations & Metrics
@@ -90,8 +58,57 @@ The platform automatically identifies the top-performing products for every depa
  HTML Executive Report   Excel Report
                   │
                   ▼
-      Management Decision Support
+    Operational Decision Support
 ```
+
+By automating each stage of the reporting process, the platform produces standardized executive reports while significantly reducing manual effort.
+
+---
+
+# Executive Dashboard
+
+Provides executives with an immediate overview of sales performance, budget attainment, traffic, conversion, and operational KPIs.
+
+![Executive Dashboard](assets/readme/executive_dashboard.png)
+
+---
+
+# Executive Summary
+
+Automatically generated narrative highlighting the week's most significant operational insights and performance trends.
+
+![Executive Summary](assets/readme/executive_summary.png)
+
+---
+
+# Department Analysis
+
+Enables managers to identify high-performing departments, budget gaps, and operational opportunities through detailed KPI analysis.
+
+![Department Analysis](assets/readme/department_analysis.png)
+
+---
+
+# Product & Brand Performance
+
+Supports merchandising decisions by automatically identifying the highest-performing brands and products across departments and subdepartments.
+
+![Product Performance](assets/readme/brands_products.png)
+
+---
+
+## Business Impact
+
+The Store Performance Reporting Platform replaces a repetitive manual reporting workflow with a standardized analytics pipeline that delivers consistent, executive-ready insights.
+
+### Benefits
+
+- Reduced report preparation time
+- Standardized KPI calculations
+- Improved reporting consistency
+- Executive-ready dashboards
+- Better operational decision support
+- Reduced manual processing and reporting effort
 
 ---
 
@@ -100,38 +117,24 @@ The platform automatically identifies the top-performing products for every depa
 - Automated Tableau export validation
 - Guided upload workflow
 - Executive KPI dashboard
-- Department-level performance analysis
-- Budget gap analysis
+- Department performance analysis
+- Budget performance monitoring
 - Sales mix visualization
-- Brand performance summaries
+- Brand performance analytics
 - Interactive HTML reporting
-- Excel report generation
+- Formatted Excel report generation
 
 ---
 
 ## Technology Stack
 
-### Programming
-
-- Python
-
-### Frameworks
-
-- Streamlit
-
-### Data Processing
-
-- Pandas
-- NumPy
-
-### Visualization
-
-- Matplotlib
-
-### Excel Reporting
-
-- OpenPyXL
-- XlsxWriter
+| Layer | Technologies |
+|--------|--------------|
+| **Backend** | Python |
+| **User Interface** | Streamlit |
+| **Data Processing** | Pandas, NumPy |
+| **Visualization** | Matplotlib |
+| **Reporting** | HTML, OpenPyXL, XlsxWriter |
 
 ---
 
@@ -139,45 +142,56 @@ The platform automatically identifies the top-performing products for every depa
 
 ```text
 📁 app.py
-Main Streamlit application
+   Main Streamlit application
 
 📁 upload_classifier.py
-Upload validation
+   Upload validation
 
 📁 vm_report_data_model_v2.py
-Data model construction
+   Data model construction
 
 📁 report_calculations.py
-KPI calculations
+   KPI calculations
 
 📁 chart_builder.py
-Chart generation
+   Chart generation
 
 📁 html_report_builder.py
-HTML report generation
+   HTML report generation
+
+📁 report_generator.py
+   Coordinates the reporting pipeline
 ```
 
 ---
 
 ## Roadmap
 
-- PDF report enhancements
-- Historical trend analysis
-- District performance comparisons
+### Next Release
+
+- Improved PDF publishing
+- Historical reporting
 - Interactive filtering
 - Performance optimization
-- Configurable KPI templates
-- PDF report enhancements
-- Historical trend analysis
+
+### Future Vision
+
 - District performance comparisons
-- Interactive filtering
-- Performance optimization
+- Multi-store reporting
 - Configurable KPI templates
+- Scheduled report generation
+- Cloud deployment
 
 ---
 
-## Author
+## About the Author
 
 **Diego Díaz Iturbe**
 
-Data Analytics • Automation • Cloud • GIS
+**Data Analytics • Automation • Cloud • GIS**
+
+Building practical decision-support systems through analytics, automation, and visualization.
+
+🌐 Portfolio: https://impactomex.wixsite.com/eportfolio
+
+💼 LinkedIn: *(Add your LinkedIn URL here)*
