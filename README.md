@@ -4,8 +4,6 @@
 
 > Transforming raw Tableau exports into executive-ready retail performance intelligence.
 
-![Header](assets/readme/KPI Reporting Platform header.png)
-
 ![Diagram](assets/readme/KPI Reporting Platform header.png)
 
 ![Python](https://img.shields.io/badge/Python-3.x-3776AB?logo=python&logoColor=white)
