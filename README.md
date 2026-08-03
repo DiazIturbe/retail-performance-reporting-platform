@@ -9,7 +9,7 @@
 ![Status](https://img.shields.io/badge/Status-Active-success)
 ![License](https://img.shields.io/badge/License-MIT-blue)
 
-The **Store Performance Reporting Platform** automates the transformation of multiple Tableau exports into standardized executive dashboards, interactive HTML reports, and formatted Excel reporting packages, enabling managers to spend less time preparing reports and more time making informed business decisions.
+The **Store Performance Reporting Platform** transforms multiple Tableau exports into executive dashboards, interactive HTML reports, and formatted Excel reporting packages, allowing retail managers and Visual Merchandisers to spend less time preparing reports and more time making merchandising decisions.
 
 ---
 
@@ -22,27 +22,84 @@ https://retail-performance-reporting.streamlit.app/
 
 ---
 
+## At a Glance
+
+| Metric | Value |
+|--------|------:|
+| Development Status | Production |
+| Report Preparation | **45 min → ~5 min** |
+| Time Reduction | **≈89%** |
+| Input Sources | Multiple Tableau Exports |
+| Outputs | Interactive HTML + Excel Reports |
+| Built With | Python • Streamlit • Pandas |
+
+---
+
 # Executive Summary
 
-The Store Performance Reporting Platform is an end-to-end retail analytics solution that transforms raw operational data into executive-ready performance reports.
+The **Store Performance Reporting Platform** was created to solve a problem I experienced every Monday as a **Visual Merchandising Manager**.
 
-Developed to eliminate repetitive reporting work, the platform automates data validation, KPI calculations, visualization, and report generation, allowing managers to focus on interpreting results rather than preparing reports.
+Before planning the week's merchandising priorities, I first had to prepare a performance report by downloading multiple Tableau exports, validating datasets, consolidating information, calculating KPIs, formatting dashboards, and summarizing results for store leadership.
 
-The result is a standardized reporting workflow that delivers consistent, accurate, and decision-ready business insights in minutes.
+Preparing the report took approximately **45 minutes**, but the report itself wasn't the goal.
+
+The goal was making better merchandising decisions.
+
+I developed this platform to eliminate repetitive report preparation so that both I—and eventually other Visual Merchandisers—could spend more time analyzing store performance and less time assembling data.
+
+Today the same process takes approximately **5 minutes**, producing standardized executive reports ready for weekly planning and leadership discussions.
 
 ---
 
 # The Challenge
 
-Every reporting cycle requires managers to download multiple Tableau exports, validate each dataset, consolidate information, calculate KPIs, format reports, and prepare executive summaries.
+Weekly retail reporting is essential for planning merchandising priorities, communicating store performance to leadership, and identifying departments requiring attention.
 
-This repetitive workflow consumes valuable management time, increases the risk of manual errors, and makes it difficult to maintain consistent reporting standards across reporting periods.
+However, preparing those reports manually required:
+
+- Downloading multiple Tableau exports
+- Validating every dataset
+- Consolidating information
+- Calculating KPIs
+- Formatting executive dashboards
+- Writing performance summaries
+
+Although these activities were necessary, they delayed the most valuable part of the process:
+
+**Understanding store performance and deciding what actions to take.**
 
 ---
 
 # The Solution
 
-The platform transforms a traditionally manual reporting workflow into an automated analytics pipeline that validates incoming data, consolidates multiple Tableau exports into a unified reporting model, calculates key business metrics, and produces executive-ready dashboards and reports.
+The platform transforms a repetitive reporting workflow into an automated analytics pipeline.
+
+Instead of manually preparing reports, users simply upload the required Tableau exports while the application automatically:
+
+- Identifies and validates every file
+- Builds a unified reporting dataset
+- Calculates operational KPIs
+- Generates executive dashboards
+- Produces interactive HTML reports
+- Exports formatted Excel reports
+
+The result is a standardized reporting workflow that consistently delivers decision-ready insights in minutes.
+
+---
+
+# Business Impact
+
+The platform transformed a repetitive reporting task into a standardized decision-support workflow.
+
+### Results
+
+- Reduced weekly report preparation from **approximately 45 minutes to around 5 minutes** (≈89% reduction)
+- Standardized KPI calculations and reporting across stores
+- Improved consistency of executive reports
+- Reduced manual data preparation
+- Increased time available for merchandising planning
+- Improved communication with store leadership
+- Better operational decision support
 
 ---
 
@@ -50,23 +107,23 @@ The platform transforms a traditionally manual reporting workflow into an automa
 
 ```mermaid
 flowchart TD
-    A[Tableau Exports] --> B[File Identification & Validation]
+    A[Tableau Exports] --> B[Automatic File Validation]
     B --> C[Unified Reporting Dataset]
     C --> D[KPI Calculations & Analytics]
     D --> E[Dashboard & Visualization Generation]
     E --> F[Interactive HTML Report]
     E --> G[Formatted Excel Report]
-    F --> H[Operational Decision Support]
+    F --> H[Weekly Merchandising Planning]
     G --> H
 ```
 
-From raw operational data to executive decision support, every stage of the reporting process is automated to improve consistency, reduce manual effort, and deliver reliable business insights in minutes.
+From raw operational data to weekly merchandising planning, every stage of the reporting process is automated to improve consistency, reduce preparation time, and support better business decisions.
 
 ---
 
 # Executive Dashboard
 
-Provides executives with an immediate overview of sales performance, budget attainment, traffic, conversion, and operational KPIs.
+The executive dashboard provides an immediate overview of sales performance, budget attainment, conversion, traffic, and operational KPIs, allowing managers to quickly assess overall store performance.
 
 ![Executive Dashboard](assets/readme/executive_dashboard.png)
 
@@ -74,53 +131,38 @@ Provides executives with an immediate overview of sales performance, budget atta
 
 # Executive Summary
 
-Automatically generated narrative highlighting the week's most significant operational insights and performance trends.
+Automatically generated executive summaries highlight the week's most significant operational insights, making it easier to communicate store performance with leadership.
 
 ![Executive Summary](assets/readme/executive_summary.png)
 
 ---
 
-# Department Analysis
+# Department Performance
 
-Enables managers to identify high-performing departments, budget gaps, and operational opportunities through detailed KPI analysis.
+Detailed department analysis highlights sales performance, budget attainment, contribution, and operational KPIs, helping managers identify priorities for the upcoming week.
 
 ![Department Analysis](assets/readme/department_analysis.png)
 
 ---
 
-# Product & Brand Performance
+# Brand & Product Insights
 
-Supports merchandising decisions by automatically identifying the highest-performing brands and products across departments and subdepartments.
+Top-performing brands and products are automatically identified, providing valuable merchandising intelligence to support assortment decisions and execution priorities.
 
-![Product Performance](assets/readme/brands_products.png)
-
----
-
-# Business Impact
-
-The Store Performance Reporting Platform replaces a repetitive manual reporting workflow with a standardized analytics pipeline that delivers consistent, executive-ready insights.
-
-### Benefits
-
-- Reduced report preparation time
-- Standardized KPI calculations
-- Improved reporting consistency
-- Executive-ready dashboards
-- Better operational decision support
-- Reduced manual reporting effort
+![Brand Performance](assets/readme/brands_products.png)
 
 ---
 
 # Key Capabilities
 
-- Automated Tableau export validation
+- Automatic Tableau export validation
 - Guided upload workflow
 - Unified reporting data model
 - Executive KPI dashboard
-- Department performance analysis
+- Department performance analytics
 - Budget performance monitoring
 - Sales mix visualization
-- Brand performance analytics
+- Brand performance analysis
 - Interactive HTML reporting
 - Formatted Excel report generation
 
@@ -145,22 +187,22 @@ The Store Performance Reporting Platform replaces a repetitive manual reporting 
    Main Streamlit application
 
 📁 upload_classifier.py
-   Upload validation and file identification
+   Upload validation and automatic file identification
 
 📁 vm_report_data_model_v2.py
-   Data model construction
+   Unified reporting data model
 
 📁 report_calculations.py
-   KPI calculations
+   KPI calculations and analytics
 
 📁 chart_builder.py
-   Chart generation
+   Dashboard visualizations
 
 📁 html_report_builder.py
    HTML report generation
 
 📁 report_generator.py
-   Coordinates the reporting pipeline
+   Coordinates the reporting workflow
 ```
 
 ---
@@ -190,7 +232,7 @@ The Store Performance Reporting Platform replaces a repetitive manual reporting 
 
 **Data Analytics • Automation • Cloud • GIS**
 
-Building practical decision-support systems through analytics, automation, and visualization.
+I enjoy solving operational problems by combining data analytics, automation, and visualization into practical decision-support systems.
 
 **Portfolio**  
 https://impactomex.wixsite.com/eportfolio
