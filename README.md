@@ -4,6 +4,8 @@
 
 > Transforming raw Tableau exports into executive-ready retail performance intelligence.
 
+![Header](assets/readme/executive_summary.png)
+
 ![Python](https://img.shields.io/badge/Python-3.x-3776AB?logo=python&logoColor=white)
 ![Streamlit](https://img.shields.io/badge/Streamlit-Live-FF4B4B?logo=streamlit&logoColor=white)
 ![Status](https://img.shields.io/badge/Status-Active-success)
@@ -22,16 +24,13 @@ https://retail-performance-reporting.streamlit.app/
 
 ---
 
-## At a Glance
+## Business Impact
 
-| Metric | Value |
-|--------|------:|
-| Development Status | Production |
-| Report Preparation | **45 min → ~5 min** |
-| Time Reduction | **≈89%** |
-| Input Sources | Multiple Tableau Exports |
-| Outputs | Interactive HTML + Excel Reports |
-| Built With | Python • Streamlit • Pandas |
+- ⏱ **Report Preparation:** 45 minutes → ~5 minutes
+- 📈 **Time Reduction:** ≈89%
+- 📊 **Data Sources:** Multiple Tableau exports
+- 📄 **Deliverables:** Interactive HTML & Excel reports
+- ✅ **Status:** Active Production
 
 ---
 
@@ -85,11 +84,9 @@ Instead of manually preparing reports, users simply upload the required Tableau 
 
 The result is a standardized reporting workflow that consistently delivers decision-ready insights in minutes.
 
+![Diagram](assets/readme/solution_diagram.jpg)
+
 ---
-
-# Business Impact
-
-The platform transformed a repetitive reporting task into a standardized decision-support workflow.
 
 ### Results
 
