@@ -6,6 +6,8 @@
 
 ![Header](assets/readme/KPI Reporting Platform header.png)
 
+![Diagram](assets/readme/KPI Reporting Platform header.png)
+
 ![Python](https://img.shields.io/badge/Python-3.x-3776AB?logo=python&logoColor=white)
 ![Streamlit](https://img.shields.io/badge/Streamlit-Live-FF4B4B?logo=streamlit&logoColor=white)
 ![Status](https://img.shields.io/badge/Status-Active-success)
